@@ -99,7 +99,7 @@ fos_rest:
     param_fetcher_listener: true
     view:
         view_response_listener: 'force'
-        exception_wrapper_handler:  null
+        #exception_wrapper_handler:  null
         formats:
             jsonp: true
             json: true
@@ -107,8 +107,8 @@ fos_rest:
             rss: false
         mime_types:
             json: ['application/json', 'application/x-json']
-            jpg: 'image/jpeg'
-            png: 'image/png'
+            jpg: ['image/jpeg']
+            png: ['image/png']
         jsonp_handler: ~
     routing_loader:
         default_format:  json
