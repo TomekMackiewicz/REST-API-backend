@@ -14,10 +14,7 @@ class BlogPostType extends AbstractType {
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
-        $builder
-                ->add('title', TextType::class)
-                ->add('body', TextType::class)
-        ;
+        $builder->add('title', TextType::class)->add('body', TextType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver) {

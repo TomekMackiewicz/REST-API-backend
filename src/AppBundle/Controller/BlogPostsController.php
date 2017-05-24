@@ -93,6 +93,7 @@ class BlogPostsController extends FOSRestController implements ClassResourceInte
         if (!$form->isValid()) {
             return $form;
         }
+        
         /**
          * @var $blogPost BlogPost
          */
@@ -101,10 +102,12 @@ class BlogPostsController extends FOSRestController implements ClassResourceInte
         $em = $this->getDoctrine()->getManager();
         $em->persist($blogPost);
         $em->flush();
+        
         $routeOptions = [
             'id' => $blogPost->getId(),
             '_format' => $request->get('_format'),
         ];
+        
         return $this->routeRedirectView('get_post', $routeOptions, Response::HTTP_CREATED);
     }
 
@@ -208,6 +211,7 @@ class BlogPostsController extends FOSRestController implements ClassResourceInte
         $em = $this->getDoctrine()->getManager();
         $em->remove($blogPost);
         $em->flush();
+        
         return new View(null, Response::HTTP_NO_CONTENT);
     }
 
