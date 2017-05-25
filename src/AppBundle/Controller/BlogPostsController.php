@@ -28,7 +28,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 class BlogPostsController extends FOSRestController implements ClassResourceInterface {
 
     /**
-     * Gets an individual Blog Post
+     * Gets an individual blog post
      *
      * @param int $id
      * @return mixed
@@ -45,7 +45,6 @@ class BlogPostsController extends FOSRestController implements ClassResourceInte
      */
     public function getAction(int $id) {
         $blogPost = $this->getBlogPostRepository()->createFindOneByIdQuery($id)->getSingleResult();
-
         if ($blogPost === null) {
             return new View(null, Response::HTTP_NOT_FOUND);
         }
@@ -54,7 +53,7 @@ class BlogPostsController extends FOSRestController implements ClassResourceInte
     }
 
     /**
-     * Gets a collection of BlogPosts
+     * Gets a collection of blog posts
      *
      * @return array
      *
@@ -71,6 +70,9 @@ class BlogPostsController extends FOSRestController implements ClassResourceInte
     }
 
     /**
+     *
+     * Adds a blog post
+     *
      * @param Request $request
      * @return View|\Symfony\Component\Form\Form
      *
@@ -87,31 +89,29 @@ class BlogPostsController extends FOSRestController implements ClassResourceInte
         $form = $this->createForm(BlogPostType::class, null, [
             'csrf_protection' => false,
         ]);
-
         $form->submit($request->request->all());
-
         if (!$form->isValid()) {
             return $form;
         }
-        
         /**
          * @var $blogPost BlogPost
          */
         $blogPost = $form->getData();
-
         $em = $this->getDoctrine()->getManager();
         $em->persist($blogPost);
         $em->flush();
-        
         $routeOptions = [
             'id' => $blogPost->getId(),
             '_format' => $request->get('_format'),
         ];
-        
+
         return $this->routeRedirectView('get_post', $routeOptions, Response::HTTP_CREATED);
     }
 
     /**
+     *
+     * Updates blog post
+     *
      * @param Request $request
      * @param int     $id
      * @return View|\Symfony\Component\Form\Form
@@ -151,6 +151,9 @@ class BlogPostsController extends FOSRestController implements ClassResourceInte
     }
 
     /**
+     *
+     * Updates blog post
+     *
      * @param Request $request
      * @param int     $id
      * @return View|\Symfony\Component\Form\Form
@@ -190,6 +193,9 @@ class BlogPostsController extends FOSRestController implements ClassResourceInte
     }
 
     /**
+     *
+     * Deletes blog post
+     *
      * @param int $id
      * @return View
      *
@@ -211,7 +217,7 @@ class BlogPostsController extends FOSRestController implements ClassResourceInte
         $em = $this->getDoctrine()->getManager();
         $em->remove($blogPost);
         $em->flush();
-        
+
         return new View(null, Response::HTTP_NO_CONTENT);
     }
 
