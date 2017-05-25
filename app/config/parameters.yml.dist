@@ -22,5 +22,5 @@ parameters:
     cors_allow_origin: 'http://localhost:4200'
 
     # nelmio api docs
-    api_name: 'legalstart'
+    api_name: 'rest-api-backend'
     api_description: 'Description'
