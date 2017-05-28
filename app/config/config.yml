@@ -94,15 +94,15 @@ fos_rest:
         view_response_listener: 'force'
         #exception_wrapper_handler:  null
         formats:
-            jsonp: true
+            #jsonp: true
             json: true
             xml: false
             rss: false
         mime_types:
             json: ['application/json', 'application/x-json']
-#            jpg: ['image/jpeg']
-#            png: ['image/png']
-        jsonp_handler: ~
+            jpg: ['image/jpeg']
+            png: ['image/png']
+#        jsonp_handler: ~
     routing_loader:
         default_format:  json
         include_format:  false
@@ -111,8 +111,10 @@ fos_rest:
         rules:
             - {
                 path: ^/,
-                priorities: [ json, jsonp ],
-                fallback_format: ~,
+                priorities: [ json ],
+                #priorities: [ json, jsonp ],
+                #fallback_format: ~,
+                fallback_format: json,
                 prefer_extension: true
                 }
     exception:

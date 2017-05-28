@@ -1,3 +1,11 @@
 blog_posts:
     type: rest
     resource: AppBundle\Controller\BlogPostsController
+
+login:
+    type: rest
+    resource: AppBundle\Controller\RestLoginController
+    
+profile:
+    type: rest
+    resource: AppBundle\Controller\RestProfileController    
