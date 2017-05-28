@@ -5,6 +5,10 @@ blog_posts:
 login:
     type: rest
     resource: AppBundle\Controller\RestLoginController
+
+password_management:
+    type: rest
+    resource: AppBundle\Controller\RestPasswordManagementController    
     
 profile:
     type: rest
