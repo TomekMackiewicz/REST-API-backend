@@ -9,3 +9,7 @@ services:
         factory: ["@doctrine", getRepository]
         arguments:
             - AppBundle\Entity\BlogPost
+    user.mailer.rest:
+        class: AppBundle\Mailer\RestMailer
+        public: false
+        parent: fos_user.mailer.twig_swift
