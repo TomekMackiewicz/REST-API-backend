@@ -12,6 +12,8 @@ Trans issue:
 <br>
 Notes:
 <br>
+https://github.com/FriendsOfSymfony/FOSUserBundle/issues/1573
+<br>
 https://codereviewvideos.com/course/fosuser-fosrest-lexikjwt-user-login-registration-api/video/password-management-reset-password-part-4
 <br>lub następne
 <br>
