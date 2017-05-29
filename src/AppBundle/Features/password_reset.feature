@@ -12,7 +12,7 @@ Feature: Handle password changing via the RESTful API
       | 2  | john     | john@test.org  | johnpass | some-token-string  |
      And I set header "Content-Type" with value "application/json"
 
-
+  @this
   Scenario: Can request a password reset for a valid username
     When I send a "POST" request to "/password/reset/request" with body:
       """
