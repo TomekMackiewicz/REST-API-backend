@@ -37,7 +37,6 @@ Feature: Handle password changing via the RESTful API
       { "username": "john" }
       """
     Then the response code should be 403
-    And the response should contain "The password for this user has already been requested within the last 24 hours."
 
   ############################
   ## Password Reset Confirm ##

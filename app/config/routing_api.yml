@@ -12,4 +12,8 @@ password_management:
     
 profile:
     type: rest
-    resource: AppBundle\Controller\RestProfileController    
+    resource: AppBundle\Controller\RestProfileController
+    
+registration:
+    type: rest
+    resource: AppBundle\Controller\RestRegistrationController    
