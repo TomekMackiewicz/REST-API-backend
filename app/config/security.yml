@@ -32,7 +32,7 @@ security:
             anonymous: true
 
         api_login:
-            pattern:  ^/login
+            pattern:  ^/login$
             stateless: true
             anonymous: true
             form_login:
