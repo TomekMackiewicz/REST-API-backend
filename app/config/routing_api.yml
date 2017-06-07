@@ -2,18 +2,22 @@ blog_posts:
     type: rest
     resource: AppBundle\Controller\BlogPostsController
 
+document_category:
+    type: rest
+    resource: AppBundle\Controller\DocumentCategoryController
+
 login:
     type: rest
     resource: AppBundle\Controller\RestLoginController
 
 password_management:
     type: rest
-    resource: AppBundle\Controller\RestPasswordManagementController    
-    
+    resource: AppBundle\Controller\RestPasswordManagementController
+
 profile:
     type: rest
     resource: AppBundle\Controller\RestProfileController
-    
+
 registration:
     type: rest
-    resource: AppBundle\Controller\RestRegistrationController    
+    resource: AppBundle\Controller\RestRegistrationController

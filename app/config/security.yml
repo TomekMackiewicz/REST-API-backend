@@ -51,6 +51,10 @@ security:
             pattern: ^/posts
             anonymous: true
 
+        api_categories:
+            pattern: ^/categories
+            anonymous: true
+
 #        login:
 #            pattern:  ^/api/login
 #            stateless: true
@@ -75,6 +79,7 @@ security:
         - { path: ^/password/reset, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/posts$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/categories$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/, role: IS_AUTHENTICATED_ANONYMOUSLY }
 #        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
 #        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }

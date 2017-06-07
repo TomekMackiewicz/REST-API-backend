@@ -9,6 +9,11 @@ services:
         factory: ["@doctrine", getRepository]
         arguments:
             - AppBundle\Entity\BlogPost
+    crv.doctrine_entity_repository.document_category:
+        class: Doctrine\ORM\EntityRepository
+        factory: ["@doctrine", getRepository]
+        arguments:
+            - AppBundle\Entity\DocumentCategory
     user.mailer.rest:
         class: AppBundle\Mailer\RestMailer
         public: false
