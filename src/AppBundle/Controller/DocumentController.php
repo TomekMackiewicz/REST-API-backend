@@ -86,6 +86,7 @@ class DocumentController extends FOSRestController implements ClassResourceInter
      * )
      */
     public function postAction(Request $request) {
+        //file_put_contents('/home/tomek/Workspace/log.log', $request);
         $form = $this->createForm(DocumentType::class, null, [
             'csrf_protection' => false,
         ]);
@@ -97,6 +98,7 @@ class DocumentController extends FOSRestController implements ClassResourceInter
          * @var $document Document
          */
         $document = $form->getData();
+        //file_put_contents('/home/tomek/Workspace/log.log', $document);
         $em = $this->getDoctrine()->getManager();
         $em->persist($document);
         $em->flush();

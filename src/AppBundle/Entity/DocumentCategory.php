@@ -28,7 +28,8 @@ class DocumentCategory implements \JsonSerializable {
     private $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Document", mappedBy="categories")
+     * @ORM\ManyToMany(targetEntity="Document", inversedBy="categories")
+     * @ORM\JoinTable(name="document_category_document")
      * @JMSSerializer\Expose
      */
     private $documents;

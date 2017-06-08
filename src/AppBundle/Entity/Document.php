@@ -34,8 +34,7 @@ class Document implements \JsonSerializable {
     private $body;
 
     /**
-     * @ORM\ManyToMany(targetEntity="DocumentCategory", inversedBy="documents")
-     * @ORM\JoinTable(name="document_category_document")
+     * @ORM\ManyToMany(targetEntity="DocumentCategory", mappedBy="documents") 
      * @JMSSerializer\Expose
      */
     private $categories;
