@@ -28,6 +28,16 @@ class DocumentCategory implements \JsonSerializable {
     private $name;
 
     /**
+     * @ORM\ManyToMany(targetEntity="Document", mappedBy="categories")
+     * @JMSSerializer\Expose
+     */
+    private $documents;
+
+    public function __construct() {
+        $this->documents = new ArrayCollection();
+    }
+
+    /**
      * @return int
      */
     public function getId() {
@@ -51,12 +61,46 @@ class DocumentCategory implements \JsonSerializable {
     }
 
     /**
+     * Add documents
+     *
+     * @param \PortalBundle\Entity\Document $documents
+     * @return DocumentCategory
+     */
+    public function addDocument(\AppBundle\Entity\Document $documents) {
+        $this->documents[] = $documents;
+        return $this;
+    }
+
+    /**
+     * Remove documents
+     *
+     * @param \PortalBundle\Entity\Document $documents
+     */
+    public function removeDocument(\AppBundle\Entity\Document $documents) {
+        $this->documents->removeElement($documents);
+    }
+
+    /**
+     * Get documents
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getDocuments() {
+        return $this->documents;
+    }
+
+//    public function __toString() {
+//        return $this->name;
+//    }
+
+    /**
      * @return mixed
      */
     function jsonSerialize() {
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'documents' => $this->documents
         ];
     }
 

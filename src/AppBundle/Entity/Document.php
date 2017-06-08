@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation as JMSSerializer;
 
 /**
@@ -31,6 +32,17 @@ class Document implements \JsonSerializable {
      * @JMSSerializer\Expose
      */
     private $body;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="DocumentCategory", inversedBy="documents")
+     * @ORM\JoinTable(name="document_category_document")
+     * @JMSSerializer\Expose
+     */
+    private $categories;
+
+    public function __construct() {
+        $this->categories = new ArrayCollection();
+    }
 
     /**
      * @return int
@@ -72,6 +84,39 @@ class Document implements \JsonSerializable {
     }
 
     /**
+     * Add categories
+     *
+     * @param \PortalBundle\Entity\DocumentCategory $categories
+     * @return Document
+     */
+    public function addCategory(\AppBundle\Entity\DocumentCategory $categories) {
+        $this->categories[] = $categories;
+        return $this;
+    }
+
+    /**
+     * Remove categories
+     *
+     * @param \PortalBundle\Entity\DocumentCategory $categories
+     */
+    public function removeCategory(\AppBundle\Entity\DocumentCategory $categories) {
+        $this->categories->removeElement($categories);
+    }
+
+    /**
+     * Get categories
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCategories() {
+        return $this->categories;
+    }
+
+//    public function __toString() {
+//        return $this->name;
+//    }
+
+    /**
      * @return mixed
      */
     function jsonSerialize() {
@@ -79,6 +124,7 @@ class Document implements \JsonSerializable {
             'id' => $this->id,
             'title' => $this->title,
             'body' => $this->body,
+            'categories' => $this->categories
         ];
     }
 
