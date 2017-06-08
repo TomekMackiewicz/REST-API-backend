@@ -1,6 +1,6 @@
-blog_posts:
+documents:
     type: rest
-    resource: AppBundle\Controller\BlogPostsController
+    resource: AppBundle\Controller\DocumentController
 
 document_category:
     type: rest

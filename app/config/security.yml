@@ -47,8 +47,8 @@ security:
             pattern: ^/register
             anonymous: true
 
-        api_posts:
-            pattern: ^/posts
+        api_documents:
+            pattern: ^/documents
             anonymous: true
 
         api_categories:
@@ -78,7 +78,7 @@ security:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/password/reset, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/posts$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/documents$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/categories$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/, role: IS_AUTHENTICATED_ANONYMOUSLY }
 #        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }

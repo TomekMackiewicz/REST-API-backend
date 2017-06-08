@@ -4,11 +4,11 @@ parameters:
     #parameter_name: value
 
 services:
-    crv.doctrine_entity_repository.blog_post:
+    crv.doctrine_entity_repository.document:
         class: Doctrine\ORM\EntityRepository
         factory: ["@doctrine", getRepository]
         arguments:
-            - AppBundle\Entity\BlogPost
+            - AppBundle\Entity\Document
     crv.doctrine_entity_repository.document_category:
         class: Doctrine\ORM\EntityRepository
         factory: ["@doctrine", getRepository]

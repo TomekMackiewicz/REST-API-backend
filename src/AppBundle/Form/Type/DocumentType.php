@@ -7,7 +7,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class BlogPostType extends AbstractType {
+class DocumentType extends AbstractType {
 
     /**
      * @param FormBuilderInterface $builder
@@ -19,13 +19,13 @@ class BlogPostType extends AbstractType {
 
     public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults([
-            'data_class' => 'AppBundle\Entity\BlogPost',
+            'data_class' => 'AppBundle\Entity\Document',
             'allow_extra_fields' => true,
         ]);
     }
 
     public function getName() {
-        return 'blog_post';
+        return 'document';
     }
 
 }
