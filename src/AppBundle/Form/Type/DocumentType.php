@@ -7,6 +7,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+
 //use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 //use AppBundle\Form\Type\DocumentCategoryType;
 
@@ -27,7 +28,7 @@ class DocumentType extends AbstractType {
                     'class' => 'AppBundle:DocumentCategory',
                     'multiple' => true,
                     'expanded' => true,
-                    'by_reference' => true,
+                    'by_reference' => false,
                     'choice_label' => 'id',
                 ))
         ;
