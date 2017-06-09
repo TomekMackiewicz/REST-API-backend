@@ -112,10 +112,6 @@ class Document implements \JsonSerializable {
         return $this->categories;
     }
 
-//    public function __toString() {
-//        return $this->name;
-//    }
-
     /**
      * @return mixed
      */
