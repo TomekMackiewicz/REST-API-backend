@@ -86,8 +86,7 @@ class DocumentController extends FOSRestController implements ClassResourceInter
      * )
      */
     public function postAction(Request $request) {
-        file_put_contents('/var/www/log.log', $request);
-        //file_put_contents('/var/www/log.log', 'got here');
+        //file_put_contents('/var/www/log.log', $request);
         $form = $this->createForm(DocumentType::class, null, [
             'csrf_protection' => false,
         ]);
@@ -95,14 +94,23 @@ class DocumentController extends FOSRestController implements ClassResourceInter
         if (!$form->isValid()) {
             return $form;
         }
-        //file_put_contents('/var/www/log.log', 'got here');
-        /**
-         * @var $document Document
-         */
+
         $document = $form->getData();
-        //file_put_contents('/home/tomek/Workspace/log.log', $document);
+        //$categories = $request->request->get('categories');
+        //file_put_contents('/var/www/log.log', $categories);
         $em = $this->getDoctrine()->getManager();
+
+        //$document->getCategories()->add($categories);
+//        foreach ($categories as $category) {
+//            $category->getDocuments()->add($document);
+//        }
+
         $em->persist($document);
+
+//        foreach ($categories as $category) {
+//            $em->persist($category);
+//            //file_put_contents('/var/www/log.log', $category);
+//        }
         $em->flush();
         $routeOptions = [
             'id' => $document->getId(),

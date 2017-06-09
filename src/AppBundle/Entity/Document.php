@@ -34,7 +34,8 @@ class Document implements \JsonSerializable {
     private $body;
 
     /**
-     * @ORM\ManyToMany(targetEntity="DocumentCategory", mappedBy="documents")
+     * @ORM\ManyToMany(targetEntity="DocumentCategory", inversedBy="documents")
+     * @ORM\JoinTable(name="document_category")
      * @JMSSerializer\Expose
      */
     private $categories;
@@ -85,7 +86,7 @@ class Document implements \JsonSerializable {
     /**
      * Add categories
      *
-     * @param \PortalBundle\Entity\DocumentCategory $categories
+     * @param \AppBundle\Entity\DocumentCategory $categories
      * @return Document
      */
     public function addCategory(\AppBundle\Entity\DocumentCategory $categories) {
@@ -96,7 +97,7 @@ class Document implements \JsonSerializable {
     /**
      * Remove categories
      *
-     * @param \PortalBundle\Entity\DocumentCategory $categories
+     * @param \AppBundle\Entity\DocumentCategory $categories
      */
     public function removeCategory(\AppBundle\Entity\DocumentCategory $categories) {
         $this->categories->removeElement($categories);
