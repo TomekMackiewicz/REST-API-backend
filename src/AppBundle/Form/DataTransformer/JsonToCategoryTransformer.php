@@ -37,13 +37,11 @@ class JsonToCategoryTransformer implements DataTransformerInterface {
      * @throws TransformationFailedException if object (category) is not found.
      */
     public function reverseTransform($categoryName) {
-        // no text? It's optional, so that's ok
         if (!$categoryName) {
             return;
         }
         $category = $this->em
                 ->getRepository('AppBundle:DocumentCategory')
-                // query for the category
                 ->findOneByName($categoryName)
         ;
         if (null === $category) {

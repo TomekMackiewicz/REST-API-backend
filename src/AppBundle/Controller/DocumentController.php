@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Document;
+use AppBundle\Entity\DocumentCategory;
 use AppBundle\Entity\Repository\DocumentRepository;
 use AppBundle\Form\Type\DocumentType;
 use FOS\RestBundle\View\View;
@@ -18,6 +19,7 @@ use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Doctrine\ORM\EntityManager;
 
 /**
  * Class DocumentController
@@ -85,8 +87,7 @@ class DocumentController extends FOSRestController implements ClassResourceInter
      *     }
      * )
      */
-    public function postAction(Request $request) {
-        //file_put_contents('/var/www/log.log', $request);
+    public function postAction(Request $request) { 
         $form = $this->createForm(DocumentType::class, null, [
             'csrf_protection' => false,
         ]);
@@ -95,23 +96,20 @@ class DocumentController extends FOSRestController implements ClassResourceInter
             return $form;
         }
 
-        $document = $form->getData();
-        //$categories = $request->request->get('categories');
-        //file_put_contents('/var/www/log.log', $categories);
         $em = $this->getDoctrine()->getManager();
-
-        //$document->getCategories()->add($categories);
-//        foreach ($categories as $category) {
-//            $category->getDocuments()->add($document);
-//        }
-
+        $document = $form->getData();
+        $categories = $request->request->get('categories'); 
+        
+        foreach ($categories as $categoryId) {
+            $category = $em->getRepository('AppBundle:DocumentCategory')->find((int)$categoryId['id']);
+            $category->addDocument($document);
+            $document->addCategory($category);
+            $em->persist($category);            
+        }
+        
         $em->persist($document);
-
-//        foreach ($categories as $category) {
-//            $em->persist($category);
-//            //file_put_contents('/var/www/log.log', $category);
-//        }
         $em->flush();
+        
         $routeOptions = [
             'id' => $document->getId(),
             '_format' => $request->get('_format'),
