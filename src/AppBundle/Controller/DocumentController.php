@@ -87,7 +87,7 @@ class DocumentController extends FOSRestController implements ClassResourceInter
      *     }
      * )
      */
-    public function postAction(Request $request) { 
+    public function postAction(Request $request) {               
         $form = $this->createForm(DocumentType::class, null, [
             'csrf_protection' => false,
         ]);
