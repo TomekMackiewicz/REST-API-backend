@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation as JMSSerializer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\DocumentRepository")
@@ -34,6 +35,17 @@ class Document implements \JsonSerializable {
     private $body;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="add_date", type="datetime", nullable=true)
+     * @Assert\Date()(
+     *  message = "Invalid value (expected: date format)."
+     * )
+     * @JMSSerializer\Expose          
+     */     
+    private $addDate;    
+    
+    /**
      * @ORM\ManyToMany(targetEntity="DocumentCategory", inversedBy="documents")
      * @ORM\JoinTable(name="document_category")
      * @JMSSerializer\Expose
@@ -41,6 +53,7 @@ class Document implements \JsonSerializable {
     private $categories;
 
     public function __construct() {
+        $this->addDate = new \DateTime();
         $this->categories = new ArrayCollection();
     }
 
@@ -83,6 +96,27 @@ class Document implements \JsonSerializable {
         return $this;
     }
 
+//    /**
+//     * Set addDate
+//     *
+//     * @param \DateTime $addDate
+//     * @return Document
+//     */
+//    public function setAddDate($addDate)
+//    {
+//        $this->addDate = $addDate;
+//        return $this;
+//    }
+//    /**
+//     * Get addDate
+//     *
+//     * @return \DateTime 
+//     */
+//    public function getAddDate()
+//    {
+//        return $this->addDate;
+//    }    
+    
     /**
      * Add categories
      *
@@ -120,6 +154,7 @@ class Document implements \JsonSerializable {
             'id' => $this->id,
             'title' => $this->title,
             'body' => $this->body,
+            'addDate' => $this->addDate,
             'categories' => $this->categories
         ];
     }
