@@ -89,10 +89,6 @@ class DocumentCategory implements \JsonSerializable {
         return $this->documents;
     }
 
-//    public function __toString() {
-//        return $this->name;
-//    }
-
     /**
      * @return mixed
      */

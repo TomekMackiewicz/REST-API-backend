@@ -136,45 +136,60 @@ class DocumentController extends FOSRestController implements ClassResourceInter
      *     }
      * )
      */
-    public function putAction(Request $request, int $id) {
-
-        file_put_contents("/home/tomek/Workspace/log.log", $request);       
+    public function putAction(Request $request, int $id) { 
         
-//        $document = $this->getDocumentRepository()->find($id);
-//        $categories = $request->request->get('categories');
-//        if ($document === null) {
-//            return new View(null, Response::HTTP_NOT_FOUND);
-//        }
-//        $form = $this->createForm(DocumentType::class, $document, [
-//            'csrf_protection' => false,
-//        ]);
-//        $form->submit($request->request->all());
-//        if (!$form->isValid()) {
-//            return $form;
-//        }
-//        $document->setModifiedDate(new \DateTime());
-//        $em = $this->getDoctrine()->getManager();
-//        
-//        foreach ($categories as $categoryId) {
-//            $category = $em->getRepository('AppBundle:DocumentCategory')->find((int)$categoryId['id']);
-//            
-//            if (!$category->hasDocument($document)) {
-//                $category->addDocument($document);
-//            }            
-//            if (!$document->hasCategory($category)) {
-//                $document->addCategory($category);
-//            }             
-//            //$category->addDocument($document);
-//            //$document->addCategory($category);
-//            $em->persist($category);            
-//        }        
-//        
-//        $em->flush();
-//        $routeOptions = [
-//            'id' => $document->getId(),
-//            '_format' => $request->get('_format'),
-//        ];
-//        return $this->routeRedirectView('get_document', $routeOptions, Response::HTTP_NO_CONTENT);
+        $document = $this->getDocumentRepository()->find($id);
+        $categories = $request->request->get('categories');
+        $em = $this->getDoctrine()->getManager();
+        
+        if ($document === null) {
+            return new View(null, Response::HTTP_NOT_FOUND);
+        }
+        $form = $this->createForm(DocumentType::class, $document, [
+            'csrf_protection' => false,
+        ]);
+        $form->submit($request->request->all());
+        if (!$form->isValid()) {
+            return $form;
+        }
+        
+        /*
+         * Add modify data
+         */
+        $document->setModifiedDate(new \DateTime());
+ 
+        /*
+         * First we delete current relations
+         */ 
+        $relations = $document->getCategories();
+        foreach($relations as $relation) {
+            $document->getCategories()->removeElement($relation); 
+        }
+        
+        /*
+         * Then we loop thru current categories
+         */
+        foreach ($categories as $categoryId) {
+            $category = $em->getRepository('AppBundle:DocumentCategory')->find((int)$categoryId['id']);
+            /*
+             * We add new relations only if relation does not exist - to avoid duplicates
+             */
+            if (!$category->hasDocument($document)) {
+                $category->addDocument($document);
+            }            
+            if (!$document->hasCategory($category)) {
+                $document->addCategory($category);
+            }             
+            $em->persist($category);            
+        }        
+        
+        $em->flush();
+        
+        $routeOptions = [
+            'id' => $document->getId(),
+            '_format' => $request->get('_format'),
+        ];
+        return $this->routeRedirectView('get_document', $routeOptions, Response::HTTP_NO_CONTENT);
     }
 
     /**

@@ -118,6 +118,7 @@ class Document implements \JsonSerializable {
         $this->modifiedDate = $modifiedDate;
         return $this;
     }
+    
 //    /**
 //     * Get addDate
 //     *
