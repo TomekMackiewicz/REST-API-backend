@@ -37,13 +37,24 @@ class Document implements \JsonSerializable {
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="add_date", type="datetime", nullable=true)
+     * @ORM\Column(name="date_add", type="datetime", nullable=true)
      * @Assert\Date()(
      *  message = "Invalid value (expected: date format)."
      * )
      * @JMSSerializer\Expose          
      */     
     private $addDate;    
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_modified", type="datetime", nullable=true)
+     * @Assert\Date()(
+     *  message = "Invalid value (expected: date format)."
+     * )
+     * @JMSSerializer\Expose          
+     */     
+    private $modifiedDate;
     
     /**
      * @ORM\ManyToMany(targetEntity="DocumentCategory", inversedBy="documents")
@@ -51,7 +62,7 @@ class Document implements \JsonSerializable {
      * @JMSSerializer\Expose
      */
     private $categories;
-
+  
     public function __construct() {
         $this->addDate = new \DateTime();
         $this->categories = new ArrayCollection();
@@ -96,17 +107,17 @@ class Document implements \JsonSerializable {
         return $this;
     }
 
-//    /**
-//     * Set addDate
-//     *
-//     * @param \DateTime $addDate
-//     * @return Document
-//     */
-//    public function setAddDate($addDate)
-//    {
-//        $this->addDate = $addDate;
-//        return $this;
-//    }
+    /**
+     * Set modifiedDate
+     *
+     * @param \DateTime $modifiedDate
+     * @return Document
+     */
+    public function setModifiedDate($modifiedDate)
+    {
+        $this->modifiedDate = $modifiedDate;
+        return $this;
+    }
 //    /**
 //     * Get addDate
 //     *
@@ -155,8 +166,17 @@ class Document implements \JsonSerializable {
             'title' => $this->title,
             'body' => $this->body,
             'addDate' => $this->addDate,
+            'modifiedDate' => $this->modifiedDate,
             'categories' => $this->categories
         ];
     }
 
+    /**
+     * @param \AppBundle\Entity\DocumentCategory $category
+     * @return bool
+     */
+    public function hasCategory(DocumentCategory $category) {
+        return $this->getCategories()->contains($category);
+    }    
+    
 }

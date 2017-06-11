@@ -104,4 +104,12 @@ class DocumentCategory implements \JsonSerializable {
         ];
     }
 
+    /**
+     * @param \AppBundle\Entity\Document $document
+     * @return bool
+     */
+    public function hasDocument(Document $document) {
+        return $this->getDocuments()->contains($document);
+    }     
+    
 }

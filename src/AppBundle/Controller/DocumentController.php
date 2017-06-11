@@ -137,27 +137,44 @@ class DocumentController extends FOSRestController implements ClassResourceInter
      * )
      */
     public function putAction(Request $request, int $id) {
-        /**
-         * @var document Document
-         */
-        $document = $this->getDocumentRepository()->find($id);
-        if ($document === null) {
-            return new View(null, Response::HTTP_NOT_FOUND);
-        }
-        $form = $this->createForm(DocumentType::class, $document, [
-            'csrf_protection' => false,
-        ]);
-        $form->submit($request->request->all());
-        if (!$form->isValid()) {
-            return $form;
-        }
-        $em = $this->getDoctrine()->getManager();
-        $em->flush();
-        $routeOptions = [
-            'id' => $document->getId(),
-            '_format' => $request->get('_format'),
-        ];
-        return $this->routeRedirectView('get_document', $routeOptions, Response::HTTP_NO_CONTENT);
+
+        file_put_contents("/home/tomek/Workspace/log.log", $request);       
+        
+//        $document = $this->getDocumentRepository()->find($id);
+//        $categories = $request->request->get('categories');
+//        if ($document === null) {
+//            return new View(null, Response::HTTP_NOT_FOUND);
+//        }
+//        $form = $this->createForm(DocumentType::class, $document, [
+//            'csrf_protection' => false,
+//        ]);
+//        $form->submit($request->request->all());
+//        if (!$form->isValid()) {
+//            return $form;
+//        }
+//        $document->setModifiedDate(new \DateTime());
+//        $em = $this->getDoctrine()->getManager();
+//        
+//        foreach ($categories as $categoryId) {
+//            $category = $em->getRepository('AppBundle:DocumentCategory')->find((int)$categoryId['id']);
+//            
+//            if (!$category->hasDocument($document)) {
+//                $category->addDocument($document);
+//            }            
+//            if (!$document->hasCategory($category)) {
+//                $document->addCategory($category);
+//            }             
+//            //$category->addDocument($document);
+//            //$document->addCategory($category);
+//            $em->persist($category);            
+//        }        
+//        
+//        $em->flush();
+//        $routeOptions = [
+//            'id' => $document->getId(),
+//            '_format' => $request->get('_format'),
+//        ];
+//        return $this->routeRedirectView('get_document', $routeOptions, Response::HTTP_NO_CONTENT);
     }
 
     /**
