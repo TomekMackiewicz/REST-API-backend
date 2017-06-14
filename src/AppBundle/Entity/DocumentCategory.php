@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation as JMSSerializer;
+use JMS\Serializer\Annotation\MaxDepth;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\DocumentCategoryRepository")
@@ -30,6 +31,7 @@ class DocumentCategory implements \JsonSerializable {
     /**
      * @ORM\ManyToMany(targetEntity="Document", mappedBy="categories")
      * @JMSSerializer\Expose
+     * @MaxDepth(2)
      */
     private $documents;
 
@@ -106,6 +108,6 @@ class DocumentCategory implements \JsonSerializable {
      */
     public function hasDocument(Document $document) {
         return $this->getDocuments()->contains($document);
-    }     
-    
+    }
+
 }

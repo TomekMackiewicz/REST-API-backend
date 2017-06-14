@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation as JMSSerializer;
+use JMS\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -41,9 +42,9 @@ class Document implements \JsonSerializable {
      * @Assert\Date()(
      *  message = "Invalid value (expected: date format)."
      * )
-     * @JMSSerializer\Expose          
-     */     
-    private $addDate;    
+     * @JMSSerializer\Expose
+     */
+    private $addDate;
 
     /**
      * @var \DateTime
@@ -52,17 +53,26 @@ class Document implements \JsonSerializable {
      * @Assert\Date()(
      *  message = "Invalid value (expected: date format)."
      * )
-     * @JMSSerializer\Expose          
-     */     
-    private $modifiedDate;
-    
-    /**
-     * @ORM\ManyToMany(targetEntity="DocumentCategory", inversedBy="documents")
-     * @ORM\JoinTable(name="document_category")
      * @JMSSerializer\Expose
      */
+    private $modifiedDate;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="DocumentCategory", inversedBy="documents")
+     * @ORM\JoinTable(
+     *  name="document_category",
+     *  joinColumns={
+     *      @ORM\JoinColumn(name="document_id", referencedColumnName="id")
+     *  },
+     *  inverseJoinColumns={
+     *      @ORM\JoinColumn(name="document_category_id", referencedColumnName="id")
+     *  }
+     * )
+     * @JMSSerializer\Expose
+     * @MaxDepth(2)
+     */
     private $categories;
-  
+
     public function __construct() {
         $this->addDate = new \DateTime();
         $this->categories = new ArrayCollection();
@@ -113,22 +123,21 @@ class Document implements \JsonSerializable {
      * @param \DateTime $modifiedDate
      * @return Document
      */
-    public function setModifiedDate($modifiedDate)
-    {
+    public function setModifiedDate($modifiedDate) {
         $this->modifiedDate = $modifiedDate;
         return $this;
     }
-    
+
 //    /**
 //     * Get addDate
 //     *
-//     * @return \DateTime 
+//     * @return \DateTime
 //     */
 //    public function getAddDate()
 //    {
 //        return $this->addDate;
-//    }    
-    
+//    }
+
     /**
      * Add categories
      *
@@ -178,6 +187,6 @@ class Document implements \JsonSerializable {
      */
     public function hasCategory(DocumentCategory $category) {
         return $this->getCategories()->contains($category);
-    }    
-    
+    }
+
 }
