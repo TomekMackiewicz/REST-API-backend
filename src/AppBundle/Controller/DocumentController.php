@@ -20,6 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Doctrine\ORM\EntityManager;
+use FOS\RestBundle\Controller\Annotations\View AS JSONView;
 
 /**
  * Class DocumentController
@@ -44,6 +45,7 @@ class DocumentController extends FOSRestController implements ClassResourceInter
      *         404 = "Return when not found"
      *     }
      * )
+     * @JSONView(serializerEnableMaxDepthChecks=true)
      */
     public function getAction(int $id) {
         $document = $this->getDocumentRepository()->createFindOneByIdQuery($id)->getSingleResult();
@@ -87,7 +89,7 @@ class DocumentController extends FOSRestController implements ClassResourceInter
      *     }
      * )
      */
-    public function postAction(Request $request) {               
+    public function postAction(Request $request) {
         $form = $this->createForm(DocumentType::class, null, [
             'csrf_protection' => false,
         ]);
@@ -98,18 +100,18 @@ class DocumentController extends FOSRestController implements ClassResourceInter
 
         $em = $this->getDoctrine()->getManager();
         $document = $form->getData();
-        $categories = $request->request->get('categories'); 
-        
+        $categories = $request->request->get('categories');
+
         foreach ($categories as $categoryId) {
-            $category = $em->getRepository('AppBundle:DocumentCategory')->find((int)$categoryId['id']);
+            $category = $em->getRepository('AppBundle:DocumentCategory')->find((int) $categoryId['id']);
             $category->addDocument($document);
             $document->addCategory($category);
-            $em->persist($category);            
+            $em->persist($category);
         }
-        
+
         $em->persist($document);
         $em->flush();
-        
+
         $routeOptions = [
             'id' => $document->getId(),
             '_format' => $request->get('_format'),
@@ -136,12 +138,12 @@ class DocumentController extends FOSRestController implements ClassResourceInter
      *     }
      * )
      */
-    public function putAction(Request $request, int $id) { 
-        
+    public function putAction(Request $request, int $id) {
+
         $document = $this->getDocumentRepository()->find($id);
         $categories = $request->request->get('categories');
         $em = $this->getDoctrine()->getManager();
-        
+
         if ($document === null) {
             return new View(null, Response::HTTP_NOT_FOUND);
         }
@@ -152,39 +154,39 @@ class DocumentController extends FOSRestController implements ClassResourceInter
         if (!$form->isValid()) {
             return $form;
         }
-        
+
         /*
          * Add modify data
          */
         $document->setModifiedDate(new \DateTime());
- 
+
         /*
          * First we delete current relations
-         */ 
+         */
         $relations = $document->getCategories();
-        foreach($relations as $relation) {
-            $document->getCategories()->removeElement($relation); 
+        foreach ($relations as $relation) {
+            $document->getCategories()->removeElement($relation);
         }
-        
+
         /*
          * Then we loop thru current categories
          */
         foreach ($categories as $categoryId) {
-            $category = $em->getRepository('AppBundle:DocumentCategory')->find((int)$categoryId['id']);
+            $category = $em->getRepository('AppBundle:DocumentCategory')->find((int) $categoryId['id']);
             /*
              * We add new relations only if relation does not exist - to avoid duplicates
              */
             if (!$category->hasDocument($document)) {
                 $category->addDocument($document);
-            }            
+            }
             if (!$document->hasCategory($category)) {
                 $document->addCategory($category);
-            }             
-            $em->persist($category);            
-        }        
-        
+            }
+            $em->persist($category);
+        }
+
         $em->flush();
-        
+
         $routeOptions = [
             'id' => $document->getId(),
             '_format' => $request->get('_format'),

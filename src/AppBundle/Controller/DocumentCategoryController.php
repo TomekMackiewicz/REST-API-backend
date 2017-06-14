@@ -18,6 +18,7 @@ use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use FOS\RestBundle\Controller\Annotations\View AS JSONView;
 
 /**
  * Class DocumentCategoryController
@@ -42,6 +43,7 @@ class DocumentCategoryController extends FOSRestController implements ClassResou
      *         404 = "Return when not found"
      *     }
      * )
+     * @JSONView(serializerEnableMaxDepthChecks=true)
      */
     public function getAction(int $id) {
         $category = $this->getDocumentCategoryRepository()->createFindOneByIdQuery($id)->getSingleResult();
