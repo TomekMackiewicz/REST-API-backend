@@ -66,6 +66,7 @@ class DocumentCategoryController extends FOSRestController implements ClassResou
      *         404 = "Return when not found"
      *     }
      * )
+     * @JSONView(serializerEnableMaxDepthChecks=true)
      */
     public function cgetAction() {
         return $this->getDocumentCategoryRepository()->createFindAllQuery()->getResult();
