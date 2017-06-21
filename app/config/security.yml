@@ -55,6 +55,10 @@ security:
             pattern: ^/categories
             anonymous: true
 
+        api_payment:
+            pattern: ^/payments
+            anonymous: true
+
 #        login:
 #            pattern:  ^/api/login
 #            stateless: true
@@ -80,6 +84,7 @@ security:
         - { path: ^/register$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/documents$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/categories$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/payments$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/, role: IS_AUTHENTICATED_ANONYMOUSLY }
 #        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
 #        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }

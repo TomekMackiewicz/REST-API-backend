@@ -21,3 +21,7 @@ profile:
 registration:
     type: rest
     resource: AppBundle\Controller\RestRegistrationController
+    
+payments:
+    type: rest
+    resource: AppBundle\Controller\PaymentController    
