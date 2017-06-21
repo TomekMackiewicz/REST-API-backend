@@ -28,6 +28,7 @@
         "friendsofsymfony/user-bundle": "~2.0",
         "incenteev/composer-parameter-handler": "^2.0",
         "jms/serializer-bundle": "^2.0",
+        "lexik/jwt-authentication-bundle": "^1.7",
         "nelmio/api-doc-bundle": "^2.13",
         "nelmio/cors-bundle": "^1.5",
         "sensio/distribution-bundle": "^5.0",
@@ -37,8 +38,7 @@
         "symfony/swiftmailer-bundle": "^2.3.10",
         "symfony/symfony": "3.2.*",
         "twig/twig": "^1.0||^2.0",
-        "willdurand/faker-bundle": "@stable",
-        "lexik/jwt-authentication-bundle": "^1.7"
+        "willdurand/faker-bundle": "@stable"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
@@ -47,7 +47,7 @@
         "behat/symfony2-extension": "^2.1",
         "phpunit/phpunit": "^5.5",
         "guzzlehttp/guzzle": "^6.2",
-        "csa/guzzle-bundle": "^2.1"        
+        "csa/guzzle-bundle": "^2.1"
     },
     "scripts": {
         "symfony-scripts": [
