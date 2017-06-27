@@ -24,4 +24,8 @@ registration:
     
 payments:
     type: rest
-    resource: AppBundle\Controller\PaymentController    
+    resource: AppBundle\Controller\PaymentController 
+    
+upload:
+    type: rest
+    resource: AppBundle\Controller\UploadController
