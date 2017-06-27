@@ -32,7 +32,7 @@ class UploadType extends AbstractType {
     }
 
     public function getName() {
-        return 'file';
+        return 'upload';
     }
 
 }

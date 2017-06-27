@@ -7,40 +7,59 @@ use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
+ * 
+ * @ORM\Table(name="files")
  * @ORM\Entity
  * @Vich\Uploadable
+ * 
  */
 class Upload
 {
     /**
      * @ORM\Id
-     * @ORM\Column(type="integer")
+     * @ORM\Column(name="id", type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="title", type="string", length=255)
+     *      
+     */
+    private $title;    
+    
+    /**
+     * @var \Date
+     *
+     * @ORM\Column(name="publishDate", type="date", nullable=true)
+     *          
+     */     
+    private $publishDate;
+    
+    /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      * 
-     * @Vich\UploadableField(mapping="upload", fileNameProperty="uploadName", size="uploadSize")
+     * @Vich\UploadableField(mapping="upload", uploadNameProperty="uploadName", size="uploadSize")
      * 
-     * @var File
+     * @var Upload
      */
-    private $file;
+    private $upload;
 
     /**
      * @ORM\Column(type="string", length=255)
      *
      * @var string
      */
-    private $fileName;
+    private $uploadName;
 
     /**
      * @ORM\Column(type="integer")
      *
      * @var integer
      */
-    private $fileSize;
+    private $uploadSize;
 
     /**
      * @ORM\Column(type="datetime")
@@ -50,15 +69,66 @@ class Upload
     private $updatedAt;
 
     /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+    /**
+     * Set title
+     *
+     * @param string $title
+     * @return Upload
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+        return $this;
+    }
+    /**
+     * Get title
+     *
+     * @return string 
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }    
+
+    /**
+     * Set publishDate
+     *
+     * @param \DateTime $publishDate
+     * @return Upload
+     */
+    public function setPublishDate($publishDate)
+    {
+        $this->publishDate = $publishDate;
+        return $this;
+    }
+    /**
+     * Get publishDate
+     *
+     * @return \DateTime 
+     */
+    public function getPublishDate()
+    {
+        return $this->publishDate;
+    }
+    
+    /**
      * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
      * of 'UploadedFile' is injected into this setter to trigger the  update. If this
      * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
      * must be able to accept an instance of 'File' as the bundle will inject one here
      * during Doctrine hydration.
      *
-     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $file
+     * @param File|\Symfony\Component\HttpFoundation\File\File $file
      *
-     * @return File
+     * @return Upload
      */
     public function setUploadFile(Upload $upload = null)
     {
