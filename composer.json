@@ -38,7 +38,8 @@
         "symfony/swiftmailer-bundle": "^2.3.10",
         "symfony/symfony": "3.2.*",
         "twig/twig": "^1.0||^2.0",
-        "willdurand/faker-bundle": "@stable"
+        "willdurand/faker-bundle": "@stable",
+        "srio/rest-upload-bundle": "~2.0.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

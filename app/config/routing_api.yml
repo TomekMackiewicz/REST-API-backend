@@ -25,3 +25,7 @@ registration:
 payments:
     type: rest
     resource: AppBundle\Controller\PaymentController 
+
+files:
+    type: rest
+    resource: AppBundle\Controller\FileController

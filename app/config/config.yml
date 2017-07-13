@@ -141,4 +141,18 @@ lexik_jwt_authentication:
     public_key_path:  "%jwt_public_key_path%"
     pass_phrase:      "%jwt_key_pass_phrase%"
     token_ttl:        "%jwt_token_ttl%"
-                
+
+knp_gaufrette:
+    adapters:
+        local_uploads:
+            local:
+                directory: %kernel.root_dir%/../web/uploads
+    filesystems:
+        uploads:
+            adapter: local_uploads
+            
+srio_rest_upload:
+    storages:
+        default:
+            filesystem: gaufrette.uploads_filesystem
+            naming_strategy: image.naming.service            

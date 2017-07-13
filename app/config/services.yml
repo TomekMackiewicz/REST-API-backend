@@ -18,3 +18,5 @@ services:
         class: AppBundle\Mailer\RestMailer
         public: false
         parent: fos_user.mailer.twig_swift
+    image.naming.service:
+        class: AppBundle\Services\ImageNamingService
