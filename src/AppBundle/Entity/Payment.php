@@ -13,6 +13,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="payments")
  * @JMSSerializer\ExclusionPolicy("all")
  */
-class Payment implements \JsonSerializable {
+abstract class Payment implements \JsonSerializable {
+
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
     
 }

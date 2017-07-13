@@ -59,9 +59,7 @@ security:
             pattern: ^/payments
             anonymous: true
 
-        api_upload:
-            pattern: ^/uploads
-            anonymous: true
+
 
 #        login:
 #            pattern:  ^/api/login
@@ -89,7 +87,6 @@ security:
         - { path: ^/documents$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/categories$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/payments$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/uploads$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/, role: IS_AUTHENTICATED_ANONYMOUSLY }
 #        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
 #        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
