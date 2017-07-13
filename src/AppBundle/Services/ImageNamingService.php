@@ -16,8 +16,10 @@ class ImageNamingService implements NamingStrategy
      */
     public function getName(UploadContext $context)
     {
-        $name = uniqid();
-        $extension = self::DEFAULT_EXTENSION;
+        // 500 if name already exists - to fix, random name = uncomment
+        
+        //$name = uniqid();
+        //$extension = self::DEFAULT_EXTENSION;
 
         if (($request = $context->getRequest()) !== null) {
             $files = $request->files->all();
@@ -26,11 +28,12 @@ class ImageNamingService implements NamingStrategy
             $file = array_pop($files);
 
             if ($file !== null) {
-                $parts = explode('.', $file->getClientOriginalName());
-                $extension = array_pop($parts);
+                return $file->getClientOriginalName();
+                //$parts = explode('.', $file->getClientOriginalName());
+                //$extension = array_pop($parts);
             }
         }
 
-        return $name.'.'.$extension;
+        //return $name.'.'.$extension;
     }
 }
