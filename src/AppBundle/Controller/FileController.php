@@ -18,7 +18,9 @@ class FileController extends Controller implements ClassResourceInterface
     public function cgetAction() 
     {
         $finder = new Finder();
-        $finder->files()->in('/var/www/rest-api/REST-API-backend/web/uploads');
+        $folder = $this->get('kernel')->getRootDir() . '/../web/uploads/';
+        //file_put_contents('/home/tomek/Workspace/log.log', $test);
+        $finder->files()->in($folder);
         //$root1 = $this->container->get('app.root.service');
         //$root2 = $root1->getProjectDir();
         //$finder->directories()->in(__DIR__);
@@ -92,13 +94,11 @@ class FileController extends Controller implements ClassResourceInterface
     {        
         $fs = new Filesystem();
         $newName = $request->getContent();
-        file_put_contents('/var/www/log.log', print_r($oldName));
+        $folder = $this->get('kernel')->getRootDir() . '/../web/uploads/';
+        //file_put_contents('/var/www/log.log', print_r($oldName));
         return;
         try {
-            $fs->rename(
-                '/var/www/rest-api/REST-API-backend/web/uploads/'.$oldName, 
-                '/var/www/rest-api/REST-API-backend/web/uploads/'.$newName
-            );
+            $fs->rename($folder.$oldName, $folder.$newName);
         } catch (IOExceptionInterface $e) {
             echo "An error occurred while renaming file at ".$e->getPath();
         }        
@@ -107,9 +107,10 @@ class FileController extends Controller implements ClassResourceInterface
     public function deleteAction(string $name) 
     {
         $fs = new Filesystem();
-
+        $folder = $this->get('kernel')->getRootDir() . '/../web/uploads/';
+        
         try {
-            $fs->remove(array('file', '/var/www/rest-api/REST-API-backend/web/uploads/'.$name, $name));
+            $fs->remove(array('file', $folder.$name, $name));
         } catch (IOExceptionInterface $e) {
             echo "An error occurred while deleting file at ".$e->getPath();
         }
