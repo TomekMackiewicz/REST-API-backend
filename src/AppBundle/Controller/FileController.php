@@ -9,6 +9,8 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use Symfony\Component\Finder\Finder;
 //use FOS\RestBundle\Controller\FOSRestController;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
 class FileController extends Controller implements ClassResourceInterface
 {
@@ -85,4 +87,18 @@ class FileController extends Controller implements ClassResourceInterface
 //
 //        throw new NotAcceptableHttpException();
     }
+    
+    public function deleteAction(string $name) 
+    {
+
+        $fs = new Filesystem();
+
+        try {
+            $fs->remove(array('file', '/var/www/rest-api/REST-API-backend/web/uploads/'.$name, $name));
+        } catch (IOExceptionInterface $e) {
+            echo "An error occurred while deleting file at ".$e->getPath();
+        }
+        
+    }    
+    
 }
