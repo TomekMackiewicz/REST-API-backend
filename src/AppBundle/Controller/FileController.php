@@ -87,10 +87,25 @@ class FileController extends Controller implements ClassResourceInterface
 //
 //        throw new NotAcceptableHttpException();
     }
+
+    public function putAction(Request $request, string $oldName) 
+    {        
+        $fs = new Filesystem();
+        $newName = $request->getContent();
+        file_put_contents('/var/www/log.log', print_r($oldName));
+        return;
+        try {
+            $fs->rename(
+                '/var/www/rest-api/REST-API-backend/web/uploads/'.$oldName, 
+                '/var/www/rest-api/REST-API-backend/web/uploads/'.$newName
+            );
+        } catch (IOExceptionInterface $e) {
+            echo "An error occurred while renaming file at ".$e->getPath();
+        }        
+    }
     
     public function deleteAction(string $name) 
     {
-
         $fs = new Filesystem();
 
         try {
