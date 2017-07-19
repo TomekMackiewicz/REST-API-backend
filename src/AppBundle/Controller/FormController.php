@@ -6,6 +6,7 @@ use AppBundle\Entity\Form;
 //use AppBundle\Entity\Question;
 use AppBundle\Entity\Repository\FormRepository;
 use AppBundle\Form\Type\FormType;
+use AppBundle\Form\Type\FormConfigType;
 use AppBundle\Form\Type\QuestionType;
 use AppBundle\Form\Type\OptionType;
 use FOS\RestBundle\View\View;
@@ -93,29 +94,15 @@ class FormController extends FOSRestController implements ClassResourceInterface
     public function postAction(Request $request) {
         $form = $this->createForm(FormType::class, null, ['csrf_protection' => false]);               
         $form->submit($request->request->all());
-        if (!$form->isValid()) { return $form; }
+        if (!$form->isValid()) { 
+            return $form;             
+        }
         $uploadedForm = $form->getData();        
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager(); 
         
-        foreach($request->request->get('questions') as $question) {
-            $questionForm = $this->createForm(QuestionType::class, null, ['csrf_protection' => false]);            
-            $questionForm->submit($question);
-            if (!$questionForm->isValid()) { return $questionForm; }
-            $uploadedQuestion = $questionForm->getData();
-            $uploadedForm->addQuestion($uploadedQuestion);
-            $uploadedQuestion->addForm($uploadedForm);
-            $em->persist($uploadedQuestion);
-            foreach($question["options"] as $option) {
-                $optionForm = $this->createForm(OptionType::class, null, ['csrf_protection' => false]);            
-                $optionForm->submit($option);
-                if (!$optionForm->isValid()) { return $optionForm; }
-                $uploadedOption = $optionForm->getData();
-                $uploadedQuestion->addOption($uploadedOption);
-                $uploadedOption->addQuestion($uploadedQuestion);
-                $em->persist($uploadedOption);                
-            }        
-        }        
-
+        $this->uploadConfig($em, $request->request->get('config'), $uploadedForm);
+        $this->uploadQuestions($em, $uploadedForm, $request->request->get('questions'));
+        
         $em->persist($uploadedForm);
         $em->flush();
 
@@ -272,6 +259,46 @@ class FormController extends FOSRestController implements ClassResourceInterface
 //        return new View(null, Response::HTTP_NO_CONTENT);
 //    }
 
+    private function uploadConfig($em, $conf, $f) {
+        $form = $this->createForm(FormConfigType::class, null, ['csrf_protection' => false]);                       
+        $form->submit($conf);
+        if (!$form->isValid()) { 
+            return $form;             
+        }
+        $config = $form->getData();        
+        $f->addConfig($config);        
+        $em->persist($config);               
+    }
+    
+    private function uploadQuestions($em, $f, $questions) {
+        foreach($questions as $q) {
+            $form = $this->createForm(QuestionType::class, null, ['csrf_protection' => false]);            
+            $form->submit($q);
+            if (!$form->isValid()) { 
+                return $form;                 
+            }
+            $question = $form->getData();
+            $f->addQuestion($question);
+            $question->addForm($f);
+            $em->persist($question);            
+            $this->uploadOptions($em, $question, $q["options"]);       
+        }        
+    }
+    
+    private function uploadOptions($em, $question, $options) {
+        foreach($options as $opt) {
+            $form = $this->createForm(OptionType::class, null, ['csrf_protection' => false]);            
+            $form->submit($opt);
+            if (!$form->isValid()) {
+                return $form;                 
+            }
+            $option = $form->getData();
+            $question->addOption($option);
+            $option->addQuestion($question);
+            $em->persist($option);                
+        }        
+    }
+    
     /**
      * @return FormRepository
      */
