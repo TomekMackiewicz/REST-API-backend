@@ -17,7 +17,7 @@ class QuestionType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
             ->add('name', TextType::class)
-            ->add('questionTypeId', IntegerType::class)
+            ->add('questionType', TextType::class)
             ->add('answered', IntegerType::class)
         ;         
     }

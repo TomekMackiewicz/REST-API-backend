@@ -30,10 +30,10 @@ class Question implements \JsonSerializable {
     private $name;
 
     /**
-     * @ORM\Column(type="integer", name="question_type_id")
+     * @ORM\Column(type="string", name="question_type")
      * @JMSSerializer\Expose
      */
-    private $questionTypeId;     
+    private $questionType;     
 
     /**
      * @ORM\Column(type="integer", name="answered", nullable=true)
@@ -84,16 +84,16 @@ class Question implements \JsonSerializable {
     /**
      * @return mixed
      */
-    public function getQuestionTypeId() {
-        return $this->questionTypeId;
+    public function getQuestionType() {
+        return $this->questionType;
     }
 
     /**
-     * @param mixed $questionTypeId
+     * @param mixed $questionType
      * @return Question
      */
-    public function setQuestionTypeId($questionTypeId) {
-        $this->questionTypeId = $questionTypeId;
+    public function setQuestionType($questionType) {
+        $this->questionType = $questionType;
         return $this;
     }
 
@@ -160,7 +160,7 @@ class Question implements \JsonSerializable {
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'questionTypeId' => $this->questionTypeId,
+            'questionType' => $this->questionType,
             'options' => $this->options,
             'answered' => $this->answered
         ];
