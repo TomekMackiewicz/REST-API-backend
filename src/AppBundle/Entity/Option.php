@@ -29,24 +29,31 @@ class Option implements \JsonSerializable {
      */
     private $name;
 
-    /**
-     * @ORM\Column(type="integer", name="question_id")
-     * @JMSSerializer\Expose
-     */
-    private $questionId;     
+//    /**
+//     * @ORM\Column(type="integer", name="question_id")
+//     * @JMSSerializer\Expose
+//     */
+//    private $questionId;     
 
     /**
-     * @ORM\Column(type="integer", name="is_answer")
+     * @ORM\Column(type="integer", name="is_answer", nullable=true)
      * @JMSSerializer\Expose
      */
     private $isAnswer;    
     
     /**
-     * @ORM\Column(type="integer", name="selected")
+     * @ORM\Column(type="integer", name="selected", nullable=true)
      * @JMSSerializer\Expose
      */
     private $selected; 
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Question", inversedBy="options")
+     * @ORM\JoinColumn(name="question_id", referencedColumnName="id")
+     * @JMSSerializer\Expose
+     */
+    private $question;    
+    
     /**
      * @return int
      */
@@ -70,21 +77,21 @@ class Option implements \JsonSerializable {
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getQuestionId() {
-        return $this->questionId;
-    }
-
-    /**
-     * @param mixed $questionId
-     * @return Option
-     */
-    public function setQuestionId($questionId) {
-        $this->questionId = $questionId;
-        return $this;
-    }
+//    /**
+//     * @return mixed
+//     */
+//    public function getQuestionId() {
+//        return $this->questionId;
+//    }
+//
+//    /**
+//     * @param mixed $questionId
+//     * @return Option
+//     */
+//    public function setQuestionId($questionId) {
+//        $this->questionId = $questionId;
+//        return $this;
+//    }
 
     /**
      * @return mixed
@@ -118,6 +125,17 @@ class Option implements \JsonSerializable {
         return $this;
     }
 
+    /**
+     * Add question
+     *
+     * @param \AppBundle\Entity\Question $question
+     * @return Option
+     */
+    public function addQuestion(\AppBundle\Entity\Question $question) {
+        $this->question = $question;
+        return $this;
+    }    
+    
     /**
      * @return mixed
      */

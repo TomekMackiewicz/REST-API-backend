@@ -36,7 +36,7 @@ class Question implements \JsonSerializable {
     private $questionTypeId;     
 
     /**
-     * @ORM\Column(type="integer", name="answered")
+     * @ORM\Column(type="integer", name="answered", nullable=true)
      * @JMSSerializer\Expose
      */
     private $answered;    
@@ -53,7 +53,7 @@ class Question implements \JsonSerializable {
      * @JMSSerializer\Expose
      */
     private $options;
-
+    
     public function __construct() {
         $this->options = new ArrayCollection();
     }
@@ -110,6 +110,17 @@ class Question implements \JsonSerializable {
      */
     public function setAnswered($answered) {
         $this->answered = $answered;
+        return $this;
+    }
+
+    /**
+     * Add form
+     *
+     * @param \AppBundle\Entity\Form $form
+     * @return Question
+     */
+    public function addForm(\AppBundle\Entity\Form $form) {
+        $this->form = $form;
         return $this;
     }
     

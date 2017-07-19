@@ -2,6 +2,10 @@ documents:
     type: rest
     resource: AppBundle\Controller\DocumentController
 
+forms:
+    type: rest
+    resource: AppBundle\Controller\FormController
+
 document_category:
     type: rest
     resource: AppBundle\Controller\DocumentCategoryController

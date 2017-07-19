@@ -51,6 +51,10 @@ security:
             pattern: ^/documents
             anonymous: true
 
+        api_forms:
+            pattern: ^/forms
+            anonymous: true
+
         api_categories:
             pattern: ^/categories
             anonymous: true
@@ -88,6 +92,7 @@ security:
         - { path: ^/password/reset, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/documents$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/forms$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/categories$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/payments$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/, role: IS_AUTHENTICATED_ANONYMOUSLY }
