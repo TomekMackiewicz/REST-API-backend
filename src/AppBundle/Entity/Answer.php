@@ -5,7 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 //use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation as JMSSerializer;
-//use JMS\Serializer\Annotation\MaxDepth;
+use JMS\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -30,6 +30,14 @@ class Answer implements \JsonSerializable {
     private $body;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Question", inversedBy="answers")
+     * @ORM\JoinColumn(name="question_id", referencedColumnName="id")
+     * @JMSSerializer\Expose
+     * @MaxDepth(1)
+     */
+    private $question;     
+    
+    /**
      * @return int
      */
     public function getId() {
@@ -52,6 +60,17 @@ class Answer implements \JsonSerializable {
         return $this;
     }
 
+    /**
+     * Add question
+     *
+     * @param \AppBundle\Entity\Question $question
+     * @return Answer
+     */
+    public function addQuestion(\AppBundle\Entity\Question $question) {
+        $this->question = $question;
+        return $this;
+    }    
+    
     /**
      * @return mixed
      */

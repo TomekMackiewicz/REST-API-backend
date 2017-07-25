@@ -54,8 +54,15 @@ class Question implements \JsonSerializable {
      */
     private $options;
     
+    /**
+     * @ORM\OneToMany(targetEntity="Answer", mappedBy="question")
+     * @JMSSerializer\Expose
+     */
+    private $answers;    
+    
     public function __construct() {
         $this->options = new ArrayCollection();
+        $this->answers = new ArrayCollection();
     }
 
     /**
@@ -153,6 +160,35 @@ class Question implements \JsonSerializable {
         return $this->options;
     }
 
+    /**
+     * Add answers
+     *
+     * @param \AppBundle\Entity\Answer $answers
+     * @return Question
+     */
+    public function addAnswer(\AppBundle\Entity\Answer $answers) {
+        $this->answers[] = $answers;
+        return $this;
+    }
+
+    /**
+     * Remove answers
+     *
+     * @param \AppBundle\Entity\Answer $answers
+     */
+    public function removeAnswer(\AppBundle\Entity\Answer $answers) {
+        $this->answers->removeElement($answers);
+    }
+
+    /**
+     * Get answers
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAnswers() {
+        return $this->answers;
+    }    
+    
     /**
      * @return mixed
      */

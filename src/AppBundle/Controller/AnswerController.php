@@ -4,7 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Answer;
 use AppBundle\Entity\Repository\AnswerRepository;
-use AppBundle\Form\Type\FormType;
+use AppBundle\Form\Type\AnswerType;
 use AppBundle\Form\Type\FormConfigType;
 use FOS\RestBundle\View\View;
 use FOS\RestBundle\Controller\Annotations;
@@ -45,6 +45,7 @@ class AnswerController extends FOSRestController implements ClassResourceInterfa
      *         404 = "Return when not found"
      *     }
      * )
+     * @JSONView(serializerEnableMaxDepthChecks=true)
      */
     public function getAction(int $id) {
         $answer = $this->getAnswerRepository()->createFindOneByIdQuery($id)->getSingleResult();
@@ -67,6 +68,7 @@ class AnswerController extends FOSRestController implements ClassResourceInterfa
      *         404 = "Return when not found"
      *     }
      * )
+     * @JSONView(serializerEnableMaxDepthChecks=true)
      */
     public function cgetAction() {
         return $this->getAnswerRepository()->createFindAllQuery()->getResult();
@@ -90,31 +92,50 @@ class AnswerController extends FOSRestController implements ClassResourceInterfa
      */
     public function postAction(Request $request) {
         
-        foreach($request->getContent() as $row)
-        {
-            foreach($row as $key => $val)
-            {
-                $test = $key . ': ' . $val;
-            }
-        }        
+        $inputAnswers = json_decode($request->getContent());
         
-     file_put_contents('/var/www/log.log', $test);
-//        $form = $this->createForm(AnswerType::class, null, ['csrf_protection' => false]);               
-//        $form->submit($request->request->all());
-//        if (!$form->isValid()) { 
-//            return $form;             
-//        }
-//        $answer = $form->getData();        
-//        $em = $this->getDoctrine()->getManager();         
-//        $em->persist($answer);
-//        $em->flush();
-//
-//        $routeOptions = [
-//            'id' => $answer->getId(),
-//            '_format' => $request->get('_format'),
-//        ];
-//
-//        return $this->routeRedirectView('get_form', $routeOptions, Response::HTTP_CREATED);
+        foreach ($inputAnswers as $questionId => $inputAnswer) {
+            if(is_array($inputAnswer)) {
+                foreach ($inputAnswer as $inputOption) {
+                    $form = $this->createForm(AnswerType::class, null, ['csrf_protection' => false]); 
+                    $answer = array("body" => $inputOption);
+                    $form->submit($answer);
+                    if (!$form->isValid()) { 
+                        return $form;             
+                    } 
+                    $em = $this->getDoctrine()->getManager();
+                    $question = $em->getRepository('AppBundle:Question')->find((int) $questionId);                
+                    $outputAnswer = $form->getData(); 
+                    $outputAnswer->addQuestion($question);
+                    $question->addAnswer($outputAnswer);
+                    $em->persist($outputAnswer);
+                    $em->persist($question);
+                    $em->flush(); 
+                }
+            } else { 
+                $form = $this->createForm(AnswerType::class, null, ['csrf_protection' => false]); 
+                $answer = array("body" => $inputAnswer);
+                $form->submit($answer);
+                if (!$form->isValid()) { 
+                    return $form;             
+                } 
+                $em = $this->getDoctrine()->getManager();
+                $question = $em->getRepository('AppBundle:Question')->find((int) $questionId);                
+                $outputAnswer = $form->getData(); 
+                $outputAnswer->addQuestion($question);
+                $question->addAnswer($outputAnswer);
+                $em->persist($outputAnswer);
+                $em->persist($question);
+                $em->flush();                 
+            }
+        }              
+
+        $routeOptions = [
+            'id' => $outputAnswer->getId(),
+            '_format' => $request->get('_format'),
+        ];
+
+        return $this->routeRedirectView('get_form', $routeOptions, Response::HTTP_CREATED);
     }
 
 //    /**
