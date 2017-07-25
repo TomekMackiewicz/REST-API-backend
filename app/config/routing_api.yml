@@ -2,13 +2,17 @@ documents:
     type: rest
     resource: AppBundle\Controller\DocumentController
 
+document_category:
+    type: rest
+    resource: AppBundle\Controller\DocumentCategoryController
+
 forms:
     type: rest
     resource: AppBundle\Controller\FormController
 
-document_category:
+answers:
     type: rest
-    resource: AppBundle\Controller\DocumentCategoryController
+    resource: AppBundle\Controller\AnswerController
 
 login:
     type: rest

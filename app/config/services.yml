@@ -9,16 +9,21 @@ services:
         factory: ["@doctrine", getRepository]
         arguments:
             - AppBundle\Entity\Document
-    crv.doctrine_entity_repository.form:
-        class: Doctrine\ORM\EntityRepository
-        factory: ["@doctrine", getRepository]
-        arguments:
-            - AppBundle\Entity\Form           
     crv.doctrine_entity_repository.document_category:
         class: Doctrine\ORM\EntityRepository
         factory: ["@doctrine", getRepository]
         arguments:
-            - AppBundle\Entity\DocumentCategory
+            - AppBundle\Entity\DocumentCategory            
+    crv.doctrine_entity_repository.form:
+        class: Doctrine\ORM\EntityRepository
+        factory: ["@doctrine", getRepository]
+        arguments:
+            - AppBundle\Entity\Form     
+    crv.doctrine_entity_repository.answer:
+        class: Doctrine\ORM\EntityRepository
+        factory: ["@doctrine", getRepository]
+        arguments:
+            - AppBundle\Entity\Answer            
     user.mailer.rest:
         class: AppBundle\Mailer\RestMailer
         public: false
