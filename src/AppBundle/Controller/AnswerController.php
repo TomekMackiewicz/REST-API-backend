@@ -3,8 +3,10 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Answer;
+use AppBundle\Entity\ReadyText;
 use AppBundle\Entity\Repository\AnswerRepository;
 use AppBundle\Form\Type\AnswerType;
+use AppBundle\Form\Type\ReadyTextType;
 use AppBundle\Form\Type\FormConfigType;
 use FOS\RestBundle\View\View;
 use FOS\RestBundle\Controller\Annotations;
@@ -108,6 +110,8 @@ class AnswerController extends FOSRestController implements ClassResourceInterfa
                         return $form;             
                     }                
                     $outputAnswer = $form->getData(); 
+                    $em->persist($outputAnswer);
+                    $em->flush();                    
                 }
             } else { 
                 $answers[$questionId] = $inputAnswer;
@@ -117,10 +121,12 @@ class AnswerController extends FOSRestController implements ClassResourceInterfa
                 if (!$form->isValid()) { 
                     return $form;             
                 }                
-                $outputAnswer = $form->getData();                
+                $outputAnswer = $form->getData();
+                $em->persist($outputAnswer);
+                $em->flush();                
             }
-            $em->persist($outputAnswer);
-            $em->flush();
+//            $em->persist($outputAnswer);
+//            $em->flush();
         }
         
         $this->processDocument($formId, $answers);
@@ -136,15 +142,34 @@ class AnswerController extends FOSRestController implements ClassResourceInterfa
     private function processDocument($formId, $answers) {
         $em = $this->getDoctrine()->getManager();
         $document = $em->getRepository('AppBundle:Document')->findByFormId((int) $formId)->getSingleResult();
-        $text = $document->getBody();
+        $t = $document->getBody();
 
         foreach($answers as $key => $value) {
-            $text = str_replace("[".$key."]", $value, $text);
+            // Nie działa checkbox
+            $t = str_replace("[".$key."]", "<strong>".$value."</strong>", $t);
+//            if (is_array($value)) {
+//                file_put_contents('/home/tomek/Workspace/log.log', 'true');
+//                $text = str_replace("[".$key."]", implode(',', $value), $text);
+//            }
         }
         //file_put_contents('/home/tomek/Workspace/log.log', $text);
-        
-        // save text
+        $title = $document->getTitle();
+        $body = $t;
+        $text = new ReadyText();
+        $text->setTitle($title);
+        $text->setBody($body);
+        $em->persist($text);
+        $em->flush();        
+        //$this->saveText($text);
     }
+    
+//        $routeOptions = [
+//            'id' => $document->getId(),
+//            '_format' => $request->get('_format'),
+//        ];
+//
+//        return $this->routeRedirectView('get_document', $routeOptions, Response::HTTP_CREATED);        
+//    }
     
 //    /**
 //     *
@@ -298,6 +323,8 @@ class AnswerController extends FOSRestController implements ClassResourceInterfa
         return $this->get('crv.doctrine_entity_repository.answer');
     }
 
+  
+    
 }
 
 
