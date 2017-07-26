@@ -90,54 +90,68 @@ class AnswerController extends FOSRestController implements ClassResourceInterfa
      *     }
      * )
      */
-    public function postAction(Request $request) {
+    public function postAction(Request $request) {       
+        //$inputAnswers = json_decode($request->getContent());
+        $formId = $request->request->get("formId");
+        //$em = $this->getDoctrine()->getManager();
         
-        $inputAnswers = json_decode($request->getContent());
+//        foreach ($inputAnswers as $questionId => $inputAnswer) {
+//            if($questionId === "formId") {
+//                continue;
+//            } elseif(is_array($inputAnswer)) {
+//                foreach ($inputAnswer as $inputOption) {
+//                    $form = $this->createForm(AnswerType::class, null, ['csrf_protection' => false]); 
+//                    $answer = array("body" => $inputOption);
+//                    $form->submit($answer);
+//                    if (!$form->isValid()) { 
+//                        return $form;             
+//                    } 
+//                    $question = $em->getRepository('AppBundle:Question')->find((int) $questionId);                
+//                    $outputAnswer = $form->getData(); 
+//                    $outputAnswer->addQuestion($question);
+//                    $question->addAnswer($outputAnswer);
+//                    $em->persist($outputAnswer);
+//                    $em->persist($question);
+//                    $em->flush(); 
+//                }
+//            } else { 
+//                $form = $this->createForm(AnswerType::class, null, ['csrf_protection' => false]); 
+//                $answer = array("body" => $inputAnswer);
+//                $form->submit($answer);
+//                if (!$form->isValid()) { 
+//                    return $form;             
+//                } 
+//                $question = $em->getRepository('AppBundle:Question')->find((int) $questionId);                
+//                $outputAnswer = $form->getData(); 
+//                $outputAnswer->addQuestion($question);
+//                $question->addAnswer($outputAnswer);
+//                $em->persist($outputAnswer);
+//                $em->persist($question);
+//                $em->flush();                 
+//            }
+//        }
         
-        foreach ($inputAnswers as $questionId => $inputAnswer) {
-            if(is_array($inputAnswer)) {
-                foreach ($inputAnswer as $inputOption) {
-                    $form = $this->createForm(AnswerType::class, null, ['csrf_protection' => false]); 
-                    $answer = array("body" => $inputOption);
-                    $form->submit($answer);
-                    if (!$form->isValid()) { 
-                        return $form;             
-                    } 
-                    $em = $this->getDoctrine()->getManager();
-                    $question = $em->getRepository('AppBundle:Question')->find((int) $questionId);                
-                    $outputAnswer = $form->getData(); 
-                    $outputAnswer->addQuestion($question);
-                    $question->addAnswer($outputAnswer);
-                    $em->persist($outputAnswer);
-                    $em->persist($question);
-                    $em->flush(); 
-                }
-            } else { 
-                $form = $this->createForm(AnswerType::class, null, ['csrf_protection' => false]); 
-                $answer = array("body" => $inputAnswer);
-                $form->submit($answer);
-                if (!$form->isValid()) { 
-                    return $form;             
-                } 
-                $em = $this->getDoctrine()->getManager();
-                $question = $em->getRepository('AppBundle:Question')->find((int) $questionId);                
-                $outputAnswer = $form->getData(); 
-                $outputAnswer->addQuestion($question);
-                $question->addAnswer($outputAnswer);
-                $em->persist($outputAnswer);
-                $em->persist($question);
-                $em->flush();                 
-            }
-        }              
-
-        $routeOptions = [
-            'id' => $outputAnswer->getId(),
-            '_format' => $request->get('_format'),
-        ];
-
-        return $this->routeRedirectView('get_form', $routeOptions, Response::HTTP_CREATED);
+        $this->processDocument($formId);
+        
+//        $routeOptions = [
+//            'id' => $outputAnswer->getId(),
+//            '_format' => $request->get('_format'),
+//        ];
+//
+//        return $this->routeRedirectView('get_form', $routeOptions, Response::HTTP_CREATED);
     }
 
+    private function processDocument($formId) {
+        $em = $this->getDoctrine()->getManager();
+        //get doc by id (formId)
+        $document = $em->getRepository('AppBundle:Document')->find((int) $formId);
+        //get answers where question id > where formId
+        $categories = $em->getRepository('AppBundle:Question')->findByFormIdQuery((int) $formId);
+        //$test = print_r($categories);
+        //file_put_contents('/var/www/log.log', $test);
+        //str replace
+    }
+    
 //    /**
 //     *
 //     * Updates document

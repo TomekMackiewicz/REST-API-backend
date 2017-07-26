@@ -16,4 +16,10 @@ class QuestionRepository extends EntityRepository {
         return $query;
     }
 
+    public function findByFormIdQuery(int $formId) {
+        $query = $this->_em->createQuery("SELECT q FROM AppBundle:Question q WHERE q.form = :id");
+        $query->setParameter('id', $formId);
+        return $query;
+    }    
+    
 }
