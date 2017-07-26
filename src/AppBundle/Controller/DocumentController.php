@@ -102,6 +102,8 @@ class DocumentController extends FOSRestController implements ClassResourceInter
         $em = $this->getDoctrine()->getManager();
         $document = $form->getData();
         $categories = $request->request->get('categories');
+        $fId = $request->request->get('formId');
+        $f = $em->getRepository('AppBundle:Form')->find((int) $fId);
 
         foreach ($categories as $categoryId) {
             $category = $em->getRepository('AppBundle:DocumentCategory')->find((int) $categoryId['id']);
@@ -109,8 +111,12 @@ class DocumentController extends FOSRestController implements ClassResourceInter
             $document->addCategory($category);
             $em->persist($category);
         }
+        
+        //$f->addDocument($document);
+        $document->addForm($f);        
 
         $em->persist($document);
+        $em->persist($f);
         $em->flush();
 
         $routeOptions = [

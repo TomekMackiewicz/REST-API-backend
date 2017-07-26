@@ -339,7 +339,7 @@ class FormConfig implements \JsonSerializable {
             'showClock' => $this->showClock,
             'showPager' => $this->showPager,
             'theme' => $this->theme,
-            'form' => $this->form
+            'form' => $this->form // remove?
         ];
     }
 

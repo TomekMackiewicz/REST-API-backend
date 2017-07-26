@@ -58,6 +58,13 @@ class Document implements \JsonSerializable {
     private $modifiedDate;
 
     /**
+     * @ORM\OneToOne(targetEntity="Form")
+     * @ORM\JoinColumn(name="form_id", referencedColumnName="id")
+     * @JMSSerializer\Expose
+     */
+    private $form;    
+    
+    /**
      * @ORM\ManyToMany(targetEntity="DocumentCategory", inversedBy="documents")
      * @ORM\JoinTable(
      *  name="document_category",
@@ -138,6 +145,26 @@ class Document implements \JsonSerializable {
 //        return $this->addDate;
 //    }
 
+    /**
+     * Add Form
+     *
+     * @param \AppBundle\Entity\Form $form
+     * @return Document
+     */
+    public function addForm(\AppBundle\Entity\Form $form) {
+        $this->form = $form;
+        return $this;
+    }
+
+    /**
+     * Get Form
+     *
+     * @return Form
+     */
+    public function getForm() {
+        return $this->form;
+    }    
+    
     /**
      * Add categories
      *
