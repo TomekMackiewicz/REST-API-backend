@@ -15,5 +15,5 @@ class AnswerRepository extends EntityRepository {
         $query->setParameter('id', $id);
         return $query;
     }
-
+    
 }

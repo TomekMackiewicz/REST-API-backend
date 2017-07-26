@@ -24,18 +24,24 @@ class Answer implements \JsonSerializable {
     protected $id;
 
     /**
+     * @ORM\Column(type="integer", name="form_id")
+     * @JMSSerializer\Expose
+     */
+    private $formId;    
+    
+    /**
      * @ORM\Column(type="string", name="body")
      * @JMSSerializer\Expose
      */
     private $body;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Question", inversedBy="answers")
-     * @ORM\JoinColumn(name="question_id", referencedColumnName="id")
-     * @JMSSerializer\Expose
-     * @MaxDepth(1)
-     */
-    private $question;     
+//    /**
+//     * @ORM\ManyToOne(targetEntity="Question", inversedBy="answers")
+//     * @ORM\JoinColumn(name="question_id", referencedColumnName="id")
+//     * @JMSSerializer\Expose
+//     * @MaxDepth(1)
+//     */
+//    private $question;     
     
     /**
      * @return int
@@ -44,6 +50,22 @@ class Answer implements \JsonSerializable {
         return $this->id;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getFormId() {
+        return $this->formId;
+    }
+
+    /**
+     * @param mixed $formId
+     * @return Answer
+     */
+    public function setformId($formId) {
+        $this->formId = $formId;
+        return $this;
+    }    
+    
     /**
      * @return mixed
      */
@@ -60,16 +82,16 @@ class Answer implements \JsonSerializable {
         return $this;
     }
 
-    /**
-     * Add question
-     *
-     * @param \AppBundle\Entity\Question $question
-     * @return Answer
-     */
-    public function addQuestion(\AppBundle\Entity\Question $question) {
-        $this->question = $question;
-        return $this;
-    }    
+//    /**
+//     * Add question
+//     *
+//     * @param \AppBundle\Entity\Question $question
+//     * @return Answer
+//     */
+//    public function addQuestion(\AppBundle\Entity\Question $question) {
+//        $this->question = $question;
+//        return $this;
+//    }    
     
     /**
      * @return mixed

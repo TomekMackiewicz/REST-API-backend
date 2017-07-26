@@ -24,6 +24,12 @@ class Document implements \JsonSerializable {
     protected $id;
 
     /**
+     * @ORM\Column(type="integer", name="form_id")
+     * @JMSSerializer\Expose
+     */
+    private $formId;    
+    
+    /**
      * @ORM\Column(type="string", name="title")
      * @JMSSerializer\Expose
      */
@@ -57,12 +63,12 @@ class Document implements \JsonSerializable {
      */
     private $modifiedDate;
 
-    /**
-     * @ORM\OneToOne(targetEntity="Form")
-     * @ORM\JoinColumn(name="form_id", referencedColumnName="id")
-     * @JMSSerializer\Expose
-     */
-    private $form;    
+//    /**
+//     * @ORM\OneToOne(targetEntity="Form")
+//     * @ORM\JoinColumn(name="form_id", referencedColumnName="id")
+//     * @JMSSerializer\Expose
+//     */
+//    private $form;    
     
     /**
      * @ORM\ManyToMany(targetEntity="DocumentCategory", inversedBy="documents")
@@ -92,6 +98,22 @@ class Document implements \JsonSerializable {
         return $this->id;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getFormId() {
+        return $this->formId;
+    }
+
+    /**
+     * @param mixed $formId
+     * @return Document
+     */
+    public function setformId($formId) {
+        $this->formId = $formId;
+        return $this;
+    }    
+    
     /**
      * @return mixed
      */
@@ -145,25 +167,25 @@ class Document implements \JsonSerializable {
 //        return $this->addDate;
 //    }
 
-    /**
-     * Add Form
-     *
-     * @param \AppBundle\Entity\Form $form
-     * @return Document
-     */
-    public function addForm(\AppBundle\Entity\Form $form) {
-        $this->form = $form;
-        return $this;
-    }
-
-    /**
-     * Get Form
-     *
-     * @return Form
-     */
-    public function getForm() {
-        return $this->form;
-    }    
+//    /**
+//     * Add Form
+//     *
+//     * @param \AppBundle\Entity\Form $form
+//     * @return Document
+//     */
+//    public function addForm(\AppBundle\Entity\Form $form) {
+//        $this->form = $form;
+//        return $this;
+//    }
+//
+//    /**
+//     * Get Form
+//     *
+//     * @return Form
+//     */
+//    public function getForm() {
+//        return $this->form;
+//    }    
     
     /**
      * Add categories
