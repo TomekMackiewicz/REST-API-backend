@@ -29,7 +29,7 @@ class ReadyText implements \JsonSerializable {
     private $title;
 
     /**
-     * @ORM\Column(type="string", name="body")
+     * @ORM\Column(type="text", name="body")
      * @JMSSerializer\Expose
      */
     private $body;

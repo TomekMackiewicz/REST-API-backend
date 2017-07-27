@@ -30,7 +30,7 @@ class Answer implements \JsonSerializable {
     private $formId;    
     
     /**
-     * @ORM\Column(type="string", name="body")
+     * @ORM\Column(type="text", name="body")
      * @JMSSerializer\Expose
      */
     private $body;
