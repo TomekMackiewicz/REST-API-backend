@@ -125,25 +125,10 @@ class AnswerController extends FOSRestController implements ClassResourceInterfa
                 $em->persist($outputAnswer);
                 $em->flush();                
             }
-//            $em->persist($outputAnswer);
-//            $em->flush();
         }
-        
-        $this->processDocument($formId, $answers);
-        
-        $routeOptions = [
-            'id' => $outputAnswer->getId(),
-            '_format' => $request->get('_format'),
-        ];
 
-        return $this->routeRedirectView('get_form', $routeOptions, Response::HTTP_CREATED);
-    }
-
-    private function processDocument($formId, $answers) {
-        $em = $this->getDoctrine()->getManager();
         $document = $em->getRepository('AppBundle:Document')->findByFormId((int) $formId)->getSingleResult();
-        $t = $document->getBody();
-
+        $t = $document->getBody();        
         foreach($answers as $key => $value) {
             // Nie działa checkbox
             $t = str_replace("[".$key."]", "<strong>".$value."</strong>", $t);
@@ -152,7 +137,6 @@ class AnswerController extends FOSRestController implements ClassResourceInterfa
 //                $text = str_replace("[".$key."]", implode(',', $value), $text);
 //            }
         }
-        //file_put_contents('/home/tomek/Workspace/log.log', $text);
         $title = $document->getTitle();
         $body = $t;
         $text = new ReadyText();
@@ -160,16 +144,10 @@ class AnswerController extends FOSRestController implements ClassResourceInterfa
         $text->setBody($body);
         $em->persist($text);
         $em->flush();        
-        //$this->saveText($text);
+
+        return View::create()->setStatusCode(201)->setData($text->getId());        
+
     }
-    
-//        $routeOptions = [
-//            'id' => $document->getId(),
-//            '_format' => $request->get('_format'),
-//        ];
-//
-//        return $this->routeRedirectView('get_document', $routeOptions, Response::HTTP_CREATED);        
-//    }
     
 //    /**
 //     *

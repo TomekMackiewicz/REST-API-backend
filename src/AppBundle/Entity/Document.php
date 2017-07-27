@@ -24,7 +24,7 @@ class Document implements \JsonSerializable {
     protected $id;
 
     /**
-     * @ORM\Column(type="integer", name="form_id")
+     * @ORM\Column(type="integer", name="form_id", nullable=true)
      * @JMSSerializer\Expose
      */
     private $formId;    
