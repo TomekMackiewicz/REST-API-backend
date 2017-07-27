@@ -43,7 +43,7 @@ class Form implements \JsonSerializable {
     private $config;    
     
     /**
-     * @ORM\OneToMany(targetEntity="Question", mappedBy="form")
+     * @ORM\OneToMany(targetEntity="Question", mappedBy="form", cascade={"remove"})
      * @JMSSerializer\Expose
      */
     private $questions;

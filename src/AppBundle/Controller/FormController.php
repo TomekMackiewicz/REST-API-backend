@@ -230,34 +230,34 @@ class FormController extends FOSRestController implements ClassResourceInterface
 //        return $this->routeRedirectView('get_document', $routeOptions, Response::HTTP_NO_CONTENT);
 //    }
 //
-//    /**
-//     *
-//     * Deletes document
-//     *
-//     * @param int $id
-//     * @return View
-//     *
-//     * @ApiDoc(
-//     *     statusCodes={
-//     *         204 = "Returned when an existing Document has been successful deleted",
-//     *         404 = "Return when not found"
-//     *     }
-//     * )
-//     */
-//    public function deleteAction(int $id) {
-//        /**
-//         * @var $document Document
-//         */
-//        $document = $this->getDocumentRepository()->find($id);
-//        if ($document === null) {
-//            return new View(null, Response::HTTP_NOT_FOUND);
-//        }
-//        $em = $this->getDoctrine()->getManager();
-//        $em->remove($document);
-//        $em->flush();
-//
-//        return new View(null, Response::HTTP_NO_CONTENT);
-//    }
+    /**
+     *
+     * Deletes form
+     *
+     * @param int $id
+     * @return View
+     *
+     * @ApiDoc(
+     *     statusCodes={
+     *         204 = "Returned when an existing form has been successful deleted",
+     *         404 = "Return when not found"
+     *     }
+     * )
+     */
+    public function deleteAction(int $id) {
+        /**
+         * @var $form Form
+         */
+        $form = $this->getFormRepository()->find($id);
+        if ($form === null) {
+            return new View(null, Response::HTTP_NOT_FOUND);
+        }
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($form);
+        $em->flush();
+
+        return new View(null, Response::HTTP_NO_CONTENT);
+    }
 
     private function uploadConfig($em, $conf, $f) {
         $form = $this->createForm(FormConfigType::class, null, ['csrf_protection' => false]);                       
