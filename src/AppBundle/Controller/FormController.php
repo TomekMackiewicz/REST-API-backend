@@ -114,46 +114,46 @@ class FormController extends FOSRestController implements ClassResourceInterface
         return $this->routeRedirectView('get_form', $routeOptions, Response::HTTP_CREATED);
     }
 
-//    /**
-//     *
-//     * Updates document
-//     *
-//     * @param Request $request
-//     * @param int     $id
-//     * @return View|\Symfony\Component\Form\Form
-//     *
-//     * @ApiDoc(
-//     *     input="AppBundle\Form\Type\DocumentType",
-//     *     output="AppBundle\Entity\Document",
-//     *     statusCodes={
-//     *         204 = "Returned when an existing Document has been successful updated",
-//     *         400 = "Return when errors",
-//     *         404 = "Return when not found"
-//     *     }
-//     * )
-//     */
-//    public function putAction(Request $request, int $id) {
-//
-//        $document = $this->getDocumentRepository()->find($id);
-//        $categories = $request->request->get('categories');
-//        $em = $this->getDoctrine()->getManager();
-//
-//        if ($document === null) {
-//            return new View(null, Response::HTTP_NOT_FOUND);
-//        }
-//        $form = $this->createForm(DocumentType::class, $document, [
-//            'csrf_protection' => false,
-//        ]);
-//        $form->submit($request->request->all());
-//        if (!$form->isValid()) {
-//            return $form;
-//        }
-//
-//        /*
-//         * Add modify data
-//         */
-//        $document->setModifiedDate(new \DateTime());
-//
+    /**
+     *
+     * Updates form
+     *
+     * @param Request $request
+     * @param int     $id
+     * @return View|\Symfony\Component\Form\Form
+     *
+     * @ApiDoc(
+     *     input="AppBundle\Form\Type\FormType",
+     *     output="AppBundle\Entity\Form",
+     *     statusCodes={
+     *         204 = "Returned when an existing Form has been successful updated",
+     *         400 = "Return when errors",
+     *         404 = "Return when not found"
+     *     }
+     * )
+     */
+    public function putAction(Request $request, int $id) {
+
+        $f = $this->getFormRepository()->find($id);
+        //$categories = $request->request->get('categories');
+        $em = $this->getDoctrine()->getManager();
+
+        if ($f === null) {
+            return new View(null, Response::HTTP_NOT_FOUND);
+        }
+        $form = $this->createForm(FormType::class, $f, [
+            'csrf_protection' => false,
+        ]);
+        $form->submit($request->request->all());
+        if (!$form->isValid()) {
+            return $form;
+        }
+
+        /*
+         * Add modify data
+         */
+        $f->setModifiedDate(new \DateTime());
+
 //        /*
 //         * First we delete current relations
 //         */
@@ -161,7 +161,7 @@ class FormController extends FOSRestController implements ClassResourceInterface
 //        foreach ($relations as $relation) {
 //            $document->getCategories()->removeElement($relation);
 //        }
-//
+
 //        /*
 //         * Then we loop thru current categories
 //         */
@@ -178,15 +178,15 @@ class FormController extends FOSRestController implements ClassResourceInterface
 //            }
 //            $em->persist($category);
 //        }
-//
-//        $em->flush();
-//
-//        $routeOptions = [
-//            'id' => $document->getId(),
-//            '_format' => $request->get('_format'),
-//        ];
-//        return $this->routeRedirectView('get_document', $routeOptions, Response::HTTP_NO_CONTENT);
-//    }
+
+        $em->flush();
+
+        $routeOptions = [
+            'id' => $f->getId(),
+            '_format' => $request->get('_format'),
+        ];
+        return $this->routeRedirectView('get_form', $routeOptions, Response::HTTP_NO_CONTENT);
+    }
 //
 //    /**
 //     *

@@ -34,6 +34,28 @@ class Form implements \JsonSerializable {
      * @JMSSerializer\Expose
      */
     private $description;   
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_add", type="datetime", nullable=true)
+     * @Assert\Date()(
+     *  message = "Invalid value (expected: date format)."
+     * )
+     * @JMSSerializer\Expose
+     */
+    private $addDate;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_modified", type="datetime", nullable=true)
+     * @Assert\Date()(
+     *  message = "Invalid value (expected: date format)."
+     * )
+     * @JMSSerializer\Expose
+     */
+    private $modifiedDate;
     
     /**
      * @ORM\OneToOne(targetEntity="FormConfig")
@@ -49,6 +71,7 @@ class Form implements \JsonSerializable {
     private $questions;
 
     public function __construct() {
+        $this->addDate = new \DateTime();
         $this->questions = new ArrayCollection();
     }
 
@@ -91,6 +114,17 @@ class Form implements \JsonSerializable {
         return $this;
     }
 
+    /**
+     * Set modifiedDate
+     *
+     * @param \DateTime $modifiedDate
+     * @return Form
+     */
+    public function setModifiedDate($modifiedDate) {
+        $this->modifiedDate = $modifiedDate;
+        return $this;
+    }    
+    
     /**
      * Add FormConfig
      *
