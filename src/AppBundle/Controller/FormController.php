@@ -102,6 +102,11 @@ class FormController extends FOSRestController implements ClassResourceInterface
         
         $this->uploadConfig($em, $request->request->get('config'), $uploadedForm);
         $this->uploadQuestions($em, $uploadedForm, $request->request->get('questions'));
+
+        /*
+         * Add create data
+         */
+        //$uploadedForm->set...Date(new \DateTime());
         
         $em->persist($uploadedForm);
         $em->flush();
