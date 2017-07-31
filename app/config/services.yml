@@ -23,7 +23,22 @@ services:
         class: Doctrine\ORM\EntityRepository
         factory: ["@doctrine", getRepository]
         arguments:
-            - AppBundle\Entity\Form     
+            - AppBundle\Entity\Form
+    crv.doctrine_entity_repository.config:
+        class: Doctrine\ORM\EntityRepository
+        factory: ["@doctrine", getRepository]
+        arguments:
+            - AppBundle\Entity\FormConfig   
+    crv.doctrine_entity_repository.question:
+        class: Doctrine\ORM\EntityRepository
+        factory: ["@doctrine", getRepository]
+        arguments:
+            - AppBundle\Entity\Question 
+    crv.doctrine_entity_repository.option:
+        class: Doctrine\ORM\EntityRepository
+        factory: ["@doctrine", getRepository]
+        arguments:
+            - AppBundle\Entity\Option              
     crv.doctrine_entity_repository.answer:
         class: Doctrine\ORM\EntityRepository
         factory: ["@doctrine", getRepository]

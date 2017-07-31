@@ -27,43 +27,19 @@ class FormConfig implements \JsonSerializable {
      * @ORM\Column(type="boolean", name="allow_back", nullable=true)
      * @JMSSerializer\Expose
      */
-    private $allowBack;     
-
-    /**
-     * @ORM\Column(type="boolean", name="allow_review", nullable=true)
-     * @JMSSerializer\Expose
-     */
-    private $allowReview;     
+    private $allowBack;         
     
     /**
      * @ORM\Column(type="boolean", name="auto_move", nullable=true)
      * @JMSSerializer\Expose
      */
-    private $autoMove;    
-    
-    /**
-     * @ORM\Column(type="integer", name="duration", nullable=true)
-     * @JMSSerializer\Expose
-     */
-    private $duration;     
-    
-    /**
-     * @ORM\Column(type="integer", name="page_size", nullable=true)
-     * @JMSSerializer\Expose
-     */
-    private $pageSize;     
+    private $autoMove;        
     
     /**
      * @ORM\Column(type="boolean", name="required_all", nullable=true)
      * @JMSSerializer\Expose
      */
-    private $requiredAll;     
-    
-    /**
-     * @ORM\Column(type="boolean", name="rich_text", nullable=true)
-     * @JMSSerializer\Expose
-     */
-    private $richText;     
+    private $requiredAll;         
     
     /**
      * @ORM\Column(type="boolean", name="shuffle_questions", nullable=true)
@@ -75,25 +51,13 @@ class FormConfig implements \JsonSerializable {
      * @ORM\Column(type="boolean", name="shuffle_options", nullable=true)
      * @JMSSerializer\Expose
      */
-    private $shuffleOptions;     
-    
-    /**
-     * @ORM\Column(type="boolean", name="show_clock", nullable=true)
-     * @JMSSerializer\Expose
-     */
-    private $showClock;     
+    private $shuffleOptions;        
     
     /**
      * @ORM\Column(type="boolean", name="show_pager", nullable=true)
      * @JMSSerializer\Expose
      */
-    private $showPager;    
-    
-    /**
-     * @ORM\Column(type="string", name="theme", nullable=true)
-     * @JMSSerializer\Expose
-     */
-    private $theme;    
+    private $showPager;       
 
 //    /**
 //     * @ORM\OneToOne(targetEntity="Form")
@@ -123,23 +87,7 @@ class FormConfig implements \JsonSerializable {
     public function setAllowBack($allowBack) {
         $this->allowBack = $allowBack;
         return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getAllowReview() {
-        return $this->allowReview;
-    }
-
-    /**
-     * @param mixed $allowReview
-     * @return FormConfig
-     */
-    public function setAllowReview($allowReview) {
-        $this->allowReview = $allowReview;
-        return $this;
-    }    
+    }   
 
     /**
      * @return mixed
@@ -160,38 +108,6 @@ class FormConfig implements \JsonSerializable {
     /**
      * @return mixed
      */
-    public function getDuration() {
-        return $this->duration;
-    }
-
-    /**
-     * @param mixed $duration
-     * @return FormConfig
-     */
-    public function setDuration($duration) {
-        $this->duration = $duration;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPageSize() {
-        return $this->pageSize;
-    }
-
-    /**
-     * @param mixed $pageSize
-     * @return FormConfig
-     */
-    public function setPageSize($pageSize) {
-        $this->pageSize = $pageSize;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getRequiredAll() {
         return $this->requiredAll;
     }
@@ -202,22 +118,6 @@ class FormConfig implements \JsonSerializable {
      */
     public function setRequiredAll($requiredAll) {
         $this->requiredAll = $requiredAll;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getRichText() {
-        return $this->richText;
-    }
-
-    /**
-     * @param mixed $richText
-     * @return FormConfig
-     */
-    public function setRichText($richText) {
-        $this->richText = $richText;
         return $this;
     }
 
@@ -256,22 +156,6 @@ class FormConfig implements \JsonSerializable {
     /**
      * @return mixed
      */
-    public function getShowClock() {
-        return $this->showClock;
-    }
-
-    /**
-     * @param mixed $showClock
-     * @return FormConfig
-     */
-    public function setShowClock($showClock) {
-        $this->showClock = $showClock;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getShowPager() {
         return $this->showPager;
     }
@@ -282,22 +166,6 @@ class FormConfig implements \JsonSerializable {
      */
     public function setShowPager($showPager) {
         $this->showPager = $showPager;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getTheme() {
-        return $this->theme;
-    }
-
-    /**
-     * @param mixed $theme
-     * @return FormConfig
-     */
-    public function setTheme($theme) {
-        $this->theme = $theme;
         return $this;
     }
 
@@ -328,18 +196,11 @@ class FormConfig implements \JsonSerializable {
         return [
             'id' => $this->id,
             'allowBack' => $this->allowBack,
-            'allowReview' => $this->allowReview,
             'autoMove' => $this->autoMove,
-            'duration' => $this->duration,
-            'pageSize' => $this->pageSize,
             'requiredAll' => $this->requiredAll,
-            'richText' => $this->richText,
             'shuffleQuestions' => $this->shuffleQuestions,
             'shuffleOptions' => $this->shuffleOptions,
-            'showClock' => $this->showClock,
             'showPager' => $this->showPager,
-            'theme' => $this->theme,
-            'form' => $this->form // remove?
         ];
     }
 

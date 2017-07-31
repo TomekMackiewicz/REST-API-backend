@@ -104,7 +104,7 @@ class FormController extends FOSRestController implements ClassResourceInterface
         $this->uploadQuestions($em, $uploadedForm, $request->request->get('questions'));
 
         /*
-         * Add create data
+         * Add create date
          */
         //$uploadedForm->set...Date(new \DateTime());
         
@@ -139,14 +139,14 @@ class FormController extends FOSRestController implements ClassResourceInterface
      */
     public function putAction(Request $request, int $id) {
 
-        $f = $this->getFormRepository()->find($id);
+        $editedForm = $this->getFormRepository()->find($id);
         //$categories = $request->request->get('categories');
         $em = $this->getDoctrine()->getManager();
 
-        if ($f === null) {
+        if ($editedForm === null) {
             return new View(null, Response::HTTP_NOT_FOUND);
         }
-        $form = $this->createForm(FormType::class, $f, [
+        $form = $this->createForm(FormType::class, $editedForm, [
             'csrf_protection' => false,
         ]);
         $form->submit($request->request->all());
@@ -154,40 +154,24 @@ class FormController extends FOSRestController implements ClassResourceInterface
             return $form;
         }
 
-        /*
-         * Add modify data
-         */
-        $f->setModifiedDate(new \DateTime());
+        $editedForm->setModifiedDate(new \DateTime());
 
 //        /*
-//         * First we delete current relations
+//         * Delete current relations
 //         */
-//        $relations = $document->getCategories();
+//        $relations = $editedForm->getQuestions();
 //        foreach ($relations as $relation) {
-//            $document->getCategories()->removeElement($relation);
-//        }
+//            $editedForm->removeQuestion($relation);
+//        }        
+        
+        $this->uploadConfig($em, $request->request->get('config'), $editedForm);
+        $this->uploadQuestions($em, $editedForm, $request->request->get('questions'));
 
-//        /*
-//         * Then we loop thru current categories
-//         */
-//        foreach ($categories as $categoryId) {
-//            $category = $em->getRepository('AppBundle:DocumentCategory')->find((int) $categoryId['id']);
-//            /*
-//             * We add new relations only if relation does not exist - to avoid duplicates
-//             */
-//            if (!$category->hasDocument($document)) {
-//                $category->addDocument($document);
-//            }
-//            if (!$document->hasCategory($category)) {
-//                $document->addCategory($category);
-//            }
-//            $em->persist($category);
-//        }
-
+        $em->persist($editedForm);
         $em->flush();
 
         $routeOptions = [
-            'id' => $f->getId(),
+            'id' => $editedForm->getId(),
             '_format' => $request->get('_format'),
         ];
         return $this->routeRedirectView('get_form', $routeOptions, Response::HTTP_NO_CONTENT);
@@ -265,42 +249,99 @@ class FormController extends FOSRestController implements ClassResourceInterface
     }
 
     private function uploadConfig($em, $conf, $f) {
-        $form = $this->createForm(FormConfigType::class, null, ['csrf_protection' => false]);                       
-        $form->submit($conf);
-        if (!$form->isValid()) { 
-            return $form;             
+        if(isset($conf["id"])) {
+            $editedConfig = $this->getConfigRepository()->find($conf["id"]);
+            if ($editedConfig === null) {
+                return new View(null, Response::HTTP_NOT_FOUND);
+            }      
+            $form = $this->createForm(FormConfigType::class, $editedConfig, [
+                'csrf_protection' => false,
+            ]);
+            $form->submit($conf);
+            if (!$form->isValid()) {
+                return $form;
+            } 
+            $config = $form->getData();
+            $em->persist($config);             
+        } else {
+            $form = $this->createForm(FormConfigType::class, null, ['csrf_protection' => false]);                       
+            $form->submit($conf);
+            if (!$form->isValid()) { 
+                return $form;             
+            }
+            $config = $form->getData();        
+            $f->addConfig($config);        
+            $em->persist($config);             
         }
-        $config = $form->getData();        
-        $f->addConfig($config);        
-        $em->persist($config);               
+                      
     }
-    
+  
     private function uploadQuestions($em, $f, $questions) {
         foreach($questions as $q) {
-            $form = $this->createForm(QuestionType::class, null, ['csrf_protection' => false]);            
-            $form->submit($q);
-            if (!$form->isValid()) { 
-                return $form;                 
-            }
-            $question = $form->getData();
-            $f->addQuestion($question);
-            $question->addForm($f);
-            $em->persist($question);            
-            $this->uploadOptions($em, $question, $q["options"]);       
+            //file_put_contents('/var/www/log.log', $q["id"], true);
+            if(isset($q["id"])) {
+                //file_put_contents('/var/www/log.log', $q);
+                $editedQuestion = $this->getQuestionRepository()->find($q["id"]);
+                if ($editedQuestion === null) {
+                    return new View(null, Response::HTTP_NOT_FOUND);
+                }      
+                $form = $this->createForm(QuestionType::class, $editedQuestion, [
+                    'csrf_protection' => false,
+                ]);           
+                $form->submit($q);
+                if (!$form->isValid()) { 
+                    return $form;                 
+                }
+                $question = $form->getData();
+                //$f->addQuestion($question);
+                //$question->addForm($f);
+                $em->persist($question);            
+                $this->uploadOptions($em, $question, $q["options"]);                
+            } else {
+                //file_put_contents('/var/www/log.log', $q["name"]);
+                $form = $this->createForm(QuestionType::class, null, ['csrf_protection' => false]);            
+                $form->submit($q);
+                if (!$form->isValid()) { 
+                    return $form;                 
+                }
+                $question = $form->getData();
+                $f->addQuestion($question);
+                $question->addForm($f);
+                $em->persist($question);            
+                $this->uploadOptions($em, $question, $q["options"]);                
+            }       
         }        
     }
     
     private function uploadOptions($em, $question, $options) {
         foreach($options as $opt) {
-            $form = $this->createForm(OptionType::class, null, ['csrf_protection' => false]);            
-            $form->submit($opt);
-            if (!$form->isValid()) {
-                return $form;                 
-            }
-            $option = $form->getData();
-            $question->addOption($option);
-            $option->addQuestion($question);
-            $em->persist($option);                
+            if(isset($opt["id"])) {
+                $editedOption = $this->getOptionRepository()->find($opt["id"]);
+                if ($editedOption === null) {
+                    return new View(null, Response::HTTP_NOT_FOUND);
+                }      
+                $form = $this->createForm(OptionType::class, $editedOption, [
+                    'csrf_protection' => false,
+                ]);           
+                $form->submit($opt);
+                if (!$form->isValid()) { 
+                    return $form;                 
+                }
+                $option = $form->getData();
+                //$f->addQuestion($question);
+                //$question->addForm($f);
+                $em->persist($option);                
+            } else {
+                $form = $this->createForm(OptionType::class, null, ['csrf_protection' => false]);            
+                $form->submit($opt);
+                if (!$form->isValid()) {
+                    return $form;                 
+                }
+                $option = $form->getData();
+                $question->addOption($option);
+                $option->addQuestion($question);
+                $em->persist($option);                
+            }                
         }        
     }
     
@@ -311,5 +352,26 @@ class FormController extends FOSRestController implements ClassResourceInterface
         return $this->get('crv.doctrine_entity_repository.form');
     }
 
+    /**
+     * @return ConfigRepository
+     */
+    private function getConfigRepository() {
+        return $this->get('crv.doctrine_entity_repository.config');
+    }    
+
+    /**
+     * @return QuestionRepository
+     */
+    private function getQuestionRepository() {
+        return $this->get('crv.doctrine_entity_repository.question');
+    }  
+
+    /**
+     * @return OptionRepository
+     */
+    private function getOptionRepository() {
+        return $this->get('crv.doctrine_entity_repository.option');
+    }
+    
 }
 

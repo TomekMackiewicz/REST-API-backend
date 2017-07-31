@@ -49,7 +49,7 @@ class Question implements \JsonSerializable {
     private $form;
     
     /**
-     * @ORM\OneToMany(targetEntity="Option", mappedBy="question")
+     * @ORM\OneToMany(targetEntity="Option", mappedBy="question", cascade={"remove"})
      * @JMSSerializer\Expose
      */
     private $options;
