@@ -130,6 +130,15 @@ class Question implements \JsonSerializable {
         $this->form = $form;
         return $this;
     }
+
+//    /**
+//     * Remove form
+//     *
+//     * @param \AppBundle\Entity\Form $form
+//     */
+//    public function removeForm(\AppBundle\Entity\Form $form) {
+//        $this->form->removeElement($form);
+//    }
     
     /**
      * Add options

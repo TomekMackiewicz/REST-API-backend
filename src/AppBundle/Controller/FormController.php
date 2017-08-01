@@ -156,13 +156,15 @@ class FormController extends FOSRestController implements ClassResourceInterface
 
         $editedForm->setModifiedDate(new \DateTime());
 
-//        /*
-//         * Delete current relations
-//         */
-//        $relations = $editedForm->getQuestions();
-//        foreach ($relations as $relation) {
-//            $editedForm->removeQuestion($relation);
-//        }        
+////        /*
+////         * Delete current relations
+////         */
+        $relations = $editedForm->getQuestions();
+        foreach ($relations as $relation) {
+            //$editedForm->removeQuestion($relation);
+            $editedForm->getQuestions()->removeElement($relation);
+            //$relation->removeForm($editedForm);
+        }        
         
         $this->uploadConfig($em, $request->request->get('config'), $editedForm);
         $this->uploadQuestions($em, $editedForm, $request->request->get('questions'));
