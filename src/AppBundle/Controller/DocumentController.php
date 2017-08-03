@@ -3,7 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Document;
-use AppBundle\Entity\DocumentCategory;
+use AppBundle\Entity\Category;
 use AppBundle\Entity\Repository\DocumentRepository;
 use AppBundle\Form\Type\DocumentType;
 use FOS\RestBundle\View\View;
@@ -101,16 +101,16 @@ class DocumentController extends FOSRestController implements ClassResourceInter
 
         $em = $this->getDoctrine()->getManager();
         $document = $form->getData();
-        $categories = $request->request->get('categories');
+        //$categories = $request->request->get('categories');
         //$fId = $request->request->get('formId');
         //$f = $em->getRepository('AppBundle:Form')->find((int) $fId);
 
-        foreach ($categories as $categoryId) {
-            $category = $em->getRepository('AppBundle:DocumentCategory')->find((int) $categoryId['id']);
-            $category->addDocument($document);
-            $document->addCategory($category);
-            $em->persist($category);
-        }
+//        foreach ($categories as $categoryId) {
+//            $category = $em->getRepository('AppBundle:Category')->find((int) $categoryId['id']);
+//            $category->addDocument($document);
+//            $document->addCategory($category);
+//            $em->persist($category);
+//        }
         
         //$f->addDocument($document);
         //$document->addForm($f);        
@@ -148,7 +148,7 @@ class DocumentController extends FOSRestController implements ClassResourceInter
     public function putAction(Request $request, int $id) {
 
         $document = $this->getDocumentRepository()->find($id);
-        $categories = $request->request->get('categories');
+        //$categories = $request->request->get('categories');
         $em = $this->getDoctrine()->getManager();
 
         if ($document === null) {
@@ -167,31 +167,31 @@ class DocumentController extends FOSRestController implements ClassResourceInter
          */
         $document->setModifiedDate(new \DateTime());
 
-        /*
-         * First we delete current relations
-         */
-        $relations = $document->getCategories();
-        foreach ($relations as $relation) {
-            $document->getCategories()->removeElement($relation);
-        }
-
-        /*
-         * Then we loop thru current categories
-         */
-        foreach ($categories as $categoryId) {
-            $category = $em->getRepository('AppBundle:DocumentCategory')->find((int) $categoryId['id']);
-            /*
-             * We add new relations only if relation does not exist - to avoid duplicates
-             */
-            if (!$category->hasDocument($document)) {
-                $category->addDocument($document);
-            }
-            if (!$document->hasCategory($category)) {
-                $document->addCategory($category);
-            }
-            $em->persist($category);
-        }
-
+//        /*
+//         * First we delete current relations
+//         */
+//        $relations = $document->getCategories();
+//        foreach ($relations as $relation) {
+//            $document->getCategories()->removeElement($relation);
+//        }
+//
+//        /*
+//         * Then we loop thru current categories
+//         */
+//        foreach ($categories as $categoryId) {
+//            $category = $em->getRepository('AppBundle:Category')->find((int) $categoryId['id']);
+//            /*
+//             * We add new relations only if relation does not exist - to avoid duplicates
+//             */
+//            if (!$category->hasDocument($document)) {
+//                $category->addDocument($document);
+//            }
+//            if (!$document->hasCategory($category)) {
+//                $document->addCategory($category);
+//            }
+//            $em->persist($category);
+//        }
+        $em->persist($document);
         $em->flush();
 
         $routeOptions = [

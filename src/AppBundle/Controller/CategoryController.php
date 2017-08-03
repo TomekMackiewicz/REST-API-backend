@@ -2,9 +2,9 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\DocumentCategory;
-use AppBundle\Entity\Repository\DocumentCategoryRepository;
-use AppBundle\Form\Type\DocumentCategoryType;
+use AppBundle\Entity\Category;
+use AppBundle\Entity\Repository\CategoryRepository;
+use AppBundle\Form\Type\CategoryType;
 use FOS\RestBundle\View\View;
 use FOS\RestBundle\Controller\Annotations;
 use FOS\RestBundle\View\RouteRedirectView;
@@ -21,12 +21,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use FOS\RestBundle\Controller\Annotations\View AS JSONView;
 
 /**
- * Class DocumentCategoryController
+ * Class CategoryController
  * @package AppBundle\Controller
  *
  * @RouteResource("category")
  */
-class DocumentCategoryController extends FOSRestController implements ClassResourceInterface {
+class CategoryController extends FOSRestController implements ClassResourceInterface {
 
     /**
      * Gets an individual category
@@ -37,7 +37,7 @@ class DocumentCategoryController extends FOSRestController implements ClassResou
      * @throws \Doctrine\ORM\NonUniqueResultException
      *
      * @ApiDoc(
-     *     output="AppBundle\Entity\DocumentCategory",
+     *     output="AppBundle\Entity\Category",
      *     statusCodes={
      *         200 = "Returned when successful",
      *         404 = "Return when not found"
@@ -46,7 +46,7 @@ class DocumentCategoryController extends FOSRestController implements ClassResou
      * @JSONView(serializerEnableMaxDepthChecks=true)
      */
     public function getAction(int $id) {
-        $category = $this->getDocumentCategoryRepository()->createFindOneByIdQuery($id)->getSingleResult();
+        $category = $this->getCategoryRepository()->createFindOneByIdQuery($id)->getSingleResult();
         if ($category === null) {
             return new View(null, Response::HTTP_NOT_FOUND);
         }
@@ -60,7 +60,7 @@ class DocumentCategoryController extends FOSRestController implements ClassResou
      * @return array
      *
      * @ApiDoc(
-     *     output="AppBundle\Entity\DocumentCategory",
+     *     output="AppBundle\Entity\Category",
      *     statusCodes={
      *         200 = "Returned when successful",
      *         404 = "Return when not found"
@@ -69,7 +69,7 @@ class DocumentCategoryController extends FOSRestController implements ClassResou
      * @JSONView(serializerEnableMaxDepthChecks=true)
      */
     public function cgetAction() {
-        return $this->getDocumentCategoryRepository()->createFindAllQuery()->getResult();
+        return $this->getCategoryRepository()->createFindAllQuery()->getResult();
     }
 
     /**
@@ -80,16 +80,16 @@ class DocumentCategoryController extends FOSRestController implements ClassResou
      * @return View|\Symfony\Component\Form\Form
      *
      * @ApiDoc(
-     *     input="AppBundle\Form\Type\DocumentCategoryType",
-     *     output="AppBundle\Entity\DocumentCategory",
+     *     input="AppBundle\Form\Type\CategoryType",
+     *     output="AppBundle\Entity\Category",
      *     statusCodes={
-     *         201 = "Returned when a new DocumentCategory has been successful created",
+     *         201 = "Returned when a new Category has been successful created",
      *         404 = "Return when not found"
      *     }
      * )
      */
     public function postAction(Request $request) {
-        $form = $this->createForm(DocumentCategoryType::class, null, [
+        $form = $this->createForm(CategoryType::class, null, [
             'csrf_protection' => false,
         ]);
         $form->submit($request->request->all());
@@ -97,7 +97,7 @@ class DocumentCategoryController extends FOSRestController implements ClassResou
             return $form;
         }
         /**
-         * @var $category DocumentCategory
+         * @var $category Category
          */
         $category = $form->getData();
         $em = $this->getDoctrine()->getManager();
@@ -120,10 +120,10 @@ class DocumentCategoryController extends FOSRestController implements ClassResou
      * @return View|\Symfony\Component\Form\Form
      *
      * @ApiDoc(
-     *     input="AppBundle\Form\Type\DocumentCategoryType",
-     *     output="AppBundle\Entity\DocumentCategory",
+     *     input="AppBundle\Form\Type\CategoryType",
+     *     output="AppBundle\Entity\Category",
      *     statusCodes={
-     *         204 = "Returned when an existing DocumentCategory has been successful updated",
+     *         204 = "Returned when an existing Category has been successful updated",
      *         400 = "Return when errors",
      *         404 = "Return when not found"
      *     }
@@ -131,13 +131,13 @@ class DocumentCategoryController extends FOSRestController implements ClassResou
      */
     public function putAction(Request $request, int $id) {
         /**
-         * @var $category DocumentCategory
+         * @var $category Category
          */
-        $category = $this->getDocumentCategoryRepository()->find($id);
+        $category = $this->getCategoryRepository()->find($id);
         if ($category === null) {
             return new View(null, Response::HTTP_NOT_FOUND);
         }
-        $form = $this->createForm(DocumentCategoryType::class, $category, [
+        $form = $this->createForm(CategoryType::class, $category, [
             'csrf_protection' => false,
         ]);
         $form->submit($request->request->all());
@@ -162,10 +162,10 @@ class DocumentCategoryController extends FOSRestController implements ClassResou
      * @return View|\Symfony\Component\Form\Form
      *
      * @ApiDoc(
-     *     input="AppBundle\Form\Type\DocumentCategoryType",
-     *     output="AppBundle\Entity\DocumentCategoryPost",
+     *     input="AppBundle\Form\Type\CategoryType",
+     *     output="AppBundle\Entity\CategoryPost",
      *     statusCodes={
-     *         204 = "Returned when an existing DocumentCategory has been successful updated",
+     *         204 = "Returned when an existing Category has been successful updated",
      *         400 = "Return when errors",
      *         404 = "Return when not found"
      *     }
@@ -173,13 +173,13 @@ class DocumentCategoryController extends FOSRestController implements ClassResou
      */
     public function patchAction(Request $request, int $id) {
         /**
-         * @var $category DocumentCategory
+         * @var $category Category
          */
-        $category = $this->getDocumentCategoryRepository()->find($id);
+        $category = $this->getCategoryRepository()->find($id);
         if ($category === null) {
             return new View(null, Response::HTTP_NOT_FOUND);
         }
-        $form = $this->createForm(DocumentCategoryType::class, $category, [
+        $form = $this->createForm(CategoryType::class, $category, [
             'csrf_protection' => false,
         ]);
         $form->submit($request->request->all(), false);
@@ -204,16 +204,16 @@ class DocumentCategoryController extends FOSRestController implements ClassResou
      *
      * @ApiDoc(
      *     statusCodes={
-     *         204 = "Returned when an existing DocumentCategory has been successful deleted",
+     *         204 = "Returned when an existing Category has been successful deleted",
      *         404 = "Return when not found"
      *     }
      * )
      */
     public function deleteAction(int $id) {
         /**
-         * @var $category DocumentCategory
+         * @var $category Category
          */
-        $category = $this->getDocumentCategoryRepository()->find($id);
+        $category = $this->getCategoryRepository()->find($id);
         if ($category === null) {
             return new View(null, Response::HTTP_NOT_FOUND);
         }
@@ -225,10 +225,10 @@ class DocumentCategoryController extends FOSRestController implements ClassResou
     }
 
     /**
-     * @return DocumentCategoryRepository
+     * @return CategoryRepository
      */
-    private function getDocumentCategoryRepository() {
-        return $this->get('crv.doctrine_entity_repository.document_category');
+    private function getCategoryRepository() {
+        return $this->get('crv.doctrine_entity_repository.category');
     }
 
 }

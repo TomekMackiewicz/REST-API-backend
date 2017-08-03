@@ -2,7 +2,7 @@
 
 namespace AppBundle\Form\DataTransformer;
 
-use AppBundle\Entity\DocumentCategory;
+use AppBundle\Entity\Category;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
@@ -18,14 +18,14 @@ class JsonToCategoryTransformer implements DataTransformerInterface {
     /**
      * Transforms an object to a string.
      *
-     * @param  DocumentCategory|null $category
+     * @param  Category|null $category
      * @return string
      */
     public function transform($category) {
         if (null === $category) {
             return '';
         }
-        //return $category->getId();
+
         return $category->getId();
     }
 
@@ -33,7 +33,7 @@ class JsonToCategoryTransformer implements DataTransformerInterface {
      * Transforms a string to an object.
      *
      * @param  string $categoryName
-     * @return DocumentCategory|null
+     * @return Category|null
      * @throws TransformationFailedException if object (category) is not found.
      */
     public function reverseTransform($categoryName) {
@@ -41,11 +41,11 @@ class JsonToCategoryTransformer implements DataTransformerInterface {
             return;
         }
         $category = $this->em
-                ->getRepository('AppBundle:DocumentCategory')
+                ->getRepository('AppBundle:Category')
                 ->findOneByName($categoryName)
         ;
         if (null === $category) {
-//            $category = new DocumentCategory();
+//            $category = new Category();
 //            $category->setName($categoryName);
 //            $em = $this->manager;
 //            $em->persist($category);

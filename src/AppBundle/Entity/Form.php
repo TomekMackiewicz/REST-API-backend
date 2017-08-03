@@ -69,10 +69,27 @@ class Form implements \JsonSerializable {
      * @JMSSerializer\Expose
      */
     private $questions;
+    
+    /**
+     * @ORM\ManyToMany(targetEntity="Category", inversedBy="forms")
+     * @ORM\JoinTable(
+     *  name="form_category",
+     *  joinColumns={
+     *      @ORM\JoinColumn(name="form_id", referencedColumnName="id")
+     *  },
+     *  inverseJoinColumns={
+     *      @ORM\JoinColumn(name="category_id", referencedColumnName="id")
+     *  }
+     * )
+     * @JMSSerializer\Expose
+     * @MaxDepth(2)
+     */
+    private $categories;    
 
     public function __construct() {
         $this->addDate = new \DateTime();
         $this->questions = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     /**
@@ -176,6 +193,35 @@ class Form implements \JsonSerializable {
     }
 
     /**
+     * Add categories
+     *
+     * @param \AppBundle\Entity\Category $categories
+     * @return Form
+     */
+    public function addCategory(\AppBundle\Entity\Category $categories) {
+        $this->categories[] = $categories;
+        return $this;
+    }
+
+    /**
+     * Remove categories
+     *
+     * @param \AppBundle\Entity\Category $categories
+     */
+    public function removeCategory(\AppBundle\Entity\Category $categories) {
+        $this->categories->removeElement($categories);
+    }
+
+    /**
+     * Get categories
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCategories() {
+        return $this->categories;
+    }    
+    
+    /**
      * @return mixed
      */
     function jsonSerialize() {
@@ -184,7 +230,8 @@ class Form implements \JsonSerializable {
             'name' => $this->name,
             'description' => $this->description,
             'config' => $this->config,
-            'questions' => $this->questions
+            'questions' => $this->questions,
+            'categories' => $this->categories
         ];
     }
 
@@ -196,5 +243,13 @@ class Form implements \JsonSerializable {
         return $this->getQuestions()->contains($question);
     }
 
+    /**
+     * @param \AppBundle\Entity\Category $category
+     * @return bool
+     */
+    public function hasCategory(Category $category) {
+        return $this->getCategories()->contains($category);
+    }    
+    
 }
 

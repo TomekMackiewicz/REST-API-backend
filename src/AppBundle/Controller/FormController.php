@@ -99,6 +99,14 @@ class FormController extends FOSRestController implements ClassResourceInterface
         }
         $uploadedForm = $form->getData();        
         $em = $this->getDoctrine()->getManager(); 
+
+        $categories = $request->request->get('categories');
+        foreach ($categories as $categoryId) {
+            $category = $em->getRepository('AppBundle:Category')->find((int) $categoryId['id']);
+            $category->addForm($uploadedForm);
+            $uploadedForm->addCategory($category);
+            $em->persist($category);
+        }
         
         $this->uploadConfig($em, $request->request->get('config'), $uploadedForm);
         $this->uploadQuestions($em, $uploadedForm, $request->request->get('questions'));
@@ -140,7 +148,7 @@ class FormController extends FOSRestController implements ClassResourceInterface
     public function putAction(Request $request, int $id) {
 
         $editedForm = $this->getFormRepository()->find($id);
-        //$categories = $request->request->get('categories');
+        $categories = $request->request->get('categories');
         $em = $this->getDoctrine()->getManager();
 
         if ($editedForm === null) {
@@ -157,14 +165,28 @@ class FormController extends FOSRestController implements ClassResourceInterface
         $editedForm->setModifiedDate(new \DateTime());
 
         /*
-         * Delete current relations
+         * First we delete current relations
          */
-        $relations = $editedForm->getQuestions();
+        $relations = $editedForm->getCategories();
         foreach ($relations as $relation) {
-            //$em->remove($relation);
-            //$editedForm->removeQuestion($relation);
-            //$editedForm->getQuestions()->removeElement($relation);
-            //$relation->removeForm($editedForm);
+            $editedForm->getCategories()->removeElement($relation);
+        }
+
+        /*
+         * Then we loop thru current categories
+         */
+        foreach ($categories as $categoryId) {
+            $category = $em->getRepository('AppBundle:Category')->find((int) $categoryId['id']);
+            /*
+             * We add new relations only if relation does not exist - to avoid duplicates
+             */
+            if (!$category->hasForm($editedForm)) {
+                $category->addForm($editedForm);
+            }
+            if (!$editedForm->hasCategory($category)) {
+                $editedForm->addCategory($category);
+            }
+            $em->persist($category);
         }        
         
         $this->uploadConfig($em, $request->request->get('config'), $editedForm);

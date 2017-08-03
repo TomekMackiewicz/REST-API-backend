@@ -70,25 +70,25 @@ class Document implements \JsonSerializable {
 //     */
 //    private $form;    
     
-    /**
-     * @ORM\ManyToMany(targetEntity="DocumentCategory", inversedBy="documents")
-     * @ORM\JoinTable(
-     *  name="document_category",
-     *  joinColumns={
-     *      @ORM\JoinColumn(name="document_id", referencedColumnName="id")
-     *  },
-     *  inverseJoinColumns={
-     *      @ORM\JoinColumn(name="document_category_id", referencedColumnName="id")
-     *  }
-     * )
-     * @JMSSerializer\Expose
-     * @MaxDepth(2)
-     */
-    private $categories;
+//    /**
+//     * @ORM\ManyToMany(targetEntity="Category", inversedBy="documents")
+//     * @ORM\JoinTable(
+//     *  name="document_category",
+//     *  joinColumns={
+//     *      @ORM\JoinColumn(name="document_id", referencedColumnName="id")
+//     *  },
+//     *  inverseJoinColumns={
+//     *      @ORM\JoinColumn(name="category_id", referencedColumnName="id")
+//     *  }
+//     * )
+//     * @JMSSerializer\Expose
+//     * @MaxDepth(2)
+//     */
+//    private $categories;
 
     public function __construct() {
         $this->addDate = new \DateTime();
-        $this->categories = new ArrayCollection();
+        //$this->categories = new ArrayCollection();
     }
 
     /**
@@ -187,34 +187,34 @@ class Document implements \JsonSerializable {
 //        return $this->form;
 //    }    
     
-    /**
-     * Add categories
-     *
-     * @param \AppBundle\Entity\DocumentCategory $categories
-     * @return Document
-     */
-    public function addCategory(\AppBundle\Entity\DocumentCategory $categories) {
-        $this->categories[] = $categories;
-        return $this;
-    }
-
-    /**
-     * Remove categories
-     *
-     * @param \AppBundle\Entity\DocumentCategory $categories
-     */
-    public function removeCategory(\AppBundle\Entity\DocumentCategory $categories) {
-        $this->categories->removeElement($categories);
-    }
-
-    /**
-     * Get categories
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getCategories() {
-        return $this->categories;
-    }
+//    /**
+//     * Add categories
+//     *
+//     * @param \AppBundle\Entity\Category $categories
+//     * @return Document
+//     */
+//    public function addCategory(\AppBundle\Entity\Category $categories) {
+//        $this->categories[] = $categories;
+//        return $this;
+//    }
+//
+//    /**
+//     * Remove categories
+//     *
+//     * @param \AppBundle\Entity\Category $categories
+//     */
+//    public function removeCategory(\AppBundle\Entity\Category $categories) {
+//        $this->categories->removeElement($categories);
+//    }
+//
+//    /**
+//     * Get categories
+//     *
+//     * @return \Doctrine\Common\Collections\Collection
+//     */
+//    public function getCategories() {
+//        return $this->categories;
+//    }
 
     /**
      * @return mixed
@@ -226,16 +226,16 @@ class Document implements \JsonSerializable {
             'body' => $this->body,
             'addDate' => $this->addDate,
             'modifiedDate' => $this->modifiedDate,
-            'categories' => $this->categories
+            //'categories' => $this->categories
         ];
     }
 
-    /**
-     * @param \AppBundle\Entity\DocumentCategory $category
-     * @return bool
-     */
-    public function hasCategory(DocumentCategory $category) {
-        return $this->getCategories()->contains($category);
-    }
+//    /**
+//     * @param \AppBundle\Entity\Category $category
+//     * @return bool
+//     */
+//    public function hasCategory(Category $category) {
+//        return $this->getCategories()->contains($category);
+//    }
 
 }

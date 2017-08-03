@@ -14,11 +14,11 @@ services:
         factory: ["@doctrine", getRepository]
         arguments:
             - AppBundle\Entity\ReadyText            
-    crv.doctrine_entity_repository.document_category:
+    crv.doctrine_entity_repository.category:
         class: Doctrine\ORM\EntityRepository
         factory: ["@doctrine", getRepository]
         arguments:
-            - AppBundle\Entity\DocumentCategory            
+            - AppBundle\Entity\Category            
     crv.doctrine_entity_repository.form:
         class: Doctrine\ORM\EntityRepository
         factory: ["@doctrine", getRepository]

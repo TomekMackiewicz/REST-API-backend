@@ -7,7 +7,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class DocumentCategoryType extends AbstractType {
+class CategoryType extends AbstractType {
 
     /**
      * @param FormBuilderInterface $builder
@@ -19,13 +19,13 @@ class DocumentCategoryType extends AbstractType {
 
     public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults([
-            'data_class' => 'AppBundle\Entity\DocumentCategory',
+            'data_class' => 'AppBundle\Entity\Category',
             'allow_extra_fields' => true,
         ]);
     }
 
     public function getName() {
-        return 'document_category';
+        return 'category';
     }
 
 }
