@@ -45,6 +45,7 @@ class Question implements \JsonSerializable {
      * @ORM\ManyToOne(targetEntity="Form", inversedBy="questions")
      * @ORM\JoinColumn(name="form_id", referencedColumnName="id")
      * @JMSSerializer\Expose
+     * @MaxDepth(2)
      */
     private $form;
     

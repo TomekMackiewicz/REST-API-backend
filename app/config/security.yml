@@ -59,6 +59,14 @@ security:
             pattern: ^/forms
             anonymous: true
 
+        api_questions:
+            pattern: ^/questions
+            anonymous: true
+
+        api_options:
+            pattern: ^/options
+            anonymous: true
+
         api_answers:
             pattern: ^/answers
             anonymous: true
