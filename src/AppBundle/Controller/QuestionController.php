@@ -175,7 +175,6 @@ class QuestionController extends FOSRestController implements ClassResourceInter
         /**
          * @var $question Question
          */
-        file_put_contents('/var/www/log.log', $id);
         $question = $this->getQuestionRepository()->find($id);
         if ($question === null) {
             return new View(null, Response::HTTP_NOT_FOUND);
