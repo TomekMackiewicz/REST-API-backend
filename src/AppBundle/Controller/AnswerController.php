@@ -96,6 +96,7 @@ class AnswerController extends FOSRestController implements ClassResourceInterfa
         $inputAnswers = json_decode($request->getContent());
         $formId = $request->request->get("formId");
         $em = $this->getDoctrine()->getManager();
+        // Po co zapisywać odpowiedzi do bazy?
         $answers = [];
         foreach ($inputAnswers as $questionId => $inputAnswer) {
             if($questionId === "formId") {
@@ -103,27 +104,27 @@ class AnswerController extends FOSRestController implements ClassResourceInterfa
             } elseif(is_array($inputAnswer)) {
                 foreach ($inputAnswer as $inputOption) {
                     $answers[$questionId] = $inputOption;
-                    $form = $this->createForm(AnswerType::class, null, ['csrf_protection' => false]); 
-                    $answer = array("formId" => $formId, "body" => $inputOption);
-                    $form->submit($answer);
-                    if (!$form->isValid()) { 
-                        return $form;             
-                    }                
-                    $outputAnswer = $form->getData(); 
-                    $em->persist($outputAnswer);
-                    $em->flush();                    
+//                    $form = $this->createForm(AnswerType::class, null, ['csrf_protection' => false]); 
+//                    $answer = array("formId" => $formId, "body" => $inputOption);
+//                    $form->submit($answer);
+//                    if (!$form->isValid()) { 
+//                        return $form;             
+//                    }                
+//                    $outputAnswer = $form->getData(); 
+//                    $em->persist($outputAnswer);
+//                    $em->flush();                    
                 }
             } else { 
                 $answers[$questionId] = $inputAnswer;
-                $form = $this->createForm(AnswerType::class, null, ['csrf_protection' => false]); 
-                $answer = array("formId" => $formId, "body" => $inputAnswer);
-                $form->submit($answer);
-                if (!$form->isValid()) { 
-                    return $form;             
-                }                
-                $outputAnswer = $form->getData();
-                $em->persist($outputAnswer);
-                $em->flush();                
+//                $form = $this->createForm(AnswerType::class, null, ['csrf_protection' => false]); 
+//                $answer = array("formId" => $formId, "body" => $inputAnswer);
+//                $form->submit($answer);
+//                if (!$form->isValid()) { 
+//                    return $form;             
+//                }                
+//                $outputAnswer = $form->getData();
+//                $em->persist($outputAnswer);
+//                $em->flush();                
             }
         }
 

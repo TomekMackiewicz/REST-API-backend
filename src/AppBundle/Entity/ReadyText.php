@@ -21,6 +21,12 @@ class ReadyText implements \JsonSerializable {
      * @JMSSerializer\Expose
      */
     protected $id;    
+
+    /**
+     * @ORM\Column(type="string", name="token")
+     * @JMSSerializer\Expose
+     */
+    private $token;
     
     /**
      * @ORM\Column(type="string", name="title")
@@ -47,6 +53,7 @@ class ReadyText implements \JsonSerializable {
 
     public function __construct() {
         $this->addDate = new \DateTime();
+        $this->token = base64_encode(random_bytes(10));
     }
 
     /**
@@ -55,6 +62,13 @@ class ReadyText implements \JsonSerializable {
     public function getId() {
         return $this->id;
     }   
+
+    /**
+     * @return mixed
+     */
+    public function getToken() {
+        return $this->token;
+    }
     
     /**
      * @return mixed
@@ -97,6 +111,7 @@ class ReadyText implements \JsonSerializable {
             'title' => $this->title,
             'body' => $this->body,
             'addDate' => $this->addDate,
+            'token' => $this->token
         ];
     }
 
