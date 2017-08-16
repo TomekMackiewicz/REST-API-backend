@@ -53,7 +53,8 @@ class ReadyText implements \JsonSerializable {
 
     public function __construct() {
         $this->addDate = new \DateTime();
-        $this->token = base64_encode(random_bytes(10));
+        //$this->token = base64_encode(random_bytes(10)); random_int(100, 999)
+        $this->token = random_int(100000000, 999999999);
     }
 
     /**
