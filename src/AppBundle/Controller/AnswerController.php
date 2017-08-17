@@ -147,7 +147,7 @@ class AnswerController extends FOSRestController implements ClassResourceInterfa
         $em->flush();        
         
         // if text id
-        return View::create()->setStatusCode(201)->setData($text->getToken());        
+        return View::create()->setStatusCode(201)->setData($text->getId());        
 
     }
     
