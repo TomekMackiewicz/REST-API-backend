@@ -58,7 +58,7 @@ class Form implements \JsonSerializable {
     private $modifiedDate;
     
     /**
-     * @ORM\OneToOne(targetEntity="FormConfig")
+     * @ORM\OneToOne(targetEntity="FormConfig", cascade={"remove"})
      * @ORM\JoinColumn(name="config_id", referencedColumnName="id")
      * @JMSSerializer\Expose
      */
