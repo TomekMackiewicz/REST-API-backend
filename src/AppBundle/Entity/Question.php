@@ -36,10 +36,16 @@ class Question implements \JsonSerializable {
     private $questionType;     
 
     /**
-     * @ORM\Column(type="integer", name="answered", nullable=true)
+     * @ORM\Column(type="text", name="validation", nullable=true)
      * @JMSSerializer\Expose
      */
-    private $answered;    
+    private $validation;    
+
+    /**
+     * @ORM\Column(type="boolean", name="required", nullable=true)
+     * @JMSSerializer\Expose
+     */
+    private $required;
     
     /**
      * @ORM\ManyToOne(targetEntity="Form", inversedBy="questions")
@@ -108,19 +114,35 @@ class Question implements \JsonSerializable {
     /**
      * @return mixed
      */
-    public function getAnswered() {
-        return $this->answered;
+    public function getValidation() {
+        return $this->validation;
     }
 
     /**
-     * @param mixed $answered
+     * @param mixed $validation
      * @return Question
      */
-    public function setAnswered($answered) {
-        $this->answered = $answered;
+    public function setValidation($validation) {
+        $this->validation = $validation;
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getRequired() {
+        return $this->required;
+    }
+
+    /**
+     * @param mixed $required
+     * @return Question
+     */
+    public function setRequired($required) {
+        $this->required = $required;
+        return $this;
+    }    
+    
     /**
      * Add form
      *
@@ -208,7 +230,8 @@ class Question implements \JsonSerializable {
             'name' => $this->name,
             'questionType' => $this->questionType,
             'options' => $this->options,
-            'answered' => $this->answered
+            'validation' => $this->validation,
+            'required' => $this->required
         ];
     }
 
