@@ -17,8 +17,8 @@ class DocumentType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
             ->add('title', TextType::class)
-            ->add('body', TextType::class)
-            ->add('formId', IntegerType::class);    
+            ->add('body', TextType::class);
+            //->add('formId', IntegerType::class);    
     }
 
     public function configureOptions(OptionsResolver $resolver) {

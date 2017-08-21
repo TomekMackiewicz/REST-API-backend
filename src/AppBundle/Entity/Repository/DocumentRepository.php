@@ -17,10 +17,10 @@ class DocumentRepository extends EntityRepository {
         return $query;
     }
     
-    public function findByFormId(int $id) {
-        $query = $this->_em->createQuery("SELECT d FROM AppBundle:Document d WHERE d.formId = :id");
-        $query->setParameter('id', $id);
-
-        return $query;        
-    }
+//    public function findByFormId(int $id) {
+//        $query = $this->_em->createQuery("SELECT d FROM AppBundle:Document d WHERE d.formId = :id");
+//        $query->setParameter('id', $id);
+//
+//        return $query;        
+//    }
 }

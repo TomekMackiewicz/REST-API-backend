@@ -23,11 +23,11 @@ class Document implements \JsonSerializable {
      */
     protected $id;
 
-    /**
-     * @ORM\Column(type="integer", name="form_id", nullable=true)
-     * @JMSSerializer\Expose
-     */
-    private $formId;    
+//    /**
+//     * @ORM\Column(type="integer", name="form_id", nullable=true)
+//     * @JMSSerializer\Expose
+//     */
+//    private $formId;    
     
     /**
      * @ORM\Column(type="string", name="title")
@@ -56,13 +56,20 @@ class Document implements \JsonSerializable {
      * @var \DateTime
      *
      * @ORM\Column(name="date_modified", type="datetime", nullable=true)
-     * @Assert\Date()(
+     * @Assert\Date() (
      *  message = "Invalid value (expected: date format)."
      * )
      * @JMSSerializer\Expose
      */
     private $modifiedDate;
 
+    /**
+     * @ORM\OneToOne(targetEntity="Form", mappedBy="document")
+     * @ORM\JoinColumn(name="form_id", referencedColumnName="id", onDelete="SET NULL")
+     * @JMSSerializer\Expose
+     */    
+    private $form;
+    
     public function __construct() {
         $this->addDate = new \DateTime();
     }
@@ -74,21 +81,21 @@ class Document implements \JsonSerializable {
         return $this->id;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getFormId() {
-        return $this->formId;
-    }
+//    /**
+//     * @return mixed
+//     */
+//    public function getFormId() {
+//        return $this->formId;
+//    }
 
-    /**
-     * @param mixed $formId
-     * @return Document
-     */
-    public function setformId($formId) {
-        $this->formId = $formId;
-        return $this;
-    }    
+//    /**
+//     * @param mixed $formId
+//     * @return Document
+//     */
+//    public function setformId($formId) {
+//        $this->formId = $formId;
+//        return $this;
+//    }    
     
     /**
      * @return mixed
@@ -133,6 +140,32 @@ class Document implements \JsonSerializable {
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getForm() {
+        return $this->form;
+    }    
+    
+    /**
+     * Add form
+     *
+     * @param \AppBundle\Entity\Form $form
+     * @return Document
+     */
+    public function addForm(\AppBundle\Entity\Form $form) {
+        $this->form = $form;
+        return $this;
+    }
+
+    /**
+     * Remove form
+     */
+    public function removeForm() {
+        $this->form = NULL;
+        return $this;            
+    }    
+    
     /**
      * @return mixed
      */

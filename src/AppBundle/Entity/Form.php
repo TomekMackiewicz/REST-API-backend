@@ -86,6 +86,13 @@ class Form implements \JsonSerializable {
      */
     private $categories;    
 
+    /**
+     * @ORM\OneToOne(targetEntity="Document", inversedBy="form")
+     * @ORM\JoinColumn(name="document_id", referencedColumnName="id", onDelete="SET NULL")
+     * @JMSSerializer\Expose
+     */
+    private $document;    
+    
     public function __construct() {
         $this->addDate = new \DateTime();
         $this->questions = new ArrayCollection();
@@ -141,6 +148,32 @@ class Form implements \JsonSerializable {
         $this->modifiedDate = $modifiedDate;
         return $this;
     }    
+
+    /**
+     * @return mixed
+     */
+    public function getDocument() {
+        return $this->document;
+    }    
+    
+    /**
+     * Add document
+     *
+     * @param \AppBundle\Entity\Document $document
+     * @return Form
+     */
+    public function addDocument(\AppBundle\Entity\Document $document) {
+        $this->document = $document;
+        return $this;
+    }
+
+    /**
+     * Remove document
+     */
+    public function removeDocument() {
+        $this->document = NULL;          
+        return $this;
+    }
     
     /**
      * Add FormConfig
@@ -250,6 +283,6 @@ class Form implements \JsonSerializable {
     public function hasCategory(Category $category) {
         return $this->getCategories()->contains($category);
     }    
-    
+  
 }
 

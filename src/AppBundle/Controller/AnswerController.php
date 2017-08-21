@@ -128,7 +128,9 @@ class AnswerController extends FOSRestController implements ClassResourceInterfa
             }
         }
 
-        $document = $em->getRepository('AppBundle:Document')->findByFormId((int) $formId)->getSingleResult();
+        //$document = $em->getRepository('AppBundle:Document')->findByFormId((int) $formId)->getSingleResult();
+        $form = $em->getRepository('AppBundle:Form')->createFindOneByIdQuery((int) $formId)->getSingleResult();
+        $document = $form->getDocument();
         $t = $document->getBody();        
         foreach($answers as $key => $value) {
             // Nie działa checkbox

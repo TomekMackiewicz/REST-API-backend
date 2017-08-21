@@ -99,8 +99,13 @@ class DocumentController extends FOSRestController implements ClassResourceInter
         }
 
         $em = $this->getDoctrine()->getManager();
+        $formId = $request->request->get('formId');
+        $f = $em->getRepository('AppBundle:Form')->createFindOneByIdQuery((int) $formId)->getSingleResult();
         $document = $form->getData();
+        $document->addForm($f);
+        $f->addDocument($document);
         $em->persist($document);
+        $em->persist($f);
         $em->flush();
 
         $routeOptions = [
@@ -145,11 +150,22 @@ class DocumentController extends FOSRestController implements ClassResourceInter
             return $form;
         }
 
-        /*
-         * Add modify data
-         */
         $document->setModifiedDate(new \DateTime());
+        
+        $newForm = $em
+                ->getRepository('AppBundle:Form')
+                ->createFindOneByIdQuery((int) $request->request->get('formId'))
+                ->getSingleResult();
+        $currentForm = $document->getForm();        
+        if($currentForm) {
+            $document->removeForm(); 
+            $currentForm->removeDocument();
+        }
+      
+        $document->addForm($newForm);
+        $newForm->addDocument($document);        
         $em->persist($document);
+        $em->persist($newForm);
         $em->flush();
 
         $routeOptions = [
