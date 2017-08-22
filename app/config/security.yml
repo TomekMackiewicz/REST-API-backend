@@ -11,7 +11,7 @@ security:
         fos_userbundle:
             id: fos_user.user_provider.username_email
 
-    firewalls:
+    firewalls:        
 #        main:
 #            pattern: ^/
 #            form_login:
@@ -102,23 +102,29 @@ security:
 #                authenticators:
 #                    - lexik_jwt_authentication.jwt_token_authenticator
 
+#symfony.com/doc/current/security/access_control.html
+#host: www.yourdomain.com
+#- { path: ^/register$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+
     access_control:
-        #- { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/password/reset, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/register$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/documents$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/texts$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/forms$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/answers$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/categories$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/payments$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/documents, roles: IS_AUTHENTICATED_ANONYMOUSLY, ips: [127.0.0.1, ::1] }
+        - { path: ^/documents, roles: ROLE_NO_ACCESS }
+        - { path: ^/texts, role: IS_AUTHENTICATED_ANONYMOUSLY, ips: [127.0.0.1, ::1] }
+        - { path: ^/texts, roles: ROLE_NO_ACCESS }
+        - { path: ^/forms, role: IS_AUTHENTICATED_ANONYMOUSLY, ips: [127.0.0.1, ::1] }
+        - { path: ^/forms, roles: ROLE_NO_ACCESS }
+        - { path: ^/questions, role: IS_AUTHENTICATED_ANONYMOUSLY, ips: [127.0.0.1, ::1] }
+        - { path: ^/questions, roles: ROLE_NO_ACCESS } 
+        - { path: ^/options, role: IS_AUTHENTICATED_ANONYMOUSLY, ips: [127.0.0.1, ::1] }
+        - { path: ^/options, roles: ROLE_NO_ACCESS }        
+        - { path: ^/answers, role: IS_AUTHENTICATED_ANONYMOUSLY, ips: [127.0.0.1, ::1] }
+        - { path: ^/answers, roles: ROLE_NO_ACCESS }
+        - { path: ^/categories, role: IS_AUTHENTICATED_ANONYMOUSLY, ips: [127.0.0.1, ::1] }
+        - { path: ^/categories, roles: ROLE_NO_ACCESS }
+        - { path: ^/payments, role: IS_AUTHENTICATED_ANONYMOUSLY, ips: [127.0.0.1, ::1] }
+        - { path: ^/payments, roles: ROLE_NO_ACCESS }
+        - { path: ^/files, role: IS_AUTHENTICATED_ANONYMOUSLY, ips: [127.0.0.1, ::1] }
+        - { path: ^/files, roles: ROLE_NO_ACCESS }        
         - { path: ^/, role: IS_AUTHENTICATED_ANONYMOUSLY }
-#        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-#        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
-#        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
-#        - { path: ^/admin/, role: ROLE_ADMIN }
-#        - { path: ^/doc, role: IS_AUTHENTICATED_ANONYMOUSLY }
-#        - { path: ^/, role: IS_AUTHENTICATED_ANONYMOUSLY }
-#        - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-#        - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
