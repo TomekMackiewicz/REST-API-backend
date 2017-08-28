@@ -29,17 +29,17 @@ class FormConfig implements \JsonSerializable {
      */
     private $allowBack;         
     
-    /**
-     * @ORM\Column(type="boolean", name="auto_move", nullable=true)
-     * @JMSSerializer\Expose
-     */
-    private $autoMove;        
-    
-    /**
-     * @ORM\Column(type="boolean", name="required_all", nullable=true)
-     * @JMSSerializer\Expose
-     */
-    private $requiredAll;         
+//    /**
+//     * @ORM\Column(type="boolean", name="auto_move", nullable=true)
+//     * @JMSSerializer\Expose
+//     */
+//    private $autoMove;        
+//    
+//    /**
+//     * @ORM\Column(type="boolean", name="required_all", nullable=true)
+//     * @JMSSerializer\Expose
+//     */
+//    private $requiredAll;         
     
     /**
      * @ORM\Column(type="boolean", name="shuffle_questions", nullable=true)
@@ -89,37 +89,37 @@ class FormConfig implements \JsonSerializable {
         return $this;
     }   
 
-    /**
-     * @return mixed
-     */
-    public function getAutoMove() {
-        return $this->autoMove;
-    }
-
-    /**
-     * @param mixed $autoMove
-     * @return FormConfig
-     */
-    public function setAutoMove($autoMove) {
-        $this->autoMove = $autoMove;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getRequiredAll() {
-        return $this->requiredAll;
-    }
-
-    /**
-     * @param mixed $requiredAll
-     * @return FormConfig
-     */
-    public function setRequiredAll($requiredAll) {
-        $this->requiredAll = $requiredAll;
-        return $this;
-    }
+//    /**
+//     * @return mixed
+//     */
+//    public function getAutoMove() {
+//        return $this->autoMove;
+//    }
+//
+//    /**
+//     * @param mixed $autoMove
+//     * @return FormConfig
+//     */
+//    public function setAutoMove($autoMove) {
+//        $this->autoMove = $autoMove;
+//        return $this;
+//    }
+//
+//    /**
+//     * @return mixed
+//     */
+//    public function getRequiredAll() {
+//        return $this->requiredAll;
+//    }
+//
+//    /**
+//     * @param mixed $requiredAll
+//     * @return FormConfig
+//     */
+//    public function setRequiredAll($requiredAll) {
+//        $this->requiredAll = $requiredAll;
+//        return $this;
+//    }
 
     /**
      * @return mixed
@@ -196,8 +196,8 @@ class FormConfig implements \JsonSerializable {
         return [
             'id' => $this->id,
             'allowBack' => $this->allowBack,
-            'autoMove' => $this->autoMove,
-            'requiredAll' => $this->requiredAll,
+            //'autoMove' => $this->autoMove,
+            //'requiredAll' => $this->requiredAll,
             'shuffleQuestions' => $this->shuffleQuestions,
             'shuffleOptions' => $this->shuffleOptions,
             'showPager' => $this->showPager,

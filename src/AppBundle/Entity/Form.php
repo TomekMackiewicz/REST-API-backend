@@ -30,7 +30,7 @@ class Form implements \JsonSerializable {
     private $name;
 
     /**
-     * @ORM\Column(type="text", name="description")
+     * @ORM\Column(type="text", name="description", nullable=true)
      * @JMSSerializer\Expose
      */
     private $description;   
