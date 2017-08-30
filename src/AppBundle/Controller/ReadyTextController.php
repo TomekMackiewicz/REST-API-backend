@@ -31,6 +31,23 @@ use FOS\RestBundle\Controller\Annotations\Get;
 class ReadyTextController extends FOSRestController implements ClassResourceInterface {
 
     /**
+     * Gets a collection of texts
+     *
+     * @return array
+     *
+     * @ApiDoc(
+     *     output="AppBundle\Entity\ReadyText",
+     *     statusCodes={
+     *         200 = "Returned when successful",
+     *         404 = "Return when not found"
+     *     }
+     * )
+     */
+    public function cgetAction() {
+        return $this->getReadyTextRepository()->createFindAllQuery()->getResult();
+    }    
+    
+    /**
      * Gets an individual text
      *
      * @param int $id

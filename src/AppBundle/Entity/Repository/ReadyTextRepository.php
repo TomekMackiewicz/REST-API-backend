@@ -19,6 +19,10 @@ class ReadyTextRepository extends EntityRepository {
 
         return $query;
     }    
+
+    public function createFindAllQuery() {
+        return $this->_em->createQuery("SELECT t FROM AppBundle:ReadyText t ORDER BY t.addDate DESC");
+    }
     
 }
 

@@ -101,6 +101,10 @@ class AnswerController extends FOSRestController implements ClassResourceInterfa
         foreach ($inputAnswers as $questionId => $inputAnswer) {
             if($questionId === "formId") {
                 continue;
+            }
+            elseif($questionId === "email") {
+                $userEmail = $inputAnswer;
+                continue;                
             } elseif(is_array($inputAnswer)) {
                 foreach ($inputAnswer as $inputOption) {
                     $answers[$questionId] = $inputOption;
@@ -145,6 +149,7 @@ class AnswerController extends FOSRestController implements ClassResourceInterfa
         $text = new ReadyText();
         $text->setTitle($title);
         $text->setBody($body);
+        $text->setEmail($userEmail); // Skąd wziąć email??
         $em->persist($text);
         $em->flush();        
         
