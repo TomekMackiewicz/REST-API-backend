@@ -33,15 +33,7 @@ class Answer implements \JsonSerializable {
      * @ORM\Column(type="text", name="body")
      * @JMSSerializer\Expose
      */
-    private $body;
-
-//    /**
-//     * @ORM\ManyToOne(targetEntity="Question", inversedBy="answers")
-//     * @ORM\JoinColumn(name="question_id", referencedColumnName="id")
-//     * @JMSSerializer\Expose
-//     * @MaxDepth(1)
-//     */
-//    private $question;     
+    private $body;     
     
     /**
      * @return int
@@ -80,18 +72,7 @@ class Answer implements \JsonSerializable {
     public function setBody($body) {
         $this->body = $body;
         return $this;
-    }
-
-//    /**
-//     * Add question
-//     *
-//     * @param \AppBundle\Entity\Question $question
-//     * @return Answer
-//     */
-//    public function addQuestion(\AppBundle\Entity\Question $question) {
-//        $this->question = $question;
-//        return $this;
-//    }    
+    }   
     
     /**
      * @return mixed

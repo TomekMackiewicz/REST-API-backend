@@ -59,13 +59,7 @@ class Question implements \JsonSerializable {
      * @ORM\OneToMany(targetEntity="Option", mappedBy="question", cascade={"remove"})
      * @JMSSerializer\Expose
      */
-    private $options;
-    
-//    /**
-//     * @ORM\OneToMany(targetEntity="Answer", mappedBy="question")
-//     * @JMSSerializer\Expose
-//     */
-//    private $answers;    
+    private $options;    
     
     public function __construct() {
         $this->options = new ArrayCollection();
@@ -153,15 +147,6 @@ class Question implements \JsonSerializable {
         $this->form = $form;
         return $this;
     }
-
-//    /**
-//     * Remove form
-//     *
-//     * @param \AppBundle\Entity\Form $form
-//     */
-//    public function removeForm(\AppBundle\Entity\Form $form) {
-//        $this->form->removeElement($form);
-//    }
     
     /**
      * Add options
@@ -190,36 +175,7 @@ class Question implements \JsonSerializable {
      */
     public function getOptions() {
         return $this->options;
-    }
-
-//    /**
-//     * Add answers
-//     *
-//     * @param \AppBundle\Entity\Answer $answers
-//     * @return Question
-//     */
-//    public function addAnswer(\AppBundle\Entity\Answer $answers) {
-//        $this->answers[] = $answers;
-//        return $this;
-//    }
-//
-//    /**
-//     * Remove answers
-//     *
-//     * @param \AppBundle\Entity\Answer $answers
-//     */
-//    public function removeAnswer(\AppBundle\Entity\Answer $answers) {
-//        $this->answers->removeElement($answers);
-//    }
-//
-//    /**
-//     * Get answers
-//     *
-//     * @return \Doctrine\Common\Collections\Collection
-//     */
-//    public function getAnswers() {
-//        return $this->answers;
-//    }    
+    }   
     
     /**
      * @return mixed

@@ -27,13 +27,7 @@ class Option implements \JsonSerializable {
      * @ORM\Column(type="string", name="name")
      * @JMSSerializer\Expose
      */
-    private $name;
-
-//    /**
-//     * @ORM\Column(type="integer", name="question_id")
-//     * @JMSSerializer\Expose
-//     */
-//    private $questionId;     
+    private $name;     
 
     /**
      * @ORM\Column(type="integer", name="is_answer", nullable=true)
@@ -76,22 +70,6 @@ class Option implements \JsonSerializable {
         $this->name = $name;
         return $this;
     }
-
-//    /**
-//     * @return mixed
-//     */
-//    public function getQuestionId() {
-//        return $this->questionId;
-//    }
-//
-//    /**
-//     * @param mixed $questionId
-//     * @return Option
-//     */
-//    public function setQuestionId($questionId) {
-//        $this->questionId = $questionId;
-//        return $this;
-//    }
 
     /**
      * @return mixed

@@ -33,50 +33,6 @@ use FOS\RestBundle\Controller\Annotations\View AS JSONView;
 class AnswerController extends FOSRestController implements ClassResourceInterface {
 
     /**
-     * Gets an individual answer
-     *
-     * @param int $id
-     * @return mixed
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     *
-     * @ApiDoc(
-     *     output="AppBundle\Entity\Form",
-     *     statusCodes={
-     *         200 = "Returned when successful",
-     *         404 = "Return when not found"
-     *     }
-     * )
-     * @JSONView(serializerEnableMaxDepthChecks=true)
-     */
-    public function getAction(int $id) {
-        $answer = $this->getAnswerRepository()->createFindOneByIdQuery($id)->getSingleResult();
-        if ($answer === null) {
-            return new View(null, Response::HTTP_NOT_FOUND);
-        }
-
-        return $answer;
-    }
-
-    /**
-     * Gets a collection of answers
-     *
-     * @return array
-     *
-     * @ApiDoc(
-     *     output="AppBundle\Entity\Form",
-     *     statusCodes={
-     *         200 = "Returned when successful",
-     *         404 = "Return when not found"
-     *     }
-     * )
-     * @JSONView(serializerEnableMaxDepthChecks=true)
-     */
-    public function cgetAction() {
-        return $this->getAnswerRepository()->createFindAllQuery()->getResult();
-    }
-
-    /**
      *
      * Adds a form
      *
@@ -95,214 +51,45 @@ class AnswerController extends FOSRestController implements ClassResourceInterfa
     public function postAction(Request $request) {       
         $inputAnswers = json_decode($request->getContent());
         $formId = $request->request->get("formId");
+        $answers = $this->processAnswers($inputAnswers);
+        $email = $request->request->get("email");
         $em = $this->getDoctrine()->getManager();
-        // Po co zapisywać odpowiedzi do bazy?
-        $answers = [];
-        foreach ($inputAnswers as $questionId => $inputAnswer) {
-            if($questionId === "formId") {
-                continue;
-            }
-            elseif($questionId === "email") {
-                $userEmail = $inputAnswer;
-                continue;                
-            } elseif(is_array($inputAnswer)) {
-                foreach ($inputAnswer as $inputOption) {
-                    $answers[$questionId] = $inputOption;
-//                    $form = $this->createForm(AnswerType::class, null, ['csrf_protection' => false]); 
-//                    $answer = array("formId" => $formId, "body" => $inputOption);
-//                    $form->submit($answer);
-//                    if (!$form->isValid()) { 
-//                        return $form;             
-//                    }                
-//                    $outputAnswer = $form->getData(); 
-//                    $em->persist($outputAnswer);
-//                    $em->flush();                    
-                }
-            } else { 
-                $answers[$questionId] = $inputAnswer;
-//                $form = $this->createForm(AnswerType::class, null, ['csrf_protection' => false]); 
-//                $answer = array("formId" => $formId, "body" => $inputAnswer);
-//                $form->submit($answer);
-//                if (!$form->isValid()) { 
-//                    return $form;             
-//                }                
-//                $outputAnswer = $form->getData();
-//                $em->persist($outputAnswer);
-//                $em->flush();                
-            }
-        }
-
-        //$document = $em->getRepository('AppBundle:Document')->findByFormId((int) $formId)->getSingleResult();
         $form = $em->getRepository('AppBundle:Form')->createFindOneByIdQuery((int) $formId)->getSingleResult();
-        $document = $form->getDocument();
-        $t = $document->getBody();        
+        $body = $form->getDocument()->getBody();
+        $title = $form->getDocument()->getTitle();
+        
         foreach($answers as $key => $value) {
-            // Nie działa checkbox
-            $t = str_replace("[".$key."]", "<strong>".$value."</strong>", $t);
-//            if (is_array($value)) {
-//                file_put_contents('/home/tomek/Workspace/log.log', 'true');
-//                $text = str_replace("[".$key."]", implode(',', $value), $text);
-//            }
+            if (is_array($value)) {
+                $body = str_replace("[".$key."]", "<strong>".implode(", ",$value)."</strong>", $body);
+            } else {
+                $body = str_replace("[".$key."]", "<strong>".$value."</strong>", $body);                
+            }
         }
-        $title = $document->getTitle();
-        $body = $t;
+        
         $text = new ReadyText();
         $text->setTitle($title);
         $text->setBody($body);
-        $text->setEmail($userEmail); // Skąd wziąć email??
+        $text->setEmail($email);
         $em->persist($text);
         $em->flush();        
         
-        // if text id
         return View::create()->setStatusCode(201)->setData($text->getId());        
 
     }
     
-//    /**
-//     *
-//     * Updates document
-//     *
-//     * @param Request $request
-//     * @param int     $id
-//     * @return View|\Symfony\Component\Form\Form
-//     *
-//     * @ApiDoc(
-//     *     input="AppBundle\Form\Type\DocumentType",
-//     *     output="AppBundle\Entity\Document",
-//     *     statusCodes={
-//     *         204 = "Returned when an existing Document has been successful updated",
-//     *         400 = "Return when errors",
-//     *         404 = "Return when not found"
-//     *     }
-//     * )
-//     */
-//    public function putAction(Request $request, int $id) {
-//
-//        $document = $this->getDocumentRepository()->find($id);
-//        $categories = $request->request->get('categories');
-//        $em = $this->getDoctrine()->getManager();
-//
-//        if ($document === null) {
-//            return new View(null, Response::HTTP_NOT_FOUND);
-//        }
-//        $form = $this->createForm(DocumentType::class, $document, [
-//            'csrf_protection' => false,
-//        ]);
-//        $form->submit($request->request->all());
-//        if (!$form->isValid()) {
-//            return $form;
-//        }
-//
-//        /*
-//         * Add modify data
-//         */
-//        $document->setModifiedDate(new \DateTime());
-//
-//        /*
-//         * First we delete current relations
-//         */
-//        $relations = $document->getCategories();
-//        foreach ($relations as $relation) {
-//            $document->getCategories()->removeElement($relation);
-//        }
-//
-//        /*
-//         * Then we loop thru current categories
-//         */
-//        foreach ($categories as $categoryId) {
-//            $category = $em->getRepository('AppBundle:DocumentCategory')->find((int) $categoryId['id']);
-//            /*
-//             * We add new relations only if relation does not exist - to avoid duplicates
-//             */
-//            if (!$category->hasDocument($document)) {
-//                $category->addDocument($document);
-//            }
-//            if (!$document->hasCategory($category)) {
-//                $document->addCategory($category);
-//            }
-//            $em->persist($category);
-//        }
-//
-//        $em->flush();
-//
-//        $routeOptions = [
-//            'id' => $document->getId(),
-//            '_format' => $request->get('_format'),
-//        ];
-//        return $this->routeRedirectView('get_document', $routeOptions, Response::HTTP_NO_CONTENT);
-//    }
-//
-//    /**
-//     *
-//     * Updates document
-//     *
-//     * @param Request $request
-//     * @param int     $id
-//     * @return View|\Symfony\Component\Form\Form
-//     *
-//     * @ApiDoc(
-//     *     input="AppBundle\Form\Type\DocumentType",
-//     *     output="AppBundle\Entity\Document",
-//     *     statusCodes={
-//     *         204 = "Returned when an existing Document has been successful updated",
-//     *         400 = "Return when errors",
-//     *         404 = "Return when not found"
-//     *     }
-//     * )
-//     */
-//    public function patchAction(Request $request, int $id) {
-//        /**
-//         * @var $document Document
-//         */
-//        $document = $this->getDocumentRepository()->find($id);
-//        if ($document === null) {
-//            return new View(null, Response::HTTP_NOT_FOUND);
-//        }
-//        $form = $this->createForm(DocumentType::class, $document, [
-//            'csrf_protection' => false,
-//        ]);
-//        $form->submit($request->request->all(), false);
-//        if (!$form->isValid()) {
-//            return $form;
-//        }
-//        $em = $this->getDoctrine()->getManager();
-//        $em->flush();
-//        $routeOptions = [
-//            'id' => $document->getId(),
-//            '_format' => $request->get('_format'),
-//        ];
-//        return $this->routeRedirectView('get_document', $routeOptions, Response::HTTP_NO_CONTENT);
-//    }
-//
-//    /**
-//     *
-//     * Deletes document
-//     *
-//     * @param int $id
-//     * @return View
-//     *
-//     * @ApiDoc(
-//     *     statusCodes={
-//     *         204 = "Returned when an existing Document has been successful deleted",
-//     *         404 = "Return when not found"
-//     *     }
-//     * )
-//     */
-//    public function deleteAction(int $id) {
-//        /**
-//         * @var $document Document
-//         */
-//        $document = $this->getDocumentRepository()->find($id);
-//        if ($document === null) {
-//            return new View(null, Response::HTTP_NOT_FOUND);
-//        }
-//        $em = $this->getDoctrine()->getManager();
-//        $em->remove($document);
-//        $em->flush();
-//
-//        return new View(null, Response::HTTP_NO_CONTENT);
-//    }
-   
+    private function processAnswers($inputAnswers) {
+        $answers = [];
+        foreach ($inputAnswers as $questionId => $inputAnswer) {
+            if($questionId === "formId" || $questionId === "email" ) {
+                continue;
+            } else {
+                $answers[$questionId] = $inputAnswer;
+            }
+        }
+
+        return $answers;
+    }
+    
     /**
      * @return AnswerRepository
      */
