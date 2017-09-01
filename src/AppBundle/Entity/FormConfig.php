@@ -27,44 +27,13 @@ class FormConfig implements \JsonSerializable {
      * @ORM\Column(type="boolean", name="allow_back", nullable=true)
      * @JMSSerializer\Expose
      */
-    private $allowBack;         
-    
-//    /**
-//     * @ORM\Column(type="boolean", name="auto_move", nullable=true)
-//     * @JMSSerializer\Expose
-//     */
-//    private $autoMove;        
-//    
-//    /**
-//     * @ORM\Column(type="boolean", name="required_all", nullable=true)
-//     * @JMSSerializer\Expose
-//     */
-//    private $requiredAll;         
-    
-    /**
-     * @ORM\Column(type="boolean", name="shuffle_questions", nullable=true)
-     * @JMSSerializer\Expose
-     */
-    private $shuffleQuestions;     
-    
-    /**
-     * @ORM\Column(type="boolean", name="shuffle_options", nullable=true)
-     * @JMSSerializer\Expose
-     */
-    private $shuffleOptions;        
+    private $allowBack;                        
     
     /**
      * @ORM\Column(type="boolean", name="show_pager", nullable=true)
      * @JMSSerializer\Expose
      */
-    private $showPager;       
-
-//    /**
-//     * @ORM\OneToOne(targetEntity="Form")
-//     * @ORM\JoinColumn(name="form_id", referencedColumnName="id")
-//     * @JMSSerializer\Expose
-//     */
-//    private $form;   
+    private $showPager;  
     
     /**
      * @return int
@@ -89,70 +58,6 @@ class FormConfig implements \JsonSerializable {
         return $this;
     }   
 
-//    /**
-//     * @return mixed
-//     */
-//    public function getAutoMove() {
-//        return $this->autoMove;
-//    }
-//
-//    /**
-//     * @param mixed $autoMove
-//     * @return FormConfig
-//     */
-//    public function setAutoMove($autoMove) {
-//        $this->autoMove = $autoMove;
-//        return $this;
-//    }
-//
-//    /**
-//     * @return mixed
-//     */
-//    public function getRequiredAll() {
-//        return $this->requiredAll;
-//    }
-//
-//    /**
-//     * @param mixed $requiredAll
-//     * @return FormConfig
-//     */
-//    public function setRequiredAll($requiredAll) {
-//        $this->requiredAll = $requiredAll;
-//        return $this;
-//    }
-
-    /**
-     * @return mixed
-     */
-    public function getShuffleQuestions() {
-        return $this->shuffleQuestions;
-    }
-
-    /**
-     * @param mixed $shuffleQuestions
-     * @return FormConfig
-     */
-    public function setShuffleQuestions($shuffleQuestions) {
-        $this->shuffleQuestions = $shuffleQuestions;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getShuffleOptions() {
-        return $this->shuffleOptions;
-    }
-
-    /**
-     * @param mixed $shuffleOptions
-     * @return FormConfig
-     */
-    public function setShuffleOptions($shuffleOptions) {
-        $this->shuffleOptions = $shuffleOptions;
-        return $this;
-    }
-
     /**
      * @return mixed
      */
@@ -168,26 +73,6 @@ class FormConfig implements \JsonSerializable {
         $this->showPager = $showPager;
         return $this;
     }
-
-//    /**
-//     * Add Form
-//     *
-//     * @param \AppBundle\Entity\Form $form
-//     * @return FormConfig
-//     */
-//    public function addForm(\AppBundle\Entity\Form $form) {
-//        $this->form = $form;
-//        return $this;
-//    }
-//
-//    /**
-//     * Get Form
-//     *
-//     * @return Form
-//     */
-//    public function getForm() {
-//        return $this->form;
-//    }
     
     /**
      * @return mixed
@@ -196,11 +81,7 @@ class FormConfig implements \JsonSerializable {
         return [
             'id' => $this->id,
             'allowBack' => $this->allowBack,
-            //'autoMove' => $this->autoMove,
-            //'requiredAll' => $this->requiredAll,
-            'shuffleQuestions' => $this->shuffleQuestions,
-            'shuffleOptions' => $this->shuffleOptions,
-            'showPager' => $this->showPager,
+            'showPager' => $this->showPager
         ];
     }
 

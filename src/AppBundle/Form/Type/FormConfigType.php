@@ -17,12 +17,7 @@ class FormConfigType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
             ->add('allowBack', CheckboxType::class)
-            //->add('autoMove', CheckboxType::class)
-            //->add('requiredAll', CheckboxType::class)
-            ->add('shuffleQuestions', CheckboxType::class)
-            ->add('shuffleOptions', CheckboxType::class) 
-            ->add('showPager', CheckboxType::class)    
-        ;         
+            ->add('showPager', CheckboxType::class);         
     }
 
     public function configureOptions(OptionsResolver $resolver) {
