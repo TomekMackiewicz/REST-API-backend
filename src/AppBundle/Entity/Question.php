@@ -24,7 +24,7 @@ class Question implements \JsonSerializable {
     protected $id;
 
     /**
-     * @ORM\Column(type="integer", name="sequence")
+     * @ORM\Column(type="integer", name="sequence", nullable=true)
      * @JMSSerializer\Expose
      */
     private $sequence;    
