@@ -7,9 +7,9 @@ use Doctrine\ORM\EntityRepository;
 class QuestionRepository extends EntityRepository {
 
     public function createFindAllQuery() {
-        return $this->_em->createQuery("SELECT q FROM AppBundle:Question q");
+        return $this->_em->createQuery("SELECT q FROM AppBundle:Question q ORDER BY q.sequence");
     }
-
+// usunąć?
     public function createFindOneByIdQuery(int $id) {
         $query = $this->_em->createQuery("SELECT q FROM AppBundle:Question q WHERE q.id = :id");
         $query->setParameter('id', $id);
