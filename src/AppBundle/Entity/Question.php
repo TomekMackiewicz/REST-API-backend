@@ -205,7 +205,7 @@ class Question implements \JsonSerializable {
     function jsonSerialize() {
         return [
             'id' => $this->id,
-            'sequence' => $this->order,
+            'sequence' => $this->sequence,
             'name' => $this->name,
             'questionType' => $this->questionType,
             'options' => $this->options,
