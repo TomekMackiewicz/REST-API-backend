@@ -138,6 +138,24 @@ class OrderController extends FOSRestController implements ClassResourceInterfac
             'currency' => 'EUR',
         ]);
 
+
+//        $form->handleRequest($request);
+//
+//        if ($form->isSubmitted() && $form->isValid()) {
+//            $ppc = $this->get('payment.plugin_controller');
+//            $ppc->createPaymentInstruction($instruction = $form->getData());
+//
+//            $order->setPaymentInstruction($instruction);
+//
+//            $em = $this->getDoctrine()->getManager();
+//            $em->persist($order);
+//            $em->flush($order);
+//
+//            return $this->redirect($this->generateUrl('app_orders_paymentcreate', [
+//                'id' => $order->getId(),
+//            ]));
+//        }        
+        
         return [
             'order' => $order,
             'form'  => $form->createView(),
