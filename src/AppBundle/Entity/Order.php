@@ -34,10 +34,10 @@ class Order implements \JsonSerializable
      */
     private $amount;
 
-    public function __construct($amount)
-    {
-        $this->amount = $amount;
-    }
+//    public function __construct($amount)
+//    {
+//        $this->amount = $amount;
+//    }
 
     public function getId()
     {
@@ -49,6 +49,15 @@ class Order implements \JsonSerializable
         return $this->amount;
     }
 
+    /**
+     * @param mixed $amount
+     * @return Order
+     */
+    public function setAmount($amount) {
+        $this->amount = $amount;
+        return $this;
+    }    
+    
     public function getPaymentInstruction()
     {
         return $this->paymentInstruction;
