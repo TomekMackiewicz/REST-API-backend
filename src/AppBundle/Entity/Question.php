@@ -24,6 +24,12 @@ class Question implements \JsonSerializable {
     protected $id;
 
     /**
+     * @ORM\Column(type="integer", name="sequence", nullable=true)
+     * @JMSSerializer\Expose
+     */
+    private $sequence;    
+    
+    /**
      * @ORM\Column(type="string", name="name")
      * @JMSSerializer\Expose
      */
@@ -73,6 +79,22 @@ class Question implements \JsonSerializable {
         return $this->id;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getSequence() {
+        return $this->sequence;
+    }
+
+    /**
+     * @param mixed $sequence
+     * @return Question
+     */
+    public function setSequence($sequence) {
+        $this->sequence = $sequence;
+        return $this;
+    }    
+    
     /**
      * @return mixed
      */
@@ -183,6 +205,7 @@ class Question implements \JsonSerializable {
     function jsonSerialize() {
         return [
             'id' => $this->id,
+            'sequence' => $this->order,
             'name' => $this->name,
             'questionType' => $this->questionType,
             'options' => $this->options,

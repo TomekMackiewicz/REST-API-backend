@@ -201,49 +201,7 @@ class FormController extends FOSRestController implements ClassResourceInterface
         ];
         return $this->routeRedirectView('get_form', $routeOptions, Response::HTTP_NO_CONTENT);
     }
-//
-//    /**
-//     *
-//     * Updates document
-//     *
-//     * @param Request $request
-//     * @param int     $id
-//     * @return View|\Symfony\Component\Form\Form
-//     *
-//     * @ApiDoc(
-//     *     input="AppBundle\Form\Type\DocumentType",
-//     *     output="AppBundle\Entity\Document",
-//     *     statusCodes={
-//     *         204 = "Returned when an existing Document has been successful updated",
-//     *         400 = "Return when errors",
-//     *         404 = "Return when not found"
-//     *     }
-//     * )
-//     */
-//    public function patchAction(Request $request, int $id) {
-//        /**
-//         * @var $document Document
-//         */
-//        $document = $this->getDocumentRepository()->find($id);
-//        if ($document === null) {
-//            return new View(null, Response::HTTP_NOT_FOUND);
-//        }
-//        $form = $this->createForm(DocumentType::class, $document, [
-//            'csrf_protection' => false,
-//        ]);
-//        $form->submit($request->request->all(), false);
-//        if (!$form->isValid()) {
-//            return $form;
-//        }
-//        $em = $this->getDoctrine()->getManager();
-//        $em->flush();
-//        $routeOptions = [
-//            'id' => $document->getId(),
-//            '_format' => $request->get('_format'),
-//        ];
-//        return $this->routeRedirectView('get_document', $routeOptions, Response::HTTP_NO_CONTENT);
-//    }
-//
+
     /**
      *
      * Deletes form
@@ -303,9 +261,7 @@ class FormController extends FOSRestController implements ClassResourceInterface
   
     private function uploadQuestions($em, $f, $questions) {
         foreach($questions as $q) {
-            //file_put_contents('/var/www/log.log', $q["id"], true);
             if(isset($q["id"])) {
-                //file_put_contents('/var/www/log.log', $q);
                 $editedQuestion = $this->getQuestionRepository()->find($q["id"]);
                 if ($editedQuestion === null) {
                     return new View(null, Response::HTTP_NOT_FOUND);
@@ -323,7 +279,6 @@ class FormController extends FOSRestController implements ClassResourceInterface
                 $em->persist($question);            
                 $this->uploadOptions($em, $question, $q["options"]);                
             } else {
-                //file_put_contents('/var/www/log.log', $q["name"]);
                 $form = $this->createForm(QuestionType::class, null, ['csrf_protection' => false]);            
                 $form->submit($q);
                 if (!$form->isValid()) { 
