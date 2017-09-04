@@ -67,6 +67,7 @@ class Document implements \JsonSerializable {
      * @ORM\OneToOne(targetEntity="Form", mappedBy="document")
      * @ORM\JoinColumn(name="form_id", referencedColumnName="id", onDelete="SET NULL")
      * @JMSSerializer\Expose
+     * @MaxDepth(1)
      */    
     private $form;
     

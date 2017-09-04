@@ -41,11 +41,11 @@ profile:
 registration:
     type: rest
     resource: AppBundle\Controller\RestRegistrationController
-    
-payments:
-    type: rest
-    resource: AppBundle\Controller\PaymentController 
 
 files:
     type: rest
     resource: AppBundle\Controller\FileController
+    
+orders:
+    type: rest
+    resource: AppBundle\Controller\OrderController

@@ -44,6 +44,7 @@ class OptionController extends FOSRestController implements ClassResourceInterfa
      *         404 = "Return when not found"
      *     }
      * )
+     * @JSONView(serializerEnableMaxDepthChecks=true)
      */
     public function getAction(int $id) {
         $option = $this->getOptionRepository()->createFindOneByIdQuery($id)->getSingleResult();
@@ -66,6 +67,7 @@ class OptionController extends FOSRestController implements ClassResourceInterfa
      *         404 = "Return when not found"
      *     }
      * )
+     * @JSONView(serializerEnableMaxDepthChecks=true)
      */
     public function cgetAction() {
         return $this->getOptionRepository()->createFindAllQuery()->getResult();

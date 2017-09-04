@@ -45,6 +45,7 @@ class Option implements \JsonSerializable {
      * @ORM\ManyToOne(targetEntity="Question", inversedBy="options")
      * @ORM\JoinColumn(name="question_id", referencedColumnName="id")
      * @JMSSerializer\Expose
+     * @MaxDepth(1)
      */
     private $question;    
     

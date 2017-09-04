@@ -156,4 +156,13 @@ srio_rest_upload:
     storages:
         default:
             filesystem: gaufrette.uploads_filesystem
-            naming_strategy: image.naming.service            
+            naming_strategy: image.naming.service
+            
+jms_payment_core:
+    encryption:
+        secret: def00000499f46f65b0ce99f59a2d3ae2023ebd230769ee0f90419ef9c39473b1a1b11cb6f824a51fb50b13b93b50e274b68e202184e32e74afd82aee5ddbf1f1eb2f01f
+
+jms_payment_paypal:
+    username: your api username
+    password: your api password
+    signature: your api signature
