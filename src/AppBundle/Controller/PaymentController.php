@@ -7,6 +7,7 @@ use FOS\RestBundle\Routing\ClassResourceInterface;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Symfony\Component\HttpFoundation\Request;
 //use Symfony\Component\HttpFoundation\Response;
+use Unirest;
 
 /**
  * Class PaymentController
@@ -23,43 +24,63 @@ class PaymentController extends FOSRestController implements ClassResourceInterf
      * @param Request $request
      *
      */
-    public function postAction(Request $request) {      
-        
-        $data = $request->getContent();       
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL,"https://secure.snd.payu.com/api/v2_1/orders");
-        //curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($curl, CURLOPT_POST, 1);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-            'Content-Type: application/json',
-            'Authorization: Bearer d9a4536e-62ba-4f60-8017-6053211d3f47'
-        ));
-        
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        //$test = curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
-        //$server_output = json_decode(curl_exec ($curl), true);
-        //$server_output = curl_exec ($curl);
-        //curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
-        curl_exec ($curl);
-        $response = curl_getinfo( $curl );
-        curl_close ($curl);
+    public function postAction(Request $request) {                
 
-        $cu = curl_init($response["redirect_url"]);
-        curl_setopt($cu, CURLOPT_FOLLOWLOCATION, true);
-        curl_exec($cu);
-        curl_close ($cu);
-        //ob_start();
-        //print_r($response["redirect_url"]);
-        //$textualRepresentation = ob_get_contents();
-        //ob_end_clean();
-        //file_put_contents('/home/tomek/Workspace/log.log', $textualRepresentation); 
-//        if ($server_output["status"]["statusCode"] == "SUCCESS") {
-//            return $this->redirect($server_output["redirectUri"]);
-//        } else { 
-//            //return $this->redirect('');    
-//        }
+        $auth = Unirest\Request::post(
+            'https://secure.snd.payu.com/pl/standard/user/oauth/authorize', 
+            $headers = array(), 
+            $body = 'grant_type=client_credentials&client_id=302325&client_secret=826745237794f7fd98a0f4e6ca5a38e2'
+        );
+               
+        $arr1 = json_decode($request->getContent(), TRUE);
+        $arr2 = [
+            "notifyUrl" => "http://tomek.pl",
+            "customerIp" => "127.0.0.1",
+            "merchantPosId" => "302325",
+            "description" => "RTV market",
+            "currencyCode" => "PLN",
+            //"OpenPayu-Signature" => "sender=302325;algorithm=SHA-256;signature=f289568f7d7937e9168519f17217f07d"
+        ];
+        $arr3 = array_merge($arr1, $arr2);
+        $json = json_encode($arr3);        
+        
+        $response = Unirest\Request::post(
+            'https://secure.snd.payu.com/api/v2_1/orders', 
+            $headers = array(
+                'Accept' => 'application/json',
+                'Authorization: Bearer '.$auth->body->access_token
+            ), 
+            $body = $json
+        );
+        
+        ob_start();
+        print_r($response);
+        $textualRepresentation = ob_get_contents();
+        ob_end_clean();
+        file_put_contents('/var/www/log.log', $textualRepresentation);
 
-    }    
+        $secondKey = 'f289568f7d7937e9168519f17217f07d';
+        $algorithm = 'SHA-256';
+        $posId = 302325;
+        $test = $this->generateSignature($request->getContent(), $secondKey, $algorithm, $posId);
+        
+        return $response;
+    }
+  
+    private function generateSignature($form, $secondKey, $algorithm, $posId) {
+        $sortedValues = sortValuesByItsName($form);
+
+        foreach value in sortedValues {
+            $content = $content + $parameterName + "=" + urlencode($value) + "&"
+        }
+
+        $content = $content + $secondKey;
+
+        $result = "signature=" + $algorithm.apply(content) + ";";
+        $result = $result + "algorithm=" + $algorithm.name + ";";
+        $result = $result + "sender=" + $posId;
+
+        return $result;
+    }
     
 }
