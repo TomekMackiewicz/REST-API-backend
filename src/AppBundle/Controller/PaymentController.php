@@ -2,10 +2,13 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Payment;
+use AppBundle\Form\Type\PaymentType;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 //use Symfony\Component\HttpFoundation\Response;
 //use Unirest;
@@ -78,20 +81,45 @@ class PaymentController extends FOSRestController implements ClassResourceInterf
      *     }
      * )
      */
-    public function postAction(Request $request) {
+    public function postAction(Request $request) {        
+        $data = $request->request->all();
+        $json = json_decode($request->getContent(), TRUE);        
+        $em = $this->getDoctrine()->getManager();
         
+        $payment = new Payment();
+        $payment->setTotalAmount($data['totalAmount']);
+        $payment->setUnitPrice($data['products'][0]['unitPrice']);
+        $payment->setQuantity($data['products'][0]['quantity']);
+        $payment->setName($data['products'][0]['name']);
+        $payment->setEmail($data['buyer']['email']);
+        $payment->setPhone($data['buyer']['phone']);
+        $payment->setFirstName($data['buyer']['firstName']); 
+        $payment->setLastName($data['buyer']['lastName']);
+                            
+        $em->persist($payment);
+        $em->flush();       
+               
+        return $this->processPayment($json);
+    }
+
+    /**
+     *
+     * Process payment
+     *
+     * @param Request $request
+     *
+     */
+    private function processPayment($data) {
         // przenieść do configu
         OpenPayU_Configuration::setEnvironment('sandbox');
         OpenPayU_Configuration::setMerchantPosId('302325');
         OpenPayU_Configuration::setSignatureKey('f289568f7d7937e9168519f17217f07d');
         OpenPayU_Configuration::setOauthClientId('302325');
-        OpenPayU_Configuration::setOauthClientSecret('826745237794f7fd98a0f4e6ca5a38e2');        
+        OpenPayU_Configuration::setOauthClientSecret('826745237794f7fd98a0f4e6ca5a38e2');
+
+        $token = $this->getToken($data['id']);
         
-        $data = json_decode($request->getContent(), TRUE);       
-        //$this->processPayment($data);
-        // get text token by id $data['id']
-        
-        $order['continueUrl'] = 'http://localhost:4200/text/full/' . $data['id']; // text full + token
+        $order['continueUrl'] = 'http://localhost:4200/texts/full/' . $token['token']; // text full + token
         $order['notifyUrl'] = 'http://localhost:4200/notify';
         $order['customerIp'] = $_SERVER['REMOTE_ADDR'];
         $order['merchantPosId'] = OpenPayU_Configuration::getMerchantPosId();
@@ -108,22 +136,27 @@ class PaymentController extends FOSRestController implements ClassResourceInterf
         $order['buyer']['firstName'] = $data['buyer']['firstName'];
         $order['buyer']['lastName'] = $data['buyer']['lastName'];        
         $order['buyer']['language'] = $data['buyer']['language'];
-        // save order data (usunąć email z text, niepotrzebny)
+        //(usunąć email z text, niepotrzebny)
         
         $response = OpenPayU_Order::create($order);
 
-        return $response->getResponse()->redirectUri;
+        return $response->getResponse()->redirectUri;        
     }
 
+    private function getToken($id) {
+        $token = $this->getReadyTextRepository()->createFindTokenQuery($id)->getSingleResult();
+        if ($token === null) {
+            return new View(null, Response::HTTP_NOT_FOUND);
+        }
+
+        return $token;        
+    }    
+    
     /**
-     *
-     * Process payment
-     *
-     * @param Request $request
-     *
+     * @return ReadyTextRepository
      */
-    private function processPayment($data) {
-        
+    private function getReadyTextRepository() {
+        return $this->get('crv.doctrine_entity_repository.readyText');
     }
     
 }

@@ -20,6 +20,13 @@ class ReadyTextRepository extends EntityRepository {
         return $query;
     }    
 
+    public function createFindTokenQuery($id) {
+        $query = $this->_em->createQuery("SELECT t.token FROM AppBundle:ReadyText t WHERE t.id = :id");
+        $query->setParameter('id', $id);
+
+        return $query;
+    }    
+    
     public function createFindAllQuery() {
         return $this->_em->createQuery("SELECT t FROM AppBundle:ReadyText t ORDER BY t.addDate DESC");
     }
