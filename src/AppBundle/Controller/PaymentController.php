@@ -40,12 +40,13 @@ class PaymentController extends FOSRestController implements ClassResourceInterf
         // get text token by id $data['id']
         
         $order['continueUrl'] = 'http://localhost:4200/text/full/' . $data['id']; // text full + token
-        $order['notifyUrl'] = 'http://localhost:4200';
+        $order['notifyUrl'] = 'http://localhost:4200/notify';
         $order['customerIp'] = $_SERVER['REMOTE_ADDR'];
         $order['merchantPosId'] = OpenPayU_Configuration::getMerchantPosId();
         $order['description'] = 'New order';
         $order['currencyCode'] = 'PLN';
-        $order['totalAmount'] = 10000;
+        $order['totalAmount'] = $data['totalAmount'];
+        $order['settings']['invoiceDisabled'] = $data['settings']['invoiceDisabled'];
         //$order['extOrderId'] = '1342'; //must be unique!
         $order['products'][0]['name'] = $data['products'][0]['name'];
         $order['products'][0]['unitPrice'] = $data['products'][0]['unitPrice'];
@@ -54,7 +55,7 @@ class PaymentController extends FOSRestController implements ClassResourceInterf
         $order['buyer']['phone'] = $data['buyer']['phone'];
         $order['buyer']['firstName'] = $data['buyer']['firstName'];
         $order['buyer']['lastName'] = $data['buyer']['lastName'];        
-        
+        $order['buyer']['language'] = $data['buyer']['language'];
         // save order data (usunąć email z text, niepotrzebny)
         
         $response = OpenPayU_Order::create($order);
