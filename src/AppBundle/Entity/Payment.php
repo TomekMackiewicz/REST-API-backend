@@ -24,13 +24,13 @@ class Payment implements \JsonSerializable {
     private $id;
 
     /**
-     * @ORM\Column(type="integer", name="total_amount")
+     * @ORM\Column(type="float", name="total_amount")
      * @JMSSerializer\Expose
      */
     private $totalAmount;
 
     /**
-     * @ORM\Column(type="integer", name="unit_price")
+     * @ORM\Column(type="float", name="unit_price")
      * @JMSSerializer\Expose
      */
     private $unitPrice;    

@@ -88,8 +88,8 @@ class PaymentController extends FOSRestController implements ClassResourceInterf
         $em = $this->getDoctrine()->getManager();
         
         $payment = new Payment();
-        $payment->setTotalAmount($data['totalAmount']);
-        $payment->setUnitPrice($data['products'][0]['unitPrice']);
+        $payment->setTotalAmount($data['totalAmount']/100);
+        $payment->setUnitPrice($data['products'][0]['unitPrice']/100);
         $payment->setQuantity($data['products'][0]['quantity']);
         $payment->setName($data['products'][0]['name']);
         $payment->setEmail($data['buyer']['email']);
