@@ -13,7 +13,12 @@ services:
         class: Doctrine\ORM\EntityRepository
         factory: ["@doctrine", getRepository]
         arguments:
-            - AppBundle\Entity\ReadyText            
+            - AppBundle\Entity\ReadyText
+    crv.doctrine_entity_repository.payment:
+        class: Doctrine\ORM\EntityRepository
+        factory: ["@doctrine", getRepository]
+        arguments:
+            - AppBundle\Entity\Payment             
     crv.doctrine_entity_repository.category:
         class: Doctrine\ORM\EntityRepository
         factory: ["@doctrine", getRepository]

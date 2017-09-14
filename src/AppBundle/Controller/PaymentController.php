@@ -151,6 +151,13 @@ class PaymentController extends FOSRestController implements ClassResourceInterf
 
         return $token;        
     }    
+
+    /**
+     * @return PaymentRepository
+     */
+    private function getPaymentRepository() {
+        return $this->get('crv.doctrine_entity_repository.payment');
+    }
     
     /**
      * @return ReadyTextRepository
