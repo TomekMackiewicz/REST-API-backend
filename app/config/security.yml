@@ -79,6 +79,10 @@ security:
             pattern: ^/payments
             anonymous: true
 
+        api_setting:
+            pattern: ^/settings
+            anonymous: true
+
         api_files:
             pattern: ^/files
             anonymous: true
@@ -125,6 +129,8 @@ security:
         - { path: ^/categories, roles: ROLE_NO_ACCESS }
         - { path: ^/payments, role: IS_AUTHENTICATED_ANONYMOUSLY, ips: [127.0.0.1, ::1] }
         - { path: ^/payments, roles: ROLE_NO_ACCESS }
+        - { path: ^/settings, role: IS_AUTHENTICATED_ANONYMOUSLY, ips: [127.0.0.1, ::1] }
+        - { path: ^/settings, roles: ROLE_NO_ACCESS }        
         - { path: ^/files, role: IS_AUTHENTICATED_ANONYMOUSLY, ips: [127.0.0.1, ::1] }
         - { path: ^/files, roles: ROLE_NO_ACCESS }        
         - { path: ^/, role: IS_AUTHENTICATED_ANONYMOUSLY }

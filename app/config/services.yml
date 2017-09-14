@@ -48,7 +48,12 @@ services:
         class: Doctrine\ORM\EntityRepository
         factory: ["@doctrine", getRepository]
         arguments:
-            - AppBundle\Entity\Answer            
+            - AppBundle\Entity\Answer
+    crv.doctrine_entity_repository.setting:
+        class: Doctrine\ORM\EntityRepository
+        factory: ["@doctrine", getRepository]
+        arguments:
+            - AppBundle\Entity\Setting            
     user.mailer.rest:
         class: AppBundle\Mailer\RestMailer
         public: false

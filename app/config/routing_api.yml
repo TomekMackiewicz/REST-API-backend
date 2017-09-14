@@ -46,6 +46,10 @@ payments:
     type: rest
     resource: AppBundle\Controller\PaymentController 
 
+settings:
+    type: rest
+    resource: AppBundle\Controller\SettingController
+
 files:
     type: rest
     resource: AppBundle\Controller\FileController
