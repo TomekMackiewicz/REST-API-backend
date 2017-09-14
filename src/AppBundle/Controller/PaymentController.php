@@ -6,6 +6,7 @@ use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Symfony\Component\HttpFoundation\Request;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 //use Symfony\Component\HttpFoundation\Response;
 //use Unirest;
 use OpenPayU_Configuration;
@@ -18,13 +19,64 @@ use OpenPayU_Order;
  * @RouteResource("payment")
  */
 class PaymentController extends FOSRestController implements ClassResourceInterface {
-    
+
+    /**
+     * Gets an individual payment
+     *
+     * @param int $id
+     * @return mixed
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     *
+     * @ApiDoc(
+     *     output="AppBundle\Entity\Payment",
+     *     statusCodes={
+     *         200 = "Returned when successful",
+     *         404 = "Return when not found"
+     *     }
+     * )
+     */
+    public function getAction(int $id) {
+        $payment = $this->getPaymentRepository()->createFindOneByIdQuery($id)->getSingleResult();
+        if ($payment === null) {
+            return new View(null, Response::HTTP_NOT_FOUND);
+        }
+
+        return $payment;
+    }
+
+    /**
+     * Gets a collection of payments
+     *
+     * @return array
+     *
+     * @ApiDoc(
+     *     output="AppBundle\Entity\Payment",
+     *     statusCodes={
+     *         200 = "Returned when successful",
+     *         404 = "Return when not found"
+     *     }
+     * )
+     */
+    public function cgetAction() {
+        return $this->getPaymentRepository()->createFindAllQuery()->getResult();
+    }
+
     /**
      *
-     * Process payment
+     * Adds a payment
      *
      * @param Request $request
+     * @return View|\Symfony\Component\Form\Form
      *
+     * @ApiDoc(
+     *     input="AppBundle\Form\Type\PaymentType",
+     *     output="AppBundle\Entity\Payment",
+     *     statusCodes={
+     *         201 = "Returned when a new Form has been successful created",
+     *         404 = "Return when not found"
+     *     }
+     * )
      */
     public function postAction(Request $request) {
         
@@ -36,7 +88,7 @@ class PaymentController extends FOSRestController implements ClassResourceInterf
         OpenPayU_Configuration::setOauthClientSecret('826745237794f7fd98a0f4e6ca5a38e2');        
         
         $data = json_decode($request->getContent(), TRUE);       
-        
+        //$this->processPayment($data);
         // get text token by id $data['id']
         
         $order['continueUrl'] = 'http://localhost:4200/text/full/' . $data['id']; // text full + token
@@ -61,6 +113,17 @@ class PaymentController extends FOSRestController implements ClassResourceInterf
         $response = OpenPayU_Order::create($order);
 
         return $response->getResponse()->redirectUri;
+    }
+
+    /**
+     *
+     * Process payment
+     *
+     * @param Request $request
+     *
+     */
+    private function processPayment($data) {
+        
     }
     
 }

@@ -16,9 +16,9 @@ class FormType extends AbstractType {
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
-            ->add('totalAmount', TextType::class)
-            ->add('unitPrice', TextType::class)                
-            ->add('quantity', TextType::class)                
+            ->add('totalAmount', IntegerType::class)
+            ->add('unitPrice', IntegerType::class)                
+            ->add('quantity', IntegerType::class)                
             ->add('name', TextType::class)                
             ->add('email', TextType::class)                
             ->add('phone', TextType::class)                
