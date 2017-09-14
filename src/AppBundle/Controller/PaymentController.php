@@ -83,7 +83,8 @@ class PaymentController extends FOSRestController implements ClassResourceInterf
      */
     public function postAction(Request $request) {        
         $data = $request->request->all();
-        $json = json_decode($request->getContent(), TRUE);        
+        $json = json_decode($request->getContent(), TRUE);
+        $token = $this->getToken($data['id']);
         $em = $this->getDoctrine()->getManager();
         
         $payment = new Payment();
@@ -95,11 +96,12 @@ class PaymentController extends FOSRestController implements ClassResourceInterf
         $payment->setPhone($data['buyer']['phone']);
         $payment->setFirstName($data['buyer']['firstName']); 
         $payment->setLastName($data['buyer']['lastName']);
+        $payment->setToken($token['token']);
                             
         $em->persist($payment);
         $em->flush();       
                
-        return $this->processPayment($json);
+        return $this->processPayment($json, $token['token']);
     }
 
     /**
@@ -109,17 +111,15 @@ class PaymentController extends FOSRestController implements ClassResourceInterf
      * @param Request $request
      *
      */
-    private function processPayment($data) {
+    private function processPayment($data, $token) {
         // przenieść do configu
         OpenPayU_Configuration::setEnvironment('sandbox');
         OpenPayU_Configuration::setMerchantPosId('302325');
         OpenPayU_Configuration::setSignatureKey('f289568f7d7937e9168519f17217f07d');
         OpenPayU_Configuration::setOauthClientId('302325');
         OpenPayU_Configuration::setOauthClientSecret('826745237794f7fd98a0f4e6ca5a38e2');
-
-        $token = $this->getToken($data['id']);
         
-        $order['continueUrl'] = 'http://localhost:4200/texts/full/' . $token['token']; // text full + token
+        $order['continueUrl'] = 'http://localhost:4200/texts/full/' . $token; // text full + token
         $order['notifyUrl'] = 'http://localhost:4200/notify';
         $order['customerIp'] = $_SERVER['REMOTE_ADDR'];
         $order['merchantPosId'] = OpenPayU_Configuration::getMerchantPosId();

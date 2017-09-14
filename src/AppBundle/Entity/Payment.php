@@ -72,6 +72,12 @@ class Payment implements \JsonSerializable {
     private $lastName;     
 
     /**
+     * @ORM\Column(type="integer", name="token")
+     * @JMSSerializer\Expose
+     */
+    private $token;    
+    
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="date", type="datetime", nullable=true)
@@ -224,6 +230,22 @@ class Payment implements \JsonSerializable {
     /**
      * @return mixed
      */
+    public function getToken() {
+        return $this->token;
+    }
+
+    /**
+     * @param mixed $token
+     * @return Payment
+     */
+    public function setToken($token) {
+        $this->token = $token;
+        return $this;
+    }    
+    
+    /**
+     * @return mixed
+     */
     function jsonSerialize() {
         return [
             'id' => $this->id,
@@ -234,7 +256,8 @@ class Payment implements \JsonSerializable {
             'email' => $this->email,
             'phone' => $this->phone,            
             'firstName' => $this->firstName,            
-            'lastName' => $this->lastName,            
+            'lastName' => $this->lastName,
+            'token' => $this->token,
             'date' => $this->date,            
         ];
     }

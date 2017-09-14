@@ -23,7 +23,8 @@ class PaymentType extends AbstractType {
             ->add('email', TextType::class)                
             ->add('phone', TextType::class)                
             ->add('firstName', TextType::class)                
-            ->add('lastName', TextType::class);         
+            ->add('lastName', TextType::class)
+            ->add('token', IntegerType::class);         
     }
 
     public function configureOptions(OptionsResolver $resolver) {
