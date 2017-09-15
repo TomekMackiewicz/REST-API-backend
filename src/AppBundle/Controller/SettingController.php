@@ -69,12 +69,27 @@ class SettingController extends FOSRestController implements ClassResourceInterf
      *     }
      * )
      */
-    public function putAction(Request $request, int $id) {
-        ob_start();
-        print_r($request->request->all());
-        $textualRepresentation = ob_get_contents();
-        ob_end_clean();
-        file_put_contents('/var/www/log.log', $textualRepresentation);        
+    public function putAction(Request $request, int $id) {        
+        $settings = $this->getSettingRepository()->find($id);
+        $em = $this->getDoctrine()->getManager();
+        if ($settings === null) {
+            return new View(null, Response::HTTP_NOT_FOUND);
+        }
+        $form = $this->createForm(SettingType::class, $settings, [
+            'csrf_protection' => false,
+        ]);
+        $form->submit($request->request->all());
+        if (!$form->isValid()) {
+            return $form;
+        }
+        $em->persist($settings);
+        $em->flush();
+        $routeOptions = [
+            'id' => $settings->getId(),
+            '_format' => $request->get('_format'),
+        ];
+        
+        return $this->routeRedirectView('get_form', $routeOptions, Response::HTTP_NO_CONTENT);        
     }
 
     /**
