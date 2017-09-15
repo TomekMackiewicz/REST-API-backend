@@ -27,6 +27,12 @@ class Setting implements \JsonSerializable {
      * @JMSSerializer\Expose
      */
     private $price;       
+
+    /**
+     * @ORM\Column(type="string", name="transition", nullable=true)
+     * @JMSSerializer\Expose
+     */
+    private $transition;
     
     /**
      * @return int
@@ -50,6 +56,22 @@ class Setting implements \JsonSerializable {
         $this->price = $price;
         return $this;
     }       
+
+    /**
+     * @return mixed
+     */
+    public function getTransition() {
+        return $this->transition;
+    }
+
+    /**
+     * @param mixed $transition
+     * @return Setting
+     */
+    public function setTransition($transition) {
+        $this->transition = $transition;
+        return $this;
+    } 
     
     /**
      * @return mixed
@@ -57,7 +79,8 @@ class Setting implements \JsonSerializable {
     function jsonSerialize() {
         return [
             'id' => $this->id,
-            'price' => $this->price
+            'price' => $this->price,
+            'transition' => $this->transition
         ];
     }
 
