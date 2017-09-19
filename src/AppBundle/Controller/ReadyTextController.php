@@ -119,7 +119,6 @@ class ReadyTextController extends FOSRestController implements ClassResourceInte
         $inputAnswers = json_decode($request->getContent());
         $formId = $request->request->get("formId");
         $answers = $this->processAnswers($inputAnswers);
-        $email = $request->request->get("email");
         $em = $this->getDoctrine()->getManager();
         $form = $em->getRepository('AppBundle:Form')->createFindOneByIdQuery((int) $formId)->getSingleResult();
         $body = $form->getDocument()->getBody();
@@ -136,7 +135,6 @@ class ReadyTextController extends FOSRestController implements ClassResourceInte
         $text = new ReadyText();
         $text->setTitle($title);
         $text->setBody($body);
-        $text->setEmail($email);
         $em->persist($text);
         $em->flush();        
         
@@ -147,7 +145,7 @@ class ReadyTextController extends FOSRestController implements ClassResourceInte
     private function processAnswers($inputAnswers) {
         $answers = [];
         foreach ($inputAnswers as $questionId => $inputAnswer) {
-            if($questionId === "formId" || $questionId === "email" ) {
+            if($questionId === "formId") {
                 continue;
             } else {
                 $answers[$questionId] = $inputAnswer;

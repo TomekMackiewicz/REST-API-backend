@@ -17,8 +17,7 @@ class ReadyTextType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
             ->add('title', TextType::class)
-            ->add('body', TextType::class)
-            ->add('email', TextType::class);    
+            ->add('body', TextType::class);    
     }
 
     public function configureOptions(OptionsResolver $resolver) {

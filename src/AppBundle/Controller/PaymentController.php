@@ -82,7 +82,7 @@ class PaymentController extends FOSRestController implements ClassResourceInterf
      * )
      */
     public function postAction(Request $request) {        
-        $data = $request->request->all();
+        $data = $request->request->all();        
         $json = json_decode($request->getContent(), TRUE);
         $token = $this->getToken($data['id']);
         $em = $this->getDoctrine()->getManager();
@@ -119,7 +119,7 @@ class PaymentController extends FOSRestController implements ClassResourceInterf
         OpenPayU_Configuration::setOauthClientId('302325');
         OpenPayU_Configuration::setOauthClientSecret('826745237794f7fd98a0f4e6ca5a38e2');
         
-        $order['continueUrl'] = 'http://localhost:4200/texts/full/' . $token; // text full + token
+        $order['continueUrl'] = 'http://localhost:4200/texts/full/' . $token;
         $order['notifyUrl'] = 'http://localhost:4200/notify';
         $order['customerIp'] = $_SERVER['REMOTE_ADDR'];
         $order['merchantPosId'] = OpenPayU_Configuration::getMerchantPosId();
@@ -136,7 +136,6 @@ class PaymentController extends FOSRestController implements ClassResourceInterf
         $order['buyer']['firstName'] = $data['buyer']['firstName'];
         $order['buyer']['lastName'] = $data['buyer']['lastName'];        
         $order['buyer']['language'] = $data['buyer']['language'];
-        //(usunąć email z text, niepotrzebny)
         
         $response = OpenPayU_Order::create($order);
 

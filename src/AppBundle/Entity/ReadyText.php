@@ -49,13 +49,7 @@ class ReadyText implements \JsonSerializable {
      * )
      * @JMSSerializer\Expose
      */
-    private $addDate;
-
-    /**
-     * @ORM\Column(type="text", name="email")
-     * @JMSSerializer\Expose
-     */
-    private $email;    
+    private $addDate;   
     
     public function __construct() {
         $this->addDate = new \DateTime();
@@ -107,23 +101,7 @@ class ReadyText implements \JsonSerializable {
     public function setBody($body) {
         $this->body = $body;
         return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getEmail() {
-        return $this->email;
-    }
-
-    /**
-     * @param mixed $email
-     * @return ReadyText
-     */
-    public function setEmail($email) {
-        $this->email = $email;
-        return $this;
-    }    
+    }   
     
     /**
      * @return mixed
@@ -134,8 +112,7 @@ class ReadyText implements \JsonSerializable {
             'title' => $this->title,
             'body' => $this->body,
             'addDate' => $this->addDate,
-            'token' => $this->token,
-            'email' => $this->email
+            'token' => $this->token
         ];
     }
 
