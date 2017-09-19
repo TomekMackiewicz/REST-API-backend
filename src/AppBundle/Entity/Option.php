@@ -30,18 +30,6 @@ class Option implements \JsonSerializable {
     private $name;     
 
     /**
-     * @ORM\Column(type="integer", name="is_answer", nullable=true)
-     * @JMSSerializer\Expose
-     */
-    private $isAnswer;    
-    
-    /**
-     * @ORM\Column(type="integer", name="selected", nullable=true)
-     * @JMSSerializer\Expose
-     */
-    private $selected; 
-
-    /**
      * @ORM\ManyToOne(targetEntity="Question", inversedBy="options")
      * @ORM\JoinColumn(name="question_id", referencedColumnName="id")
      * @JMSSerializer\Expose
