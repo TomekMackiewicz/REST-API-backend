@@ -28,13 +28,6 @@ class Category implements \JsonSerializable {
      */
     private $name;
 
-//    /**
-//     * @ORM\ManyToMany(targetEntity="Document", mappedBy="categories")
-//     * @JMSSerializer\Expose
-//     * @MaxDepth(2)
-//     */
-//    private $documents;
-
     /**
      * @ORM\ManyToMany(targetEntity="Form", mappedBy="categories")
      * @JMSSerializer\Expose
@@ -43,7 +36,6 @@ class Category implements \JsonSerializable {
     private $forms;    
     
     public function __construct() {
-        //$this->documents = new ArrayCollection();
         $this->forms = new ArrayCollection();
     }
 
@@ -69,35 +61,6 @@ class Category implements \JsonSerializable {
         $this->name = $name;
         return $this;
     }
-
-//    /**
-//     * Add documents
-//     *
-//     * @param \AppBundle\Entity\Document $documents
-//     * @return Category
-//     */
-//    public function addDocument(\AppBundle\Entity\Document $documents) {
-//        $this->documents[] = $documents;
-//        return $this;
-//    }
-//
-//    /**
-//     * Remove documents
-//     *
-//     * @param \AppBundle\Entity\Document $documents
-//     */
-//    public function removeDocument(\AppBundle\Entity\Document $documents) {
-//        $this->documents->removeElement($documents);
-//    }
-//
-//    /**
-//     * Get documents
-//     *
-//     * @return \Doctrine\Common\Collections\Collection
-//     */
-//    public function getDocuments() {
-//        return $this->documents;
-//    }
 
     /**
      * Add form
@@ -139,14 +102,6 @@ class Category implements \JsonSerializable {
             'forms' => $this->forms
         ];
     }
-
-//    /**
-//     * @param \AppBundle\Entity\Document $document
-//     * @return bool
-//     */
-//    public function hasDocument(Document $document) {
-//        return $this->getDocuments()->contains($document);
-//    }
 
     /**
      * @param \AppBundle\Entity\Form $form

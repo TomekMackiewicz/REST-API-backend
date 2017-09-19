@@ -48,6 +48,7 @@ class FormController extends FOSRestController implements ClassResourceInterface
      *         404 = "Return when not found"
      *     }
      * )
+     * @JSONView(serializerEnableMaxDepthChecks=true)
      */
     public function getAction(int $id) {
         $form = $this->getFormRepository()->createFindOneByIdQuery($id)->getSingleResult();
@@ -70,6 +71,7 @@ class FormController extends FOSRestController implements ClassResourceInterface
      *         404 = "Return when not found"
      *     }
      * )
+     * @JSONView(serializerEnableMaxDepthChecks=true)
      */
     public function cgetAction() {
         return $this->getFormRepository()->createFindAllQuery()->getResult();
