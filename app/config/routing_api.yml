@@ -22,10 +22,6 @@ options:
     type: rest
     resource: AppBundle\Controller\OptionController
 
-answers:
-    type: rest
-    resource: AppBundle\Controller\AnswerController
-
 login:
     type: rest
     resource: AppBundle\Controller\RestLoginController

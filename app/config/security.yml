@@ -67,10 +67,6 @@ security:
             pattern: ^/options
             anonymous: true
 
-        api_answers:
-            pattern: ^/answers
-            anonymous: true
-
         api_categories:
             pattern: ^/categories
             anonymous: true
@@ -123,8 +119,6 @@ security:
         - { path: ^/questions, roles: ROLE_NO_ACCESS } 
         - { path: ^/options, role: IS_AUTHENTICATED_ANONYMOUSLY, ips: [127.0.0.1, ::1] }
         - { path: ^/options, roles: ROLE_NO_ACCESS }        
-        - { path: ^/answers, role: IS_AUTHENTICATED_ANONYMOUSLY, ips: [127.0.0.1, ::1] }
-        - { path: ^/answers, roles: ROLE_NO_ACCESS }
         - { path: ^/categories, role: IS_AUTHENTICATED_ANONYMOUSLY, ips: [127.0.0.1, ::1] }
         - { path: ^/categories, roles: ROLE_NO_ACCESS }
         - { path: ^/payments, role: IS_AUTHENTICATED_ANONYMOUSLY, ips: [127.0.0.1, ::1] }

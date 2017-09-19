@@ -98,6 +98,64 @@ class ReadyTextController extends FOSRestController implements ClassResourceInte
 
         return $text;
     }    
+
+    /**
+     *
+     * Adds a form
+     *
+     * @param Request $request
+     * @return View|\Symfony\Component\Form\Form
+     *
+     * @ApiDoc(
+     *     input="AppBundle\Form\Type\FormType",
+     *     output="AppBundle\Entity\Form",
+     *     statusCodes={
+     *         201 = "Returned when a new Form has been successful created",
+     *         404 = "Return when not found"
+     *     }
+     * )
+     */
+    public function postAction(Request $request) {       
+        $inputAnswers = json_decode($request->getContent());
+        $formId = $request->request->get("formId");
+        $answers = $this->processAnswers($inputAnswers);
+        $email = $request->request->get("email");
+        $em = $this->getDoctrine()->getManager();
+        $form = $em->getRepository('AppBundle:Form')->createFindOneByIdQuery((int) $formId)->getSingleResult();
+        $body = $form->getDocument()->getBody();
+        $title = $form->getDocument()->getTitle();
+        
+        foreach($answers as $key => $value) {
+            if (is_array($value)) {
+                $body = str_replace("[".$key."]", "<strong>".implode(", ",$value)."</strong>", $body);
+            } else {
+                $body = str_replace("[".$key."]", "<strong>".$value."</strong>", $body);                
+            }
+        }
+        
+        $text = new ReadyText();
+        $text->setTitle($title);
+        $text->setBody($body);
+        $text->setEmail($email);
+        $em->persist($text);
+        $em->flush();        
+        
+        return View::create()->setStatusCode(201)->setData($text->getId());        
+
+    }
+    
+    private function processAnswers($inputAnswers) {
+        $answers = [];
+        foreach ($inputAnswers as $questionId => $inputAnswer) {
+            if($questionId === "formId" || $questionId === "email" ) {
+                continue;
+            } else {
+                $answers[$questionId] = $inputAnswer;
+            }
+        }
+
+        return $answers;
+    }
     
     /**
      * @return ReadyTextRepository

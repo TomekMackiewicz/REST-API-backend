@@ -44,11 +44,6 @@ services:
         factory: ["@doctrine", getRepository]
         arguments:
             - AppBundle\Entity\Option              
-    crv.doctrine_entity_repository.answer:
-        class: Doctrine\ORM\EntityRepository
-        factory: ["@doctrine", getRepository]
-        arguments:
-            - AppBundle\Entity\Answer
     crv.doctrine_entity_repository.setting:
         class: Doctrine\ORM\EntityRepository
         factory: ["@doctrine", getRepository]

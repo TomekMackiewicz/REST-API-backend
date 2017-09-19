@@ -69,7 +69,6 @@ class Question implements \JsonSerializable {
     
     public function __construct() {
         $this->options = new ArrayCollection();
-        //$this->answers = new ArrayCollection();
     }
 
     /**
