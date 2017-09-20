@@ -99,7 +99,9 @@ class DocumentController extends FOSRestController implements ClassResourceInter
         }
 
         $em = $this->getDoctrine()->getManager();
-        $formId = $request->request->get('formId');
+        //$formId = $request->request->get('formId');
+        $formObj = $request->request->get('form');
+        $formId = $formObj['id'];
         $f = $em->getRepository('AppBundle:Form')->createFindOneByIdQuery((int) $formId)->getSingleResult();
         $document = $form->getData();
         $document->addForm($f);
@@ -135,8 +137,7 @@ class DocumentController extends FOSRestController implements ClassResourceInter
      * )
      */
     public function putAction(Request $request, int $id) {
-
-        $document = $this->getDocumentRepository()->find($id);
+        $document = $this->getDocumentRepository()->find($id);       
         $em = $this->getDoctrine()->getManager();
 
         if ($document === null) {
@@ -151,11 +152,9 @@ class DocumentController extends FOSRestController implements ClassResourceInter
         }
 
         $document->setModifiedDate(new \DateTime());
-        
-        $newForm = $em
-                ->getRepository('AppBundle:Form')
-                ->createFindOneByIdQuery((int) $request->request->get('formId'))
-                ->getSingleResult();
+        $formObj = $request->request->get('form');
+        $formId = $formObj['id'];       
+        $newForm = $em->getRepository('AppBundle:Form')->createFindOneByIdQuery((int) $formId)->getSingleResult();        
         $currentForm = $document->getForm();        
         if($currentForm) {
             $document->removeForm(); 
