@@ -31,7 +31,7 @@ class Category implements \JsonSerializable {
     /**
      * @ORM\ManyToMany(targetEntity="Form", mappedBy="categories")
      * @JMSSerializer\Expose
-     * @MaxDepth(2)
+     * @MaxDepth(3)
      */
     private $forms;    
     
