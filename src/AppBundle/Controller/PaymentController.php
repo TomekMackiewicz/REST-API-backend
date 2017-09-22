@@ -101,7 +101,7 @@ class PaymentController extends FOSRestController implements ClassResourceInterf
         $em->persist($payment);
         $em->flush();       
                
-        return $this->processPayment($json, $token['token']);
+        return $this->processPayment($json);
     }
 
     /**
@@ -111,7 +111,7 @@ class PaymentController extends FOSRestController implements ClassResourceInterf
      * @param Request $request
      *
      */
-    private function processPayment($data, $token) {
+    private function processPayment($data) {
         // przenieść do configu
         OpenPayU_Configuration::setEnvironment('sandbox');
         OpenPayU_Configuration::setMerchantPosId('302325');
@@ -119,7 +119,7 @@ class PaymentController extends FOSRestController implements ClassResourceInterf
         OpenPayU_Configuration::setOauthClientId('302325');
         OpenPayU_Configuration::setOauthClientSecret('826745237794f7fd98a0f4e6ca5a38e2');
         
-        $order['continueUrl'] = 'http://localhost:4200/texts/full/' . $token;
+        $order['continueUrl'] = 'http://localhost:4200/texts/token';
         $order['notifyUrl'] = 'http://localhost:4200/notify';
         $order['customerIp'] = $_SERVER['REMOTE_ADDR'];
         $order['merchantPosId'] = OpenPayU_Configuration::getMerchantPosId();
