@@ -21,13 +21,7 @@ class Document implements \JsonSerializable {
      * @ORM\GeneratedValue(strategy="AUTO")
      * @JMSSerializer\Expose
      */
-    protected $id;
-
-//    /**
-//     * @ORM\Column(type="integer", name="form_id", nullable=true)
-//     * @JMSSerializer\Expose
-//     */
-//    private $formId;    
+    protected $id;   
     
     /**
      * @ORM\Column(type="string", name="title")
@@ -36,7 +30,7 @@ class Document implements \JsonSerializable {
     private $title;
 
     /**
-     * @ORM\Column(type="text", name="body")
+     * @ORM\Column(type="text", name="body", nullable=true)
      * @JMSSerializer\Expose
      */
     private $body;
@@ -79,23 +73,7 @@ class Document implements \JsonSerializable {
      */
     public function getId() {
         return $this->id;
-    }
-
-//    /**
-//     * @return mixed
-//     */
-//    public function getFormId() {
-//        return $this->formId;
-//    }
-
-//    /**
-//     * @param mixed $formId
-//     * @return Document
-//     */
-//    public function setformId($formId) {
-//        $this->formId = $formId;
-//        return $this;
-//    }    
+    }   
     
     /**
      * @return mixed
